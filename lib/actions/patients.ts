@@ -9,6 +9,7 @@ import {
   type PatientFormInput,
 } from "@/lib/validations/patient";
 import { PatientSource } from "@/prisma/generated/prisma/client";
+import { getFirstZodError } from "@/lib/utils/zod";
 
 export async function createPatient(input: PatientFormInput) {
   await requireAuth();
@@ -17,7 +18,7 @@ export async function createPatient(input: PatientFormInput) {
   if (!parsed.success) {
     return {
       success: false as const,
-      error: parsed.error.errors[0]?.message ?? "Invalid data",
+      error: getFirstZodError(parsed.error),
     };
   }
 
@@ -59,7 +60,7 @@ export async function updatePatientStatus(
   if (!parsed.success) {
     return {
       success: false as const,
-      error: parsed.error.errors[0]?.message ?? "Invalid data",
+      error: getFirstZodError(parsed.error),
     };
   }
 

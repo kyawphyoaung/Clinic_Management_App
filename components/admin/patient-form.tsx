@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { createPatient } from "@/lib/actions/patients";
+import { parsePatientFormData } from "@/lib/utils/parse-patient-form";
 import { PatientSource, PatientStatus } from "@/prisma/generated/prisma/enums";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,15 +30,7 @@ export function PatientForm({ agents }: PatientFormProps) {
     const formData = new FormData(e.currentTarget);
 
     startTransition(async () => {
-      const result = await createPatient({
-        name: formData.get("name") as string,
-        phone: (formData.get("phone") as string) || "",
-        age: (formData.get("age") as string) || "",
-        gender: (formData.get("gender") as string) || "",
-        source: formData.get("source") as PatientSource,
-        status: formData.get("status") as PatientStatus,
-        agentId: (formData.get("agentId") as string) || "",
-      });
+      const result = await createPatient(parsePatientFormData(formData));
 
       if (!result.success) {
         setError(result.error);

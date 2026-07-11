@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/session";
 import { agentFormSchema, type AgentFormInput } from "@/lib/validations/agent";
+import { getFirstZodError } from "@/lib/utils/zod";
 
 export async function createAgent(input: AgentFormInput) {
   await requireAuth();
@@ -12,7 +13,7 @@ export async function createAgent(input: AgentFormInput) {
   if (!parsed.success) {
     return {
       success: false as const,
-      error: parsed.error.errors[0]?.message ?? "Invalid data",
+      error: getFirstZodError(parsed.error),
     };
   }
 

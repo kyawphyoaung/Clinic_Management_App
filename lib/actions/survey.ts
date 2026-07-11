@@ -7,6 +7,8 @@ import {
   type SurveySubmissionInput,
 } from "@/lib/validations/survey";
 import { calculateScore, getLocalizedResult } from "@/lib/utils/scoring";
+import { getFirstZodError } from "@/lib/utils/zod";
+import { toInputJsonValue } from "@/lib/utils/json";
 import { PatientSource } from "@/prisma/generated/prisma/client";
 
 export type SurveyActionResult =
@@ -37,7 +39,7 @@ export async function submitSurvey(
     if (!parsed.success) {
       return {
         success: false,
-        error: parsed.error.errors[0]?.message ?? "Invalid submission data",
+        error: getFirstZodError(parsed.error, "Invalid submission data"),
       };
     }
 
@@ -71,7 +73,9 @@ export async function submitSurvey(
         data: {
           patientId: patientId!,
           formType: data.formId,
-          rawAnswers: data.answers,
+          rawAnswers: toInputJsonValue(
+            data.answers as Record<string, string | number>
+          ),
           language: data.language,
         },
       });

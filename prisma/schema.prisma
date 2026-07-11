@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+enum PatientStatus {
+  PENDING
+  APPOINTED
+  TREATING
+  COMPLETED
+}
+
+enum PatientSource {
+  AGENT
+  BOOKING
+  WALKIN
+}
+
+model Patient {
+  id        String        @id @default(uuid())
+  name      String
+  phone     String?
+  age       Int?
+  gender    String?
+  source    PatientSource @default(WALKIN)
+  status    PatientStatus @default(PENDING)
+  agentId   String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  agent   Agent?           @relation(fields: [agentId], references: [id])
+  surveys SurveyResponse[]
+}
+
+model Agent {
+  id         String    @id @default(uuid())
+  name       String
+  phone      String?
+  shareToken String    @unique @default(uuid())
+  patients   Patient[]
+}
+
+model SurveyResponse {
+  id         String   @id @default(uuid())
+  patientId  String
+  formType   String
+  rawAnswers Json
+  language   String
+  createdAt  DateTime @default(now())
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+}

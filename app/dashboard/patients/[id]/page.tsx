@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { getPatientById } from "@/lib/actions/patients";
 import { QUESTIONNAIRES } from "@/lib/constants/questionnaires";
 import { calculateScore, getLocalizedResult } from "@/lib/utils/scoring";
@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { StatusSelect } from "@/components/admin/status-select";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { PatientSurveyLinks } from "@/components/admin/patient-survey-links";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -60,19 +61,9 @@ export default async function PatientDetailPage({ params }: PageProps) {
             Patient ID: {patient.id}
           </p>
         </div>
-        <Button
-          variant="outline"
-          render={
-            <Link
-              href={`/survey/adam_v1?patientId=${patient.id}`}
-              target="_blank"
-            />
-          }
-        >
-          <ExternalLink className="size-4" />
-          Survey Link
-        </Button>
       </div>
+
+      <PatientSurveyLinks patientId={patient.id} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>

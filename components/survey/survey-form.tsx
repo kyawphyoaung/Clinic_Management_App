@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import Link from "next/link";
 import { ArrowLeft, Loader2 } from "lucide-react";
 
@@ -20,7 +18,10 @@ import {
   SUPPORTED_LANGUAGES,
   UI_LABELS,
 } from "@/lib/constants/labels";
-import { demographicsSchema } from "@/lib/validations/survey";
+import {
+  buildClientSurveySchema,
+  type ClientSurveyFormValues,
+} from "@/lib/validations/survey-client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -52,24 +53,11 @@ function buildFormSchema(
   questionnaire: QuestionnaireDefinition,
   isWalkIn: boolean
 ) {
-  const answerShape: Record<string, z.ZodTypeAny> = {};
-  for (const question of questionnaire.questions) {
-    answerShape[question.id] = z.union([z.number(), z.string()], {
-      errorMap: () => ({ message: "Please select an answer" }),
-    });
-  }
-
-  const base = z.object({
-    answers: z.object(answerShape),
-    demographics: isWalkIn ? demographicsSchema : z.undefined().optional(),
-  });
-
-  return base;
+  return buildClientSurveySchema(questionnaire, isWalkIn);
 }
 
 export function SurveyForm({ formId, patientId, patientName }: SurveyFormProps) {
   const questionnaire = QUESTIONNAIRES[formId];
-  const router = useRouter();
   const isWalkIn = !patientId;
 
   const [language, setLanguage] = useState<SupportedLanguage>("en");
@@ -89,19 +77,19 @@ export function SurveyForm({ formId, patientId, patientName }: SurveyFormProps) 
     setValue,
     watch,
     formState: { errors },
-  } = useForm<z.infer<typeof formSchema>>({
+  } = useForm<ClientSurveyFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       answers: defaultAnswers,
       demographics: isWalkIn
-        ? { name: "", age: undefined as unknown as number, gender: "" }
+        ? { name: "", age: undefined, gender: "" }
         : undefined,
     },
   });
 
   const answers = watch("answers");
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: ClientSurveyFormValues) {
     setIsSubmitting(true);
     setError(null);
 
@@ -227,7 +215,7 @@ export function SurveyForm({ formId, patientId, patientName }: SurveyFormProps) 
                 type="number"
                 min={1}
                 max={150}
-                {...register("demographics.age")}
+                {...register("demographics.age", { valueAsNumber: true })}
               />
               {errors.demographics?.age && (
                 <p className="text-sm text-destructive">
