@@ -9,7 +9,7 @@ import { normalizeRole } from "@/lib/roles";
  * it re-encodes the JWT cookie on every request, which invalidates the
  * App Router client cache and causes an infinite /dashboard RSC refetch loop.
  */
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const loginPath = `/${ADMIN_LOGIN_PATH}`;
 
