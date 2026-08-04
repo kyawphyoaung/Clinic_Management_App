@@ -23,12 +23,122 @@ export * from './enums';
  */
 export type Patient = Prisma.PatientModel
 /**
+ * Model Clinic
+ * 
+ */
+export type Clinic = Prisma.ClinicModel
+/**
  * Model Agent
  * 
  */
 export type Agent = Prisma.AgentModel
 /**
+ * Model ConsentLog
+ * 
+ */
+export type ConsentLog = Prisma.ConsentLogModel
+/**
+ * Model YearlyPatientSequence
+ * 
+ */
+export type YearlyPatientSequence = Prisma.YearlyPatientSequenceModel
+/**
+ * Model AgentSetPasswordToken
+ * 
+ */
+export type AgentSetPasswordToken = Prisma.AgentSetPasswordTokenModel
+/**
+ * Model BankAccount
+ * 
+ */
+export type BankAccount = Prisma.BankAccountModel
+/**
+ * Model Cashflow
+ * 
+ */
+export type Cashflow = Prisma.CashflowModel
+/**
+ * Model PatientStatusLog
+ * 
+ */
+export type PatientStatusLog = Prisma.PatientStatusLogModel
+/**
+ * Model CommissionPayment
+ * 
+ */
+export type CommissionPayment = Prisma.CommissionPaymentModel
+/**
+ * Model Appointment
+ * 
+ */
+export type Appointment = Prisma.AppointmentModel
+/**
+ * Model DoctorWeeklyAvailability
+ * 
+ */
+export type DoctorWeeklyAvailability = Prisma.DoctorWeeklyAvailabilityModel
+/**
+ * Model DoctorAvailabilityOverride
+ * 
+ */
+export type DoctorAvailabilityOverride = Prisma.DoctorAvailabilityOverrideModel
+/**
+ * Model Specialization
+ * 
+ */
+export type Specialization = Prisma.SpecializationModel
+/**
+ * Model DoctorSpecialization
+ * 
+ */
+export type DoctorSpecialization = Prisma.DoctorSpecializationModel
+/**
+ * Model ClinicService
+ * 
+ */
+export type ClinicService = Prisma.ClinicServiceModel
+/**
  * Model SurveyResponse
  * 
  */
 export type SurveyResponse = Prisma.SurveyResponseModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Treatment
+ * 
+ */
+export type Treatment = Prisma.TreatmentModel
+/**
+ * Model TreatmentCharge
+ * 
+ */
+export type TreatmentCharge = Prisma.TreatmentChargeModel
+/**
+ * Model TreatmentChargeLine
+ * 
+ */
+export type TreatmentChargeLine = Prisma.TreatmentChargeLineModel
+/**
+ * Model TreatmentPayment
+ * 
+ */
+export type TreatmentPayment = Prisma.TreatmentPaymentModel
+/**
+ * Model PaymentAllocation
+ * 
+ */
+export type PaymentAllocation = Prisma.PaymentAllocationModel
+/**
+ * Model PatientNote
+ * 
+ */
+export type PatientNote = Prisma.PatientNoteModel
+/**
+ * Model PatientDeposit
+ * 
+ */
+export type PatientDeposit = Prisma.PatientDepositModel

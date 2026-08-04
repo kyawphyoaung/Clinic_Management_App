@@ -10,10 +10,18 @@
 */
 
 export const PatientStatus = {
-  PENDING: 'PENDING',
-  APPOINTED: 'APPOINTED',
-  TREATING: 'TREATING',
-  COMPLETED: 'COMPLETED'
+  INQUIRY: 'INQUIRY',
+  QUOTATION_SENT: 'QUOTATION_SENT',
+  BOOKING_DEPOSIT_RECEIVED: 'BOOKING_DEPOSIT_RECEIVED',
+  TELEMEDICINE_SCHEDULED: 'TELEMEDICINE_SCHEDULED',
+  APPOINTMENT_CONFIRMED: 'APPOINTMENT_CONFIRMED',
+  TRAVELING: 'TRAVELING',
+  PATIENT_ARRIVED: 'PATIENT_ARRIVED',
+  TREATMENT: 'TREATMENT',
+  COMPLETED: 'COMPLETED',
+  RESCHEDULED_FOR_FOLLOW_UP: 'RESCHEDULED_FOR_FOLLOW_UP',
+  TREATMENT_CANCELLED: 'TREATMENT_CANCELLED',
+  REFUNDED: 'REFUNDED'
 } as const
 
 export type PatientStatus = (typeof PatientStatus)[keyof typeof PatientStatus]
@@ -26,3 +34,102 @@ export const PatientSource = {
 } as const
 
 export type PatientSource = (typeof PatientSource)[keyof typeof PatientSource]
+
+
+export const ConsentSource = {
+  DIGITAL: 'DIGITAL',
+  PAPER: 'PAPER'
+} as const
+
+export type ConsentSource = (typeof ConsentSource)[keyof typeof ConsentSource]
+
+
+export const AgentStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  REJECTED: 'REJECTED'
+} as const
+
+export type AgentStatus = (typeof AgentStatus)[keyof typeof AgentStatus]
+
+
+export const CashflowType = {
+  DEPOSIT: 'DEPOSIT',
+  CHARGE: 'CHARGE',
+  PAYMENT: 'PAYMENT'
+} as const
+
+export type CashflowType = (typeof CashflowType)[keyof typeof CashflowType]
+
+
+export const PaymentMethod = {
+  BANK: 'BANK',
+  CASH: 'CASH',
+  CARD: 'CARD'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
+export const AppointmentStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  RESCHEDULED: 'RESCHEDULED',
+  CANCELLED: 'CANCELLED',
+  NO_SHOW: 'NO_SHOW',
+  WAITING_FOR_PATIENT_RESCHEDULE: 'WAITING_FOR_PATIENT_RESCHEDULE',
+  ARRIVED: 'ARRIVED'
+} as const
+
+export type AppointmentStatus = (typeof AppointmentStatus)[keyof typeof AppointmentStatus]
+
+
+export const AppointmentCreatedByType = {
+  PUBLIC: 'PUBLIC',
+  PATIENT_LINK: 'PATIENT_LINK',
+  AGENT: 'AGENT',
+  STAFF: 'STAFF',
+  DOCTOR: 'DOCTOR'
+} as const
+
+export type AppointmentCreatedByType = (typeof AppointmentCreatedByType)[keyof typeof AppointmentCreatedByType]
+
+
+export const UserRole = {
+  ADMIN: 'ADMIN',
+  DOCTOR: 'DOCTOR',
+  STAFF: 'STAFF'
+} as const
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const TreatmentStatus = {
+  ONGOING: 'ONGOING',
+  COMPLETED: 'COMPLETED',
+  FOLLOW_UP_SCHEDULED: 'FOLLOW_UP_SCHEDULED'
+} as const
+
+export type TreatmentStatus = (typeof TreatmentStatus)[keyof typeof TreatmentStatus]
+
+
+export const ServiceCategory = {
+  CONSULTATION: 'CONSULTATION',
+  SURGERY: 'SURGERY',
+  MEDICATION: 'MEDICATION',
+  LAB: 'LAB',
+  IMAGING: 'IMAGING',
+  ACCOMMODATION: 'ACCOMMODATION',
+  OTHER: 'OTHER'
+} as const
+
+export type ServiceCategory = (typeof ServiceCategory)[keyof typeof ServiceCategory]
+
+
+export const CommissionReviewStatus = {
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  APPROVED: 'APPROVED',
+  PAID: 'PAID'
+} as const
+
+export type CommissionReviewStatus = (typeof CommissionReviewStatus)[keyof typeof CommissionReviewStatus]

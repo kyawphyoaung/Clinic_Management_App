@@ -5,14 +5,18 @@ import { Check, Copy, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type ShareLinkButtonProps = {
-  shareToken: string;
+  partnerId: string | null;
 };
 
-export function ShareLinkButton({ shareToken }: ShareLinkButtonProps) {
+export function ShareLinkButton({ partnerId }: ShareLinkButtonProps) {
   const [copied, setCopied] = useState(false);
 
+  if (!partnerId) {
+    return <span className="text-xs text-muted-foreground">Pending approval</span>;
+  }
+
   async function handleCopy() {
-    const url = `${window.location.origin}/shared/agent/${shareToken}`;
+    const url = `${window.location.origin}/register?ref=${partnerId}`;
     await navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -25,7 +29,7 @@ export function ShareLinkButton({ shareToken }: ShareLinkButtonProps) {
       ) : (
         <Copy className="size-4" />
       )}
-      {copied ? "Copied!" : "Share Link"}
+      {copied ? "Copied!" : "Referral Link"}
       <Link2 className="size-3 opacity-50" />
     </Button>
   );

@@ -9,6 +9,7 @@ import {
 import { calculateScore, getLocalizedResult } from "@/lib/utils/scoring";
 import { getFirstZodError } from "@/lib/utils/zod";
 import { toInputJsonValue } from "@/lib/utils/json";
+import { generateDisplayId } from "@/lib/utils/display-id";
 import { PatientSource } from "@/prisma/generated/prisma/client";
 
 export type SurveyActionResult =
@@ -49,11 +50,16 @@ export async function submitSurvey(
       let patientId = data.patientId;
 
       if (isWalkIn && data.demographics) {
+        const dob = new Date();
+        dob.setFullYear(dob.getFullYear() - data.demographics.age);
+
+        const displayId = await generateDisplayId(tx);
         const patient = await tx.patient.create({
           data: {
-            name: data.demographics.name,
-            age: data.demographics.age,
+            displayId,
+            fullName: data.demographics.name,
             gender: data.demographics.gender,
+            dateOfBirth: dob,
             source: PatientSource.WALKIN,
           },
         });

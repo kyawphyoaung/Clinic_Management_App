@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Cormorant_Garamond, Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Providers } from "@/components/providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-serif",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,9 +23,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Urology Clinic — Clinical Surveys",
+  title: {
+    default: "REVIVORA",
+    template: "%s | REVIVORA",
+  },
   description:
-    "Multilingual clinical questionnaires for urology patients. ADAM, IPSS, EHS, PEDT and more.",
+    "Expert medical care in Taipei — Men's Health, Aesthetics, and Wellness with REVIVORA.",
 };
 
 export default function RootLayout({
@@ -35,6 +44,7 @@ export default function RootLayout({
         "antialiased",
         geistSans.variable,
         geistMono.variable,
+        cormorant.variable,
         "font-sans",
         inter.variable
       )}

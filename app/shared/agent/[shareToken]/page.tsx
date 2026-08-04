@@ -3,6 +3,10 @@ import { Building2 } from "lucide-react";
 import { getAgentByShareToken } from "@/lib/actions/agents";
 import { PatientSource, PatientStatus } from "@/prisma/generated/prisma/client";
 import {
+  getPatientStatusLabel,
+  StatusBadge,
+} from "@/components/admin/status-badge";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -17,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { StatusBadge } from "@/components/admin/status-badge";
 
 type PageProps = {
   params: Promise<{ shareToken: string }>;
@@ -31,13 +34,6 @@ export default async function SharedAgentPage({ params }: PageProps) {
     notFound();
   }
 
-  const statusLabels: Record<PatientStatus, string> = {
-    PENDING: "Pending",
-    APPOINTED: "Appointed",
-    TREATING: "Treating",
-    COMPLETED: "Completed",
-  };
-
   const sourceLabels: Record<PatientSource, string> = {
     WALKIN: "Walk-in",
     BOOKING: "Booking",
@@ -50,7 +46,7 @@ export default async function SharedAgentPage({ params }: PageProps) {
         <div className="mx-auto flex max-w-4xl items-center gap-3 px-6 py-6">
           <Building2 className="size-7 text-primary" />
           <div>
-            <h1 className="text-xl font-semibold">{agent.name}</h1>
+            <h1 className="text-xl font-semibold">{agent.fullName}</h1>
             <p className="text-sm text-muted-foreground">
               Referred Patients — Read-only view
             </p>
@@ -71,8 +67,8 @@ export default async function SharedAgentPage({ params }: PageProps) {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Display ID</TableHead>
                   <TableHead>Patient Name</TableHead>
-                  <TableHead>Phone</TableHead>
                   <TableHead>Source</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Last Updated</TableHead>
@@ -91,13 +87,17 @@ export default async function SharedAgentPage({ params }: PageProps) {
                 ) : (
                   agent.patients.map((patient) => (
                     <TableRow key={patient.id}>
-                      <TableCell className="font-medium">{patient.name}</TableCell>
-                      <TableCell>{patient.phone ?? "—"}</TableCell>
+                      <TableCell className="font-mono text-xs">
+                        {patient.displayId}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {patient.preferredName ?? patient.fullName}
+                      </TableCell>
                       <TableCell>{sourceLabels[patient.source]}</TableCell>
                       <TableCell>
                         <StatusBadge
                           status={patient.status}
-                          label={statusLabels[patient.status]}
+                          label={getPatientStatusLabel(patient.status)}
                         />
                       </TableCell>
                       <TableCell className="text-muted-foreground">

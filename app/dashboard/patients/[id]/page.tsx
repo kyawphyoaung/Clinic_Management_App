@@ -1,9 +1,21 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { getPatientById } from "@/lib/actions/patients";
+import { ArrowLeft, Check } from "lucide-react";
+import {
+  getAgentsForAssignment,
+  getClinicsForSelect,
+  getPatientById,
+} from "@/lib/actions/patients";
+import { getTreatmentsForPatient } from "@/lib/actions/treatments";
+import { getAppointmentsForPatient } from "@/lib/actions/appointments";
+import { listPatientNotes } from "@/lib/actions/patient-notes";
+import { getDoctorsForSelect } from "@/lib/actions/users";
+import { requireAuth } from "@/lib/session";
+import { canWriteTreatments, hasPermission } from "@/lib/permissions";
 import { QUESTIONNAIRES } from "@/lib/constants/questionnaires";
 import { calculateScore, getLocalizedResult } from "@/lib/utils/scoring";
+import { formatMoney } from "@/lib/utils/money";
 import type { SupportedLanguage } from "@/lib/constants/questionnaires";
 import { PatientSource, PatientStatus } from "@/prisma/generated/prisma/client";
 import { Button } from "@/components/ui/button";
@@ -14,36 +26,262 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { StatusSelect } from "@/components/admin/status-select";
-import { StatusBadge } from "@/components/admin/status-badge";
-import { PatientSurveyLinks } from "@/components/admin/patient-survey-links";
+import {
+  getPatientStatusLabel,
+  StatusBadge,
+} from "@/components/admin/status-badge";
+import { TreatmentStatusBadge } from "@/components/admin/treatment-status-badge";
+import { PatientConsents } from "@/components/admin/patient-consents";
+import { PatientActionBar } from "@/components/admin/patient-action-bar";
+import { PatientDemographics } from "@/components/admin/patient-demographics";
+import { PatientSurveyGenerator } from "@/components/admin/patient-survey-generator";
+import { DeletePatientButton } from "@/components/admin/delete-patient-button";
+import { GenerateBookingLinkButton } from "@/components/admin/generate-booking-link-button";
+import { TreatmentCreateModal } from "@/components/admin/treatment-create-modal";
+import { PatientNotesSection } from "@/components/admin/patient-notes-section";
+import { PatientAppointmentsSection } from "@/components/admin/patient-appointments-section";
+import { PatientDepositsSection } from "@/components/admin/patient-deposits-section";
+import {
+  getPatientDepositBalance,
+  listPatientDeposits,
+} from "@/lib/actions/deposits";
+import { formatTaiwanDateTime } from "@/lib/utils/taiwan-time";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default async function PatientDetailPage({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const patient = await getPatientById(id);
+  return {
+    title: patient ? `${patient.fullName} - Patient` : "Patient",
+  };
+}
+
+export default async function PatientDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const [patient, clinics, agents, treatments, doctors, session, appointments, notes, deposits, depositBalance] =
+    await Promise.all([
+      getPatientById(id),
+      getClinicsForSelect(),
+      getAgentsForAssignment(),
+      getTreatmentsForPatient(id),
+      getDoctorsForSelect(),
+      requireAuth(),
+      getAppointmentsForPatient(id),
+      listPatientNotes(id),
+      listPatientDeposits(id),
+      getPatientDepositBalance(id),
+    ]);
 
   if (!patient) {
     notFound();
   }
 
-  const statusOptions = [
-    { value: PatientStatus.PENDING, label: "Pending" },
-    { value: PatientStatus.APPOINTED, label: "Appointed" },
-    { value: PatientStatus.TREATING, label: "Treating" },
-    { value: PatientStatus.COMPLETED, label: "Completed" },
-  ];
+  const canWrite = canWriteTreatments(session.user.role);
+  const canDelete = hasPermission(session.user.role, "patients:delete");
 
-  const sourceLabels: Record<PatientSource, string> = {
-    WALKIN: "Walk-in",
-    BOOKING: "Booking",
-    AGENT: "Agent Referral",
+  const statusOptions = Object.values(PatientStatus).map((status) => ({
+    value: status,
+    label: getPatientStatusLabel(status),
+  }));
+
+  const sourceLabel =
+    patient.source === PatientSource.WALKIN
+      ? "Walk-in"
+      : patient.source === PatientSource.AGENT
+        ? "Agent Referral"
+        : "Online Registration";
+  const age =
+    patient.dateOfBirth
+      ? Math.max(
+          0,
+          new Date().getFullYear() - patient.dateOfBirth.getFullYear()
+        ).toString()
+      : "—";
+  const telemedicineLanguageMap: Record<string, string> = {
+    en: "English",
+    mm: "Myanmar",
+    zh: "Chinese",
   };
+
+  const medicalRecords: string[] = [];
+  if (patient.hasMedicalReports) medicalRecords.push("Medical Reports");
+  if (patient.hasLabResults) medicalRecords.push("Lab Results");
+  if (patient.hasImaging) medicalRecords.push("Imaging");
+  if (patient.hasMedicationList) medicalRecords.push("Medication List");
+  if (patient.hasReferralLetter) medicalRecords.push("Referral Letter");
+  if (patient.hasSurgicalRecords) medicalRecords.push("Surgical Records");
+  if (patient.hasOtherMedicalDocs) medicalRecords.push("Other Medical Docs");
+
+  const latestPaperConsent = patient.consentLogs.find((log) => log.source === "PAPER");
+
+  const demographicSections = [
+    {
+      title: "Section A - Personal Information",
+      fields: [
+        { label: "Full Name", value: patient.fullName },
+        { label: "Preferred Name", value: patient.preferredName ?? "—" },
+        {
+          label: "Date of Birth",
+          value: patient.dateOfBirth?.toLocaleDateString() ?? "—",
+        },
+        { label: "Age", value: age },
+        { label: "Gender", value: patient.gender ?? "—" },
+        { label: "Phone Number", value: "", encryptedKey: "mobileNumber" },
+      ],
+    },
+    {
+      title: "Section B - Passport Information",
+      fields: [
+        { label: "Nationality", value: patient.nationality ?? "—" },
+        { label: "Country of Residence", value: patient.countryOfResidence ?? "—" },
+        { label: "Passport Number", value: "", encryptedKey: "passportNumber" },
+        {
+          label: "Passport Expiry",
+          value: patient.passportExpiry?.toLocaleDateString() ?? "—",
+        },
+      ],
+    },
+    {
+      title: "Section C - Emergency Contact",
+      fields: [
+        { label: "Emergency Contact Name", value: "", encryptedKey: "emergencyName" },
+        { label: "Emergency Relationship", value: patient.emergencyRelationship ?? "—" },
+        { label: "Emergency Phone", value: "", encryptedKey: "emergencyPhone" },
+        { label: "Emergency Email", value: "", encryptedKey: "emergencyEmail" },
+      ],
+    },
+    {
+      title: "Section D - Requested Medical Service",
+      fields: [
+        {
+          label: "Requested Medical Service Category",
+          value: patient.serviceCategory ?? "—",
+        },
+        {
+          label: "Requested Medical Service",
+          value: patient.medicalServices.join(", ") || "—",
+        },
+        ...(patient.medicalServicesOther
+          ? [{ label: "Other Service", value: patient.medicalServicesOther }]
+          : []),
+      ],
+    },
+    {
+      title: "Section E - Healthcare Information",
+      fields: [
+        { label: "Previous Treatment", value: patient.previousTreatment === "yes" ? "Yes" : "No" },
+        { label: "Under Physician Care", value: patient.underPhysicianCare === "yes" ? "Yes" : "No" },
+        ...(patient.physicianName ? [{ label: "Physician Name", value: patient.physicianName }] : []),
+        ...(patient.physicianCountry ? [{ label: "Physician Country", value: patient.physicianCountry }] : []),
+      ],
+    },
+    {
+      title: "Section F - Medical Records",
+      fields: [
+        {
+          label: "Medical Records",
+          value: medicalRecords.length > 0 ? medicalRecords.join(", ") : "Nothing",
+        },
+      ],
+    },
+    {
+      title: "Section G - Pre-treatment Telemedicine",
+      fields:
+        patient.wantTelemedicine === "yes"
+          ? [
+              { label: "Telemedicine", value: "Yes" },
+              {
+                label: "Telemedicine Language",
+                value:
+                  patient.telemedicineLanguage === "other"
+                    ? patient.telemedicineOtherLanguage ?? "Other"
+                    : telemedicineLanguageMap[patient.telemedicineLanguage ?? ""] ??
+                      (patient.telemedicineLanguage ?? "—"),
+              },
+              {
+                label: "Preferred Consultation Time",
+                value: patient.preferredConsultationTime ?? "—",
+              },
+            ]
+          : [{ label: "Telemedicine", value: "No" }],
+    },
+    {
+      title: "Section H - Travel Information",
+      fields: [
+        {
+          label: "Preferred Travel Month",
+          value: patient.preferredTravelMonth
+            ? new Date(`${patient.preferredTravelMonth}-01`).toLocaleDateString(
+                undefined,
+                { month: "long", year: "numeric" }
+              )
+            : "—",
+        },
+        { label: "Estimated Stay", value: patient.estimatedStay ?? "—" },
+        {
+          label: "Travel With Companion",
+          value: patient.travelWithCompanion === "yes" ? "Yes" : "No",
+        },
+        ...(patient.travelWithCompanion === "yes"
+          ? [
+              {
+                label: "Companion Count",
+                value: patient.companionCount?.toString() ?? "—",
+              },
+            ]
+          : []),
+        {
+          label: "Assistance Required",
+          value: patient.assistanceRequired.join(", ") || "—",
+        },
+      ],
+    },
+    {
+      title: "Section I - Referral Information",
+      fields: [
+        {
+          label: "Referral Source",
+          value:
+            patient.referralSource === "other" && patient.referralSourceOther
+              ? `Other (${patient.referralSourceOther})`
+              : patient.referralSource ?? "—",
+        },
+        ...(patient.partnerName ? [{ label: "Partner Name", value: patient.partnerName }] : []),
+        ...(patient.partnerId ? [{ label: "Partner ID", value: patient.partnerId }] : []),
+      ],
+    },
+    {
+      title: "Section J - Consent & Signature",
+      fields: [
+        { label: "Use Master Signature", value: patient.useMasterSignature ? "Yes" : "No" },
+        { label: "Consent Info Accurate", value: patient.consentInfoAccurate ? "Yes" : "No" },
+        {
+          label: "Consent Treatment Understanding",
+          value: patient.consentTreatmentUnderstanding ? "Yes" : "No",
+        },
+        {
+          label: "Consent Comprehensive",
+          value: patient.consentComprehensive ? "Yes" : "No",
+        },
+        {
+          label: "Consent Date",
+          value: patient.consentDate?.toLocaleDateString() ?? "—",
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -56,83 +294,232 @@ export default async function PatientDetailPage({ params }: PageProps) {
           <ArrowLeft className="size-4" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-2xl font-semibold">{patient.name}</h1>
+          <h1 className="text-2xl font-semibold">{patient.fullName}</h1>
           <p className="text-sm text-muted-foreground">
-            Patient ID: {patient.id}
+            Display ID: {patient.displayId}
           </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <GenerateBookingLinkButton patientId={patient.id} />
+          <Badge variant="secondary">{sourceLabel}</Badge>
         </div>
       </div>
 
-      <PatientSurveyLinks patientId={patient.id} />
+      <PatientActionBar
+        patientId={patient.id}
+        currentClinicId={patient.clinicId}
+        currentStatus={patient.status}
+        currentAgentId={patient.currentAgentId}
+        clinics={clinics}
+        agents={agents}
+        statusOptions={statusOptions}
+      />
+      <PatientSurveyGenerator patientId={patient.id} />
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Demographics</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Phone</span>
-              <span>{patient.phone ?? "—"}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Age</span>
-              <span>{patient.age ?? "—"}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Gender</span>
-              <span className="capitalize">{patient.gender ?? "—"}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Source</span>
-              <span>{sourceLabels[patient.source]}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Agent</span>
-              <span>{patient.agent?.name ?? "—"}</span>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Status</span>
-              <StatusSelect
-                patientId={patient.id}
-                currentStatus={patient.status}
-                options={statusOptions}
-              />
-            </div>
-          </CardContent>
-        </Card>
+      <PatientAppointmentsSection
+        appointments={appointments.map((a) => ({
+          id: a.id,
+          publicId: a.publicId,
+          startsAt: a.startsAt.toISOString(),
+          status: a.status,
+          doctor: a.doctor,
+        }))}
+        patient={{
+          id: patient.id,
+          fullName: patient.fullName,
+          displayId: patient.displayId,
+        }}
+        doctors={doctors}
+        canWrite={hasPermission(session.user.role, "appointments:write")}
+      />
 
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Treatments</h2>
+          {canWrite && (
+            <TreatmentCreateModal patientId={patient.id} doctors={doctors} />
+          )}
+        </div>
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Registration Info</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Registered</span>
-              <span>{patient.createdAt.toLocaleString()}</span>
+          <CardContent className="p-0">
+            <div className="hidden lg:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Start Date</TableHead>
+                    <TableHead>Diagnosis</TableHead>
+                    <TableHead>Doctor</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Charges</TableHead>
+                    <TableHead>Paid</TableHead>
+                    <TableHead>Balance</TableHead>
+                    <TableHead className="text-right">Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {treatments.length === 0 ? (
+                    <TableRow>
+                      <TableCell
+                        colSpan={8}
+                        className="py-8 text-center text-muted-foreground"
+                      >
+                        No treatments yet
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    treatments.map((treatment) => {
+                      const totalCharges = treatment.charges.reduce(
+                        (sum, c) => sum + Number(c.netPrice),
+                        0
+                      );
+                      const totalPaid = treatment.payments.reduce(
+                        (sum, p) => sum + Number(p.amount),
+                        0
+                      );
+                      const balance = totalCharges - totalPaid;
+                      return (
+                        <TableRow key={treatment.id}>
+                          <TableCell>
+                            {treatment.treatmentDate.toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>{treatment.diagnosis ?? "—"}</TableCell>
+                          <TableCell>
+                            {treatment.doctor?.fullName ?? "—"}
+                          </TableCell>
+                          <TableCell>
+                            <TreatmentStatusBadge status={treatment.status} />
+                          </TableCell>
+                          <TableCell>{formatMoney(totalCharges)}</TableCell>
+                          <TableCell>{formatMoney(totalPaid)}</TableCell>
+                          <TableCell>
+                            {balance <= 0 ? (
+                              <span className="inline-flex items-center gap-1 text-[#10b981]">
+                                {formatMoney(0)} <Check className="size-3.5" />
+                              </span>
+                            ) : (
+                              <span className="text-[#ef4444]">
+                                {formatMoney(balance)}
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              render={
+                                <Link
+                                  href={`/dashboard/treatments/${treatment.id}?from=patient`}
+                                />
+                              }
+                            >
+                              View
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+                </TableBody>
+              </Table>
             </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Last Updated</span>
-              <span>{patient.updatedAt.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Total Surveys</span>
-              <span>{patient.surveys.length}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Current Status</span>
-              <StatusBadge
-                status={patient.status}
-                label={
-                  statusOptions.find((o) => o.value === patient.status)?.label ??
-                  patient.status
-                }
-              />
+
+            <div className="space-y-3 p-4 lg:hidden">
+              {treatments.length === 0 ? (
+                <p className="py-8 text-center text-sm text-muted-foreground">
+                  No treatments yet
+                </p>
+              ) : (
+                treatments.map((treatment) => {
+                  const totalCharges = treatment.charges.reduce(
+                    (sum, c) => sum + Number(c.netPrice),
+                    0
+                  );
+                  const totalPaid = treatment.payments.reduce(
+                    (sum, p) => sum + Number(p.amount),
+                    0
+                  );
+                  const balance = totalCharges - totalPaid;
+                  return (
+                    <Card key={treatment.id} className="shadow-sm">
+                      <CardContent className="space-y-2 p-4">
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="font-medium">
+                            {treatment.diagnosis ?? "Treatment"}
+                          </p>
+                          <TreatmentStatusBadge status={treatment.status} />
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Start: {treatment.treatmentDate.toLocaleDateString()}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Doctor: {treatment.doctor?.fullName ?? "—"}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Charges: {formatMoney(totalCharges)} · Paid:{" "}
+                          {formatMoney(totalPaid)}
+                        </p>
+                        <p className="text-sm">
+                          Balance:{" "}
+                          {balance <= 0 ? (
+                            <span className="text-[#10b981]">
+                              {formatMoney(0)}
+                            </span>
+                          ) : (
+                            <span className="text-[#ef4444]">
+                              {formatMoney(balance)}
+                            </span>
+                          )}
+                        </p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full"
+                          render={
+                            <Link
+                              href={`/dashboard/treatments/${treatment.id}?from=patient`}
+                            />
+                          }
+                        >
+                          View
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })
+              )}
             </div>
           </CardContent>
         </Card>
       </div>
+
+      <PatientNotesSection
+        patientId={patient.id}
+        notes={notes}
+        appointments={appointments.map((a) => ({
+          id: a.id,
+          label: `${a.publicId} · ${formatTaiwanDateTime(a.startsAt)}`,
+        }))}
+        treatments={treatments.map((t) => ({
+          id: t.id,
+          label: `${t.treatmentDate.toLocaleDateString()} · ${t.diagnosis ?? "Treatment"}`,
+        }))}
+        canWrite={hasPermission(session.user.role, "patients:write")}
+      />
+
+      <PatientDepositsSection
+        patientId={patient.id}
+        deposits={deposits}
+        balance={depositBalance}
+        canWrite={hasPermission(session.user.role, "patients:write")}
+      />
+
+      <PatientDemographics
+        patientId={patient.id}
+        sections={demographicSections}
+        signatureAvailable={Boolean(patient.signatureImageUrl)}
+      />
+
+      <PatientConsents consentLogs={patient.consentLogs} />
 
       <div className="space-y-4">
         <h2 className="text-lg font-semibold">Survey Results</h2>
@@ -201,6 +588,43 @@ export default async function PatientDetailPage({ params }: PageProps) {
           })
         )}
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Registration Info</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Registered</span>
+            <span>{patient.createdAt.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Last Updated</span>
+            <span>{patient.updatedAt.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Total Surveys</span>
+            <span>{patient.surveys.length}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Consents</span>
+            <span>{patient.consentLogs.length}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Current Status</span>
+            <StatusBadge
+              status={patient.status}
+              label={getPatientStatusLabel(patient.status)}
+            />
+          </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">Location</span>
+            <span>{latestPaperConsent?.physicalLocation ?? "—"}</span>
+          </div>
+        </CardContent>
+      </Card>
+
+      {canDelete && <DeletePatientButton patientId={patient.id} />}
     </div>
   );
 }

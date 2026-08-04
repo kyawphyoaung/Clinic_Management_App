@@ -4,14 +4,26 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
+// =============================================================================
+// Enums
+// =============================================================================
+
 enum PatientStatus {
-  PENDING
-  APPOINTED
-  TREATING
+  INQUIRY
+  QUOTATION_SENT
+  BOOKING_DEPOSIT_RECEIVED
+  TELEMEDICINE_SCHEDULED
+  APPOINTMENT_CONFIRMED
+  TRAVELING
+  PATIENT_ARRIVED
+  TREATMENT
   COMPLETED
+  RESCHEDULED_FOR_FOLLOW_UP
+  TREATMENT_CANCELLED
+  REFUNDED
 }
 
 enum PatientSource {
@@ -20,37 +32,695 @@ enum PatientSource {
   WALKIN
 }
 
+enum ConsentSource {
+  DIGITAL
+  PAPER
+}
+
+enum AgentStatus {
+  PENDING
+  ACTIVE
+  REJECTED
+}
+
+enum CashflowType {
+  DEPOSIT
+  CHARGE
+  PAYMENT
+}
+
+enum PaymentMethod {
+  BANK
+  CASH
+  CARD
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  RESCHEDULED
+  CANCELLED
+  NO_SHOW
+  WAITING_FOR_PATIENT_RESCHEDULE
+  ARRIVED
+}
+
+enum AppointmentCreatedByType {
+  PUBLIC
+  PATIENT_LINK
+  AGENT
+  STAFF
+  DOCTOR
+}
+
+enum UserRole {
+  ADMIN
+  DOCTOR
+  STAFF
+}
+
+enum TreatmentStatus {
+  ONGOING
+  COMPLETED
+  FOLLOW_UP_SCHEDULED
+}
+
+enum ServiceCategory {
+  CONSULTATION
+  SURGERY
+  MEDICATION
+  LAB
+  IMAGING
+  ACCOMMODATION
+  OTHER
+}
+
+enum CommissionReviewStatus {
+  PENDING_REVIEW
+  APPROVED
+  PAID
+}
+
+// =============================================================================
+// Patient
+// =============================================================================
+
 model Patient {
   id        String        @id @default(uuid())
-  name      String
-  phone     String?
-  age       Int?
-  gender    String?
-  source    PatientSource @default(WALKIN)
-  status    PatientStatus @default(PENDING)
-  agentId   String?
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  displayId String        @unique @map("display_id")
 
-  agent   Agent?           @relation(fields: [agentId], references: [id])
-  surveys SurveyResponse[]
+  // Section A – Personal Information
+  fullName            String   @map("full_name")
+  preferredName       String?  @map("preferred_name")
+  gender              String?
+  dateOfBirth         DateTime @map("date_of_birth") @db.Date
+  nationality         String?
+  passportNumber      String?  @map("passport_number")
+  passportExpiry      DateTime? @map("passport_expiry") @db.Date
+  countryOfResidence  String?  @map("country_of_residence")
+  streetAddress       String?  @map("street_address")
+  city                String?
+  stateProvince       String?  @map("state_province")
+  postalCode          String?  @map("postal_code")
+  mobileNumber        String?  @map("mobile_number")
+  whatsapp            String?
+  lineId              String?  @map("line_id")
+  email               String?
+
+  // Section B – Emergency Contact
+  emergencyName         String? @map("emergency_name")
+  emergencyRelationship String? @map("emergency_relationship")
+  emergencyPhone        String? @map("emergency_phone")
+  emergencyEmail        String? @map("emergency_email")
+
+  // Section C – Medical Service
+  serviceCategory      String?  @map("service_category")
+  medicalServices      String[] @default([]) @map("medical_services")
+  medicalServicesOther String?  @map("medical_services_other")
+
+  // Section D – Healthcare Information
+  previousTreatment            String?  @map("previous_treatment")
+  previousTreatmentDescription String?  @map("previous_treatment_description")
+  underPhysicianCare           String?  @map("under_physician_care")
+  physicianName                String?  @map("physician_name")
+  physicianCountry             String?  @map("physician_country")
+
+  // Section E – Medical Records (checkbox only)
+  hasMedicalReports    Boolean @default(false) @map("has_medical_reports")
+  hasLabResults        Boolean @default(false) @map("has_lab_results")
+  hasImaging           Boolean @default(false) @map("has_imaging")
+  hasMedicationList    Boolean @default(false) @map("has_medication_list")
+  hasReferralLetter    Boolean @default(false) @map("has_referral_letter")
+  hasSurgicalRecords   Boolean @default(false) @map("has_surgical_records")
+  hasOtherMedicalDocs  Boolean @default(false) @map("has_other_medical_docs")
+
+  // Section F – Telemedicine
+  wantTelemedicine           String? @map("want_telemedicine")
+  telemedicineLanguage       String? @map("telemedicine_language")
+  telemedicineOtherLanguage  String? @map("telemedicine_other_language")
+  preferredConsultationTime  String? @map("preferred_consultation_time")
+
+  // Section G – Travel Information
+  preferredTravelMonth  String?  @map("preferred_travel_month")
+  estimatedStay         String?  @map("estimated_stay")
+  travelWithCompanion   String?  @map("travel_with_companion")
+  companionCount        Int?     @map("companion_count")
+  assistanceRequired    String[] @default([]) @map("assistance_required")
+
+  // Section H – Referral Information
+  referralSource      String? @map("referral_source")
+  referralSourceOther String? @map("referral_source_other")
+  partnerName           String? @map("partner_name")
+  partnerId             String? @map("partner_id")
+
+  // Section I – Consent & Signature
+  useMasterSignature          Boolean @default(false) @map("use_master_signature")
+  consentInfoAccurate         Boolean @default(false) @map("consent_info_accurate")
+  consentTreatmentUnderstanding Boolean @default(false) @map("consent_treatment_understanding")
+  consentComprehensive        Boolean @default(false) @map("consent_comprehensive")
+  signatureName               String? @map("signature_name")
+  signatureImageUrl           String? @map("signature_image_url")
+  consentDate                 DateTime? @map("consent_date") @db.Date
+
+  // Clinic / agent assignment
+  clinicId       String? @map("clinic_id")
+  currentAgentId String? @map("current_agent_id")
+
+  // Staff digitization
+  digitizedBy String?   @map("digitized_by")
+  digitizedAt DateTime? @map("digitized_at")
+
+  // Workflow
+  source            PatientSource @default(BOOKING)
+  status            PatientStatus @default(INQUIRY)
+  appointmentDate   DateTime?     @map("appointment_date")
+  appointmentStatus AppointmentStatus? @map("appointment_status")
+  registrationLanguage String?    @map("registration_language")
+  bookingShareToken String?       @unique @map("booking_share_token")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  clinic             Clinic?             @relation(fields: [clinicId], references: [id])
+  currentAgent       Agent?              @relation(fields: [currentAgentId], references: [id])
+  consentLogs        ConsentLog[]
+  surveys            SurveyResponse[]
+  statusLogs         PatientStatusLog[]
+  cashflows          Cashflow[]
+  commissionPayments CommissionPayment[]
+  appointments       Appointment[]
+  treatments         Treatment[]
+  patientNotes       PatientNote[]
+  deposits           PatientDeposit[]
+
+  @@map("patients")
 }
+
+// =============================================================================
+// Clinic
+// =============================================================================
+
+model Clinic {
+  id   String @id @default(uuid())
+  code String @unique
+  name String
+
+  patients     Patient[]
+  appointments Appointment[]
+
+  @@map("clinics")
+}
+
+// =============================================================================
+// Agent
+// =============================================================================
 
 model Agent {
-  id         String    @id @default(uuid())
-  name       String
-  phone      String?
-  shareToken String    @unique @default(uuid())
-  patients   Patient[]
+  id        String      @id @default(uuid())
+  partnerId String?     @unique @map("partner_id")
+  status    AgentStatus @default(PENDING)
+
+  // Section A – Applicant Information
+  fullName            String  @map("full_name")
+  companyName         String? @map("company_name")
+  jobTitle            String? @map("job_title")
+  countryOfResidence  String? @map("country_of_residence")
+  businessAddress     String? @map("business_address")
+  mobileNumber        String? @map("mobile_number")
+  whatsapp            String?
+  lineId              String? @map("line_id")
+  email               String
+  website             String?
+  socialFacebook      String? @map("social_facebook")
+  socialInstagram     String? @map("social_instagram")
+  socialLinkedin      String? @map("social_linkedin")
+  socialOther         String? @map("social_other")
+
+  // Section B – Business Profile
+  businessType      String[] @default([]) @map("business_type")
+  businessTypeOther String?  @map("business_type_other")
+  yearsInBusiness   String?  @map("years_in_business")
+  monthlyClients    String?  @map("monthly_clients")
+
+  // Section C – Referral Information
+  referralServices         String[] @default([]) @map("referral_services")
+  referralServicesOther    String?  @map("referral_services_other")
+  patientOriginCountries   String[] @default([]) @map("patient_origin_countries")
+  patientOriginOther       String?  @map("patient_origin_other")
+  estimatedMonthlyReferrals String? @map("estimated_monthly_referrals")
+
+  // Section D – Professional Standards
+  confirmNoMedicalAdvice      Boolean @default(false) @map("confirm_no_medical_advice")
+  confirmCustomPackagePrices  Boolean @default(false) @map("confirm_custom_package_prices")
+  confirmNoOutcomeGuarantees  Boolean @default(false) @map("confirm_no_outcome_guarantees")
+  confirmPatientPrivacy       Boolean @default(false) @map("confirm_patient_privacy")
+  confirmCompliance           Boolean @default(false) @map("confirm_compliance")
+
+  // Section E – Supporting Documents (availability checkboxes)
+  supportingDocuments String[] @default([]) @map("supporting_documents")
+
+  // Section F – Declaration
+  commissionTierPreference        String?  @map("commission_tier_preference")
+  remarks                         String?
+  useMasterSignature              Boolean  @default(false) @map("use_master_signature")
+  signatureImageUrl               String?  @map("signature_image_url")
+  declarationAccurateInfo         Boolean  @default(false) @map("declaration_accurate_info")
+  declarationNoGuaranteeApproval  Boolean  @default(false) @map("declaration_no_guarantee_approval")
+  declarationComplianceAgreement  Boolean  @default(false) @map("declaration_compliance_agreement")
+  applicantName                   String?  @map("applicant_name")
+  signatureDate                   DateTime? @map("signature_date") @db.Date
+
+  // Auth & commission
+  passwordHash      String?  @map("password_hash")
+  commissionPercent Float?   @map("commission_percent")
+
+  approvedAt DateTime? @map("approved_at")
+  approvedBy String?   @map("approved_by")
+
+  registrationLanguage String? @map("registration_language")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  patients            Patient[]
+  consentLogs         ConsentLog[]
+  setPasswordTokens   AgentSetPasswordToken[]
+  commissionPayments  CommissionPayment[]
+
+  @@map("agents")
 }
+
+// =============================================================================
+// Consent & Display ID
+// =============================================================================
+
+model ConsentLog {
+  id                String        @id @default(uuid())
+  patientId         String?       @map("patient_id")
+  agentId           String?       @map("agent_id")
+  documentType      String        @map("document_type")
+  version           String
+  source            ConsentSource
+  consentedAt       DateTime      @map("consented_at")
+  recordedAt        DateTime      @default(now()) @map("recorded_at")
+  ipAddress         String?       @map("ip_address")
+  userAgent         String?       @map("user_agent")
+  staffId           String?       @map("staff_id")
+  physicalLocation  String?       @map("physical_location")
+  signatureImageUrl String?       @map("signature_image_url")
+  staffDeclaration  Boolean       @default(false) @map("staff_declaration")
+
+  patient Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  agent   Agent?   @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([patientId])
+  @@index([agentId])
+  @@map("consent_logs")
+}
+
+model YearlyPatientSequence {
+  year    Int @id
+  lastSeq Int @default(0) @map("last_seq")
+
+  @@map("yearly_patient_sequences")
+}
+
+model AgentSetPasswordToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  agentId   String   @map("agent_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([agentId])
+  @@map("agent_set_password_tokens")
+}
+
+// =============================================================================
+// Financial & Workflow (Phase 1 schema — used in later phases)
+// =============================================================================
+
+model BankAccount {
+  id            String  @id @default(uuid())
+  name          String
+  accountNumber String  @map("account_number")
+  isActive      Boolean @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  cashflows Cashflow[]
+
+  @@map("bank_accounts")
+}
+
+model Cashflow {
+  id            String        @id @default(uuid())
+  patientId     String        @map("patient_id")
+  type          CashflowType
+  amount        Decimal       @db.Decimal(12, 2)
+  currency      String
+  method        PaymentMethod
+  bankAccountId String?       @map("bank_account_id")
+  remark        String?
+  timestamp     DateTime      @default(now())
+
+  patient     Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  bankAccount BankAccount? @relation(fields: [bankAccountId], references: [id])
+
+  @@index([patientId])
+  @@map("cashflows")
+}
+
+model PatientStatusLog {
+  id        String        @id @default(uuid())
+  patientId String        @map("patient_id")
+  oldStatus PatientStatus @map("old_status")
+  newStatus PatientStatus @map("new_status")
+  changedBy String        @map("changed_by")
+  remark    String?
+  timestamp DateTime      @default(now())
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@index([patientId])
+  @@map("patient_status_logs")
+}
+
+model CommissionPayment {
+  id            String                 @id @default(uuid())
+  agentId       String                 @map("agent_id")
+  patientId     String                 @map("patient_id")
+  treatmentId   String                 @map("treatment_id")
+  amount        Decimal                @db.Decimal(12, 2)
+  currency      String                 @default("NTD")
+  calculatedAt  DateTime               @map("calculated_at")
+  reviewStatus  CommissionReviewStatus @default(PENDING_REVIEW) @map("review_status")
+  paidAt        DateTime?              @map("paid_at")
+  paymentMethod PaymentMethod?         @map("payment_method")
+  remark        String?
+
+  agent     Agent     @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  patient   Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  treatment Treatment @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
+
+  @@unique([agentId, treatmentId])
+  @@index([agentId])
+  @@index([patientId])
+  @@index([treatmentId])
+  @@map("commission_payments")
+}
+
+model Appointment {
+  id                String                    @id @default(uuid())
+  displayId         String                    @unique @map("display_id")
+  publicId          String                    @unique @map("public_id")
+  patientId         String?                   @map("patient_id")
+  doctorId          String                    @map("doctor_id")
+  clinicId          String?                   @map("clinic_id")
+  service           String
+  startsAt          DateTime                  @map("starts_at")
+  endsAt            DateTime                  @map("ends_at")
+  status            AppointmentStatus         @default(CONFIRMED)
+  notes             String?
+  preferredLanguage String?                   @map("preferred_language")
+  phoneEncrypted    String?                   @map("phone_encrypted")
+  referralCode      String?                   @map("referral_code")
+  shareToken        String?                   @unique @map("share_token")
+  rescheduleToken   String?                   @unique @map("reschedule_token")
+  usedQRCode        Boolean                   @default(false) @map("used_qr_code")
+  createdByType     AppointmentCreatedByType  @map("created_by_type")
+  createdById       String?                   @map("created_by_id")
+  cancelledAt       DateTime?                 @map("cancelled_at")
+  noShowAt          DateTime?                 @map("no_show_at")
+  createdAt         DateTime                  @default(now()) @map("created_at")
+  updatedAt         DateTime                  @updatedAt @map("updated_at")
+
+  patient Patient? @relation(fields: [patientId], references: [id], onDelete: SetNull)
+  doctor  User     @relation("AppointmentDoctor", fields: [doctorId], references: [id])
+  clinic  Clinic?  @relation(fields: [clinicId], references: [id])
+  patientNotes PatientNote[]
+
+  @@index([doctorId, startsAt])
+  @@index([patientId])
+  @@index([status])
+  @@index([startsAt])
+  @@map("appointments")
+}
+
+model DoctorWeeklyAvailability {
+  id        String   @id @default(uuid())
+  doctorId  String   @map("doctor_id")
+  dayOfWeek Int      @map("day_of_week") // 0=Sun … 6=Sat (Taiwan)
+  startTime Int      @map("start_time") // minutes from midnight
+  endTime   Int      @map("end_time")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  doctor User @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@unique([doctorId, dayOfWeek, startTime, endTime])
+  @@index([doctorId])
+  @@map("doctor_weekly_availability")
+}
+
+model DoctorAvailabilityOverride {
+  id        String   @id @default(uuid())
+  doctorId  String   @map("doctor_id")
+  date      DateTime @db.Date
+  isBlocked Boolean  @default(false) @map("is_blocked")
+  startTime Int?     @map("start_time")
+  endTime   Int?     @map("end_time")
+  reason    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  doctor User @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@index([doctorId, date])
+  @@map("doctor_availability_overrides")
+}
+
+model Specialization {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  doctors DoctorSpecialization[]
+
+  @@map("specializations")
+}
+
+model DoctorSpecialization {
+  id               String @id @default(uuid())
+  doctorId         String @map("doctor_id")
+  specializationId String @map("specialization_id")
+
+  doctor         User           @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  specialization Specialization @relation(fields: [specializationId], references: [id], onDelete: Cascade)
+
+  @@unique([doctorId, specializationId])
+  @@index([doctorId])
+  @@index([specializationId])
+  @@map("doctor_specializations")
+}
+
+model ClinicService {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([isActive, sortOrder])
+  @@map("clinic_services")
+}
+
+// =============================================================================
+// Survey (existing)
+// =============================================================================
 
 model SurveyResponse {
   id         String   @id @default(uuid())
-  patientId  String
-  formType   String
-  rawAnswers Json
+  patientId  String   @map("patient_id")
+  formType   String   @map("form_type")
+  rawAnswers Json     @map("raw_answers")
   language   String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime @default(now()) @map("created_at")
 
   patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@index([patientId])
+  @@map("survey_responses")
+}
+
+// =============================================================================
+// Users & Treatments
+// =============================================================================
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String?
+  passwordHash String   @map("password_hash")
+  fullName     String   @map("full_name")
+  role         UserRole
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  treatmentsAsDoctor       Treatment[]                  @relation("TreatmentDoctor")
+  paymentsRecorded         TreatmentPayment[]           @relation("PaymentRecorder")
+  appointmentsAsDoctor     Appointment[]                @relation("AppointmentDoctor")
+  weeklyAvailability       DoctorWeeklyAvailability[]
+  availabilityOverrides    DoctorAvailabilityOverride[]
+  specializations          DoctorSpecialization[]
+  patientNotesCreated      PatientNote[]                @relation("PatientNoteAuthor")
+  depositsRecorded         PatientDeposit[]             @relation("DepositRecorder")
+
+  @@map("users")
+}
+
+model Treatment {
+  id            String          @id @default(uuid())
+  patientId     String          @map("patient_id")
+  treatmentDate DateTime        @map("treatment_date") @db.Date
+  endDate       DateTime?       @map("end_date") @db.Date
+  diagnosis     String?
+  doctorId      String?         @map("doctor_id")
+  notes         String?
+  status        TreatmentStatus @default(ONGOING)
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+
+  patient            Patient             @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctor             User?               @relation("TreatmentDoctor", fields: [doctorId], references: [id])
+  charges            TreatmentCharge[]
+  payments           TreatmentPayment[]
+  commissionPayments CommissionPayment[]
+  patientNotes       PatientNote[]
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([endDate])
+  @@map("treatments")
+}
+
+model TreatmentCharge {
+  id             String   @id @default(uuid())
+  treatmentId    String   @map("treatment_id")
+  totalPrice     Decimal  @map("total_price") @db.Decimal(12, 2)
+  discount       Decimal  @default(0) @db.Decimal(12, 2)
+  depositApplied Decimal  @default(0) @map("deposit_applied") @db.Decimal(12, 2)
+  netPrice       Decimal  @map("net_price") @db.Decimal(12, 2)
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  treatment   Treatment             @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
+  lines       TreatmentChargeLine[]
+  allocations PaymentAllocation[]
+
+  @@index([treatmentId])
+  @@map("treatment_charges")
+}
+
+model TreatmentChargeLine {
+  id              String          @id @default(uuid())
+  chargeId        String          @map("charge_id")
+  serviceCategory ServiceCategory @map("service_category")
+  notes           String?
+  quantity        Int             @default(1)
+  unitPrice       Decimal         @map("unit_price") @db.Decimal(12, 2)
+  createdAt       DateTime        @default(now()) @map("created_at")
+
+  charge TreatmentCharge @relation(fields: [chargeId], references: [id], onDelete: Cascade)
+
+  @@index([chargeId])
+  @@map("treatment_charge_lines")
+}
+
+model TreatmentPayment {
+  id           String        @id @default(uuid())
+  treatmentId  String        @map("treatment_id")
+  amount       Decimal       @db.Decimal(12, 2)
+  method       PaymentMethod
+  paymentDate  DateTime      @map("payment_date") @db.Date
+  reference    String?
+  notes        String?
+  recordedById String?       @map("recorded_by_id")
+  createdAt    DateTime      @default(now()) @map("created_at")
+
+  treatment   Treatment           @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
+  recordedBy  User?               @relation("PaymentRecorder", fields: [recordedById], references: [id])
+  allocations PaymentAllocation[]
+
+  @@index([treatmentId])
+  @@map("treatment_payments")
+}
+
+model PaymentAllocation {
+  id        String  @id @default(uuid())
+  paymentId String  @map("payment_id")
+  chargeId  String  @map("charge_id")
+  amount    Decimal @db.Decimal(12, 2)
+
+  payment TreatmentPayment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  charge  TreatmentCharge  @relation(fields: [chargeId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([chargeId])
+  @@map("payment_allocations")
+}
+
+model PatientNote {
+  id              String   @id @default(uuid())
+  patientId       String   @map("patient_id")
+  title           String
+  content         String?
+  bloodPressure   String?  @map("blood_pressure")
+  heartRate       Int?     @map("heart_rate")
+  weight          Decimal? @db.Decimal(6, 2)
+  height          Decimal? @db.Decimal(6, 2)
+  bodyTemperature Decimal? @map("body_temperature") @db.Decimal(4, 1)
+  appointmentId   String?  @map("appointment_id")
+  treatmentId     String?  @map("treatment_id")
+  createdById     String   @map("created_by_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  patient     Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  treatment   Treatment?   @relation(fields: [treatmentId], references: [id], onDelete: SetNull)
+  createdBy   User         @relation("PatientNoteAuthor", fields: [createdById], references: [id])
+
+  @@index([patientId])
+  @@index([treatmentId])
+  @@index([appointmentId])
+  @@index([createdById])
+  @@map("patient_notes")
+}
+
+model PatientDeposit {
+  id           String        @id @default(uuid())
+  patientId    String        @map("patient_id")
+  amount       Decimal       @db.Decimal(12, 2)
+  method       PaymentMethod
+  paymentDate  DateTime      @map("payment_date") @db.Date
+  reference    String?
+  notes        String?
+  createdById  String?       @map("created_by_id")
+  createdAt    DateTime      @default(now()) @map("created_at")
+
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdBy User?   @relation("DepositRecorder", fields: [createdById], references: [id])
+
+  @@index([patientId])
+  @@index([paymentDate])
+  @@map("patient_deposits")
 }

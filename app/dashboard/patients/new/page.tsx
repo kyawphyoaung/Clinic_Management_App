@@ -1,12 +1,9 @@
 import Link from "next/link";
-import { getAgentsForSelect } from "@/lib/actions/agents";
-import { PatientForm } from "@/components/admin/patient-form";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { PatientRegistrationForm } from "@/components/registration/patient-registration-form";
+import { Button } from "@/components/ui/button";
 
-export default async function NewPatientPage() {
-  const agents = await getAgentsForSelect();
-
+export default function StaffNewPatientPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -18,13 +15,13 @@ export default async function NewPatientPage() {
           <ArrowLeft className="size-4" />
         </Button>
         <div>
-          <h1 className="text-2xl font-semibold">Register Patient</h1>
+          <h1 className="text-2xl font-semibold">Digitize Paper Registration</h1>
           <p className="text-sm text-muted-foreground">
-            Manually register a new patient. Names support trilingual characters.
+            Staff-only form to enter a signed paper registration into the system.
           </p>
         </div>
       </div>
-      <PatientForm agents={agents} />
+      <PatientRegistrationForm mode="staff" />
     </div>
   );
 }

@@ -20,52 +20,318 @@ export type AgentModel = runtime.Types.Result.DefaultSelection<Prisma.$AgentPayl
 
 export type AggregateAgent = {
   _count: AgentCountAggregateOutputType | null
+  _avg: AgentAvgAggregateOutputType | null
+  _sum: AgentSumAggregateOutputType | null
   _min: AgentMinAggregateOutputType | null
   _max: AgentMaxAggregateOutputType | null
 }
 
+export type AgentAvgAggregateOutputType = {
+  commissionPercent: number | null
+}
+
+export type AgentSumAggregateOutputType = {
+  commissionPercent: number | null
+}
+
 export type AgentMinAggregateOutputType = {
   id: string | null
-  name: string | null
-  phone: string | null
-  shareToken: string | null
+  partnerId: string | null
+  status: $Enums.AgentStatus | null
+  fullName: string | null
+  companyName: string | null
+  jobTitle: string | null
+  countryOfResidence: string | null
+  businessAddress: string | null
+  mobileNumber: string | null
+  whatsapp: string | null
+  lineId: string | null
+  email: string | null
+  website: string | null
+  socialFacebook: string | null
+  socialInstagram: string | null
+  socialLinkedin: string | null
+  socialOther: string | null
+  businessTypeOther: string | null
+  yearsInBusiness: string | null
+  monthlyClients: string | null
+  referralServicesOther: string | null
+  patientOriginOther: string | null
+  estimatedMonthlyReferrals: string | null
+  confirmNoMedicalAdvice: boolean | null
+  confirmCustomPackagePrices: boolean | null
+  confirmNoOutcomeGuarantees: boolean | null
+  confirmPatientPrivacy: boolean | null
+  confirmCompliance: boolean | null
+  commissionTierPreference: string | null
+  remarks: string | null
+  useMasterSignature: boolean | null
+  signatureImageUrl: string | null
+  declarationAccurateInfo: boolean | null
+  declarationNoGuaranteeApproval: boolean | null
+  declarationComplianceAgreement: boolean | null
+  applicantName: string | null
+  signatureDate: Date | null
+  passwordHash: string | null
+  commissionPercent: number | null
+  approvedAt: Date | null
+  approvedBy: string | null
+  registrationLanguage: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type AgentMaxAggregateOutputType = {
   id: string | null
-  name: string | null
-  phone: string | null
-  shareToken: string | null
+  partnerId: string | null
+  status: $Enums.AgentStatus | null
+  fullName: string | null
+  companyName: string | null
+  jobTitle: string | null
+  countryOfResidence: string | null
+  businessAddress: string | null
+  mobileNumber: string | null
+  whatsapp: string | null
+  lineId: string | null
+  email: string | null
+  website: string | null
+  socialFacebook: string | null
+  socialInstagram: string | null
+  socialLinkedin: string | null
+  socialOther: string | null
+  businessTypeOther: string | null
+  yearsInBusiness: string | null
+  monthlyClients: string | null
+  referralServicesOther: string | null
+  patientOriginOther: string | null
+  estimatedMonthlyReferrals: string | null
+  confirmNoMedicalAdvice: boolean | null
+  confirmCustomPackagePrices: boolean | null
+  confirmNoOutcomeGuarantees: boolean | null
+  confirmPatientPrivacy: boolean | null
+  confirmCompliance: boolean | null
+  commissionTierPreference: string | null
+  remarks: string | null
+  useMasterSignature: boolean | null
+  signatureImageUrl: string | null
+  declarationAccurateInfo: boolean | null
+  declarationNoGuaranteeApproval: boolean | null
+  declarationComplianceAgreement: boolean | null
+  applicantName: string | null
+  signatureDate: Date | null
+  passwordHash: string | null
+  commissionPercent: number | null
+  approvedAt: Date | null
+  approvedBy: string | null
+  registrationLanguage: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type AgentCountAggregateOutputType = {
   id: number
-  name: number
-  phone: number
-  shareToken: number
+  partnerId: number
+  status: number
+  fullName: number
+  companyName: number
+  jobTitle: number
+  countryOfResidence: number
+  businessAddress: number
+  mobileNumber: number
+  whatsapp: number
+  lineId: number
+  email: number
+  website: number
+  socialFacebook: number
+  socialInstagram: number
+  socialLinkedin: number
+  socialOther: number
+  businessType: number
+  businessTypeOther: number
+  yearsInBusiness: number
+  monthlyClients: number
+  referralServices: number
+  referralServicesOther: number
+  patientOriginCountries: number
+  patientOriginOther: number
+  estimatedMonthlyReferrals: number
+  confirmNoMedicalAdvice: number
+  confirmCustomPackagePrices: number
+  confirmNoOutcomeGuarantees: number
+  confirmPatientPrivacy: number
+  confirmCompliance: number
+  supportingDocuments: number
+  commissionTierPreference: number
+  remarks: number
+  useMasterSignature: number
+  signatureImageUrl: number
+  declarationAccurateInfo: number
+  declarationNoGuaranteeApproval: number
+  declarationComplianceAgreement: number
+  applicantName: number
+  signatureDate: number
+  passwordHash: number
+  commissionPercent: number
+  approvedAt: number
+  approvedBy: number
+  registrationLanguage: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
+export type AgentAvgAggregateInputType = {
+  commissionPercent?: true
+}
+
+export type AgentSumAggregateInputType = {
+  commissionPercent?: true
+}
+
 export type AgentMinAggregateInputType = {
   id?: true
-  name?: true
-  phone?: true
-  shareToken?: true
+  partnerId?: true
+  status?: true
+  fullName?: true
+  companyName?: true
+  jobTitle?: true
+  countryOfResidence?: true
+  businessAddress?: true
+  mobileNumber?: true
+  whatsapp?: true
+  lineId?: true
+  email?: true
+  website?: true
+  socialFacebook?: true
+  socialInstagram?: true
+  socialLinkedin?: true
+  socialOther?: true
+  businessTypeOther?: true
+  yearsInBusiness?: true
+  monthlyClients?: true
+  referralServicesOther?: true
+  patientOriginOther?: true
+  estimatedMonthlyReferrals?: true
+  confirmNoMedicalAdvice?: true
+  confirmCustomPackagePrices?: true
+  confirmNoOutcomeGuarantees?: true
+  confirmPatientPrivacy?: true
+  confirmCompliance?: true
+  commissionTierPreference?: true
+  remarks?: true
+  useMasterSignature?: true
+  signatureImageUrl?: true
+  declarationAccurateInfo?: true
+  declarationNoGuaranteeApproval?: true
+  declarationComplianceAgreement?: true
+  applicantName?: true
+  signatureDate?: true
+  passwordHash?: true
+  commissionPercent?: true
+  approvedAt?: true
+  approvedBy?: true
+  registrationLanguage?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type AgentMaxAggregateInputType = {
   id?: true
-  name?: true
-  phone?: true
-  shareToken?: true
+  partnerId?: true
+  status?: true
+  fullName?: true
+  companyName?: true
+  jobTitle?: true
+  countryOfResidence?: true
+  businessAddress?: true
+  mobileNumber?: true
+  whatsapp?: true
+  lineId?: true
+  email?: true
+  website?: true
+  socialFacebook?: true
+  socialInstagram?: true
+  socialLinkedin?: true
+  socialOther?: true
+  businessTypeOther?: true
+  yearsInBusiness?: true
+  monthlyClients?: true
+  referralServicesOther?: true
+  patientOriginOther?: true
+  estimatedMonthlyReferrals?: true
+  confirmNoMedicalAdvice?: true
+  confirmCustomPackagePrices?: true
+  confirmNoOutcomeGuarantees?: true
+  confirmPatientPrivacy?: true
+  confirmCompliance?: true
+  commissionTierPreference?: true
+  remarks?: true
+  useMasterSignature?: true
+  signatureImageUrl?: true
+  declarationAccurateInfo?: true
+  declarationNoGuaranteeApproval?: true
+  declarationComplianceAgreement?: true
+  applicantName?: true
+  signatureDate?: true
+  passwordHash?: true
+  commissionPercent?: true
+  approvedAt?: true
+  approvedBy?: true
+  registrationLanguage?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type AgentCountAggregateInputType = {
   id?: true
-  name?: true
-  phone?: true
-  shareToken?: true
+  partnerId?: true
+  status?: true
+  fullName?: true
+  companyName?: true
+  jobTitle?: true
+  countryOfResidence?: true
+  businessAddress?: true
+  mobileNumber?: true
+  whatsapp?: true
+  lineId?: true
+  email?: true
+  website?: true
+  socialFacebook?: true
+  socialInstagram?: true
+  socialLinkedin?: true
+  socialOther?: true
+  businessType?: true
+  businessTypeOther?: true
+  yearsInBusiness?: true
+  monthlyClients?: true
+  referralServices?: true
+  referralServicesOther?: true
+  patientOriginCountries?: true
+  patientOriginOther?: true
+  estimatedMonthlyReferrals?: true
+  confirmNoMedicalAdvice?: true
+  confirmCustomPackagePrices?: true
+  confirmNoOutcomeGuarantees?: true
+  confirmPatientPrivacy?: true
+  confirmCompliance?: true
+  supportingDocuments?: true
+  commissionTierPreference?: true
+  remarks?: true
+  useMasterSignature?: true
+  signatureImageUrl?: true
+  declarationAccurateInfo?: true
+  declarationNoGuaranteeApproval?: true
+  declarationComplianceAgreement?: true
+  applicantName?: true
+  signatureDate?: true
+  passwordHash?: true
+  commissionPercent?: true
+  approvedAt?: true
+  approvedBy?: true
+  registrationLanguage?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -107,6 +373,18 @@ export type AgentAggregateArgs<ExtArgs extends runtime.Types.Extensions.Internal
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: AgentAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: AgentSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: AgentMinAggregateInputType
@@ -137,16 +415,64 @@ export type AgentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   _count?: AgentCountAggregateInputType | true
+  _avg?: AgentAvgAggregateInputType
+  _sum?: AgentSumAggregateInputType
   _min?: AgentMinAggregateInputType
   _max?: AgentMaxAggregateInputType
 }
 
 export type AgentGroupByOutputType = {
   id: string
-  name: string
-  phone: string | null
-  shareToken: string
+  partnerId: string | null
+  status: $Enums.AgentStatus
+  fullName: string
+  companyName: string | null
+  jobTitle: string | null
+  countryOfResidence: string | null
+  businessAddress: string | null
+  mobileNumber: string | null
+  whatsapp: string | null
+  lineId: string | null
+  email: string
+  website: string | null
+  socialFacebook: string | null
+  socialInstagram: string | null
+  socialLinkedin: string | null
+  socialOther: string | null
+  businessType: string[]
+  businessTypeOther: string | null
+  yearsInBusiness: string | null
+  monthlyClients: string | null
+  referralServices: string[]
+  referralServicesOther: string | null
+  patientOriginCountries: string[]
+  patientOriginOther: string | null
+  estimatedMonthlyReferrals: string | null
+  confirmNoMedicalAdvice: boolean
+  confirmCustomPackagePrices: boolean
+  confirmNoOutcomeGuarantees: boolean
+  confirmPatientPrivacy: boolean
+  confirmCompliance: boolean
+  supportingDocuments: string[]
+  commissionTierPreference: string | null
+  remarks: string | null
+  useMasterSignature: boolean
+  signatureImageUrl: string | null
+  declarationAccurateInfo: boolean
+  declarationNoGuaranteeApproval: boolean
+  declarationComplianceAgreement: boolean
+  applicantName: string | null
+  signatureDate: Date | null
+  passwordHash: string | null
+  commissionPercent: number | null
+  approvedAt: Date | null
+  approvedBy: string | null
+  registrationLanguage: string | null
+  createdAt: Date
+  updatedAt: Date
   _count: AgentCountAggregateOutputType | null
+  _avg: AgentAvgAggregateOutputType | null
+  _sum: AgentSumAggregateOutputType | null
   _min: AgentMinAggregateOutputType | null
   _max: AgentMaxAggregateOutputType | null
 }
@@ -171,39 +497,226 @@ export type AgentWhereInput = {
   OR?: Prisma.AgentWhereInput[]
   NOT?: Prisma.AgentWhereInput | Prisma.AgentWhereInput[]
   id?: Prisma.StringFilter<"Agent"> | string
-  name?: Prisma.StringFilter<"Agent"> | string
-  phone?: Prisma.StringNullableFilter<"Agent"> | string | null
-  shareToken?: Prisma.StringFilter<"Agent"> | string
+  partnerId?: Prisma.StringNullableFilter<"Agent"> | string | null
+  status?: Prisma.EnumAgentStatusFilter<"Agent"> | $Enums.AgentStatus
+  fullName?: Prisma.StringFilter<"Agent"> | string
+  companyName?: Prisma.StringNullableFilter<"Agent"> | string | null
+  jobTitle?: Prisma.StringNullableFilter<"Agent"> | string | null
+  countryOfResidence?: Prisma.StringNullableFilter<"Agent"> | string | null
+  businessAddress?: Prisma.StringNullableFilter<"Agent"> | string | null
+  mobileNumber?: Prisma.StringNullableFilter<"Agent"> | string | null
+  whatsapp?: Prisma.StringNullableFilter<"Agent"> | string | null
+  lineId?: Prisma.StringNullableFilter<"Agent"> | string | null
+  email?: Prisma.StringFilter<"Agent"> | string
+  website?: Prisma.StringNullableFilter<"Agent"> | string | null
+  socialFacebook?: Prisma.StringNullableFilter<"Agent"> | string | null
+  socialInstagram?: Prisma.StringNullableFilter<"Agent"> | string | null
+  socialLinkedin?: Prisma.StringNullableFilter<"Agent"> | string | null
+  socialOther?: Prisma.StringNullableFilter<"Agent"> | string | null
+  businessType?: Prisma.StringNullableListFilter<"Agent">
+  businessTypeOther?: Prisma.StringNullableFilter<"Agent"> | string | null
+  yearsInBusiness?: Prisma.StringNullableFilter<"Agent"> | string | null
+  monthlyClients?: Prisma.StringNullableFilter<"Agent"> | string | null
+  referralServices?: Prisma.StringNullableListFilter<"Agent">
+  referralServicesOther?: Prisma.StringNullableFilter<"Agent"> | string | null
+  patientOriginCountries?: Prisma.StringNullableListFilter<"Agent">
+  patientOriginOther?: Prisma.StringNullableFilter<"Agent"> | string | null
+  estimatedMonthlyReferrals?: Prisma.StringNullableFilter<"Agent"> | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFilter<"Agent"> | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFilter<"Agent"> | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFilter<"Agent"> | boolean
+  confirmPatientPrivacy?: Prisma.BoolFilter<"Agent"> | boolean
+  confirmCompliance?: Prisma.BoolFilter<"Agent"> | boolean
+  supportingDocuments?: Prisma.StringNullableListFilter<"Agent">
+  commissionTierPreference?: Prisma.StringNullableFilter<"Agent"> | string | null
+  remarks?: Prisma.StringNullableFilter<"Agent"> | string | null
+  useMasterSignature?: Prisma.BoolFilter<"Agent"> | boolean
+  signatureImageUrl?: Prisma.StringNullableFilter<"Agent"> | string | null
+  declarationAccurateInfo?: Prisma.BoolFilter<"Agent"> | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFilter<"Agent"> | boolean
+  declarationComplianceAgreement?: Prisma.BoolFilter<"Agent"> | boolean
+  applicantName?: Prisma.StringNullableFilter<"Agent"> | string | null
+  signatureDate?: Prisma.DateTimeNullableFilter<"Agent"> | Date | string | null
+  passwordHash?: Prisma.StringNullableFilter<"Agent"> | string | null
+  commissionPercent?: Prisma.FloatNullableFilter<"Agent"> | number | null
+  approvedAt?: Prisma.DateTimeNullableFilter<"Agent"> | Date | string | null
+  approvedBy?: Prisma.StringNullableFilter<"Agent"> | string | null
+  registrationLanguage?: Prisma.StringNullableFilter<"Agent"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
   patients?: Prisma.PatientListRelationFilter
+  consentLogs?: Prisma.ConsentLogListRelationFilter
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenListRelationFilter
+  commissionPayments?: Prisma.CommissionPaymentListRelationFilter
 }
 
 export type AgentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  shareToken?: Prisma.SortOrder
+  partnerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  fullName?: Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  countryOfResidence?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  mobileNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsapp?: Prisma.SortOrderInput | Prisma.SortOrder
+  lineId?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrder
+  website?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialFacebook?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialInstagram?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialLinkedin?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialOther?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  businessTypeOther?: Prisma.SortOrderInput | Prisma.SortOrder
+  yearsInBusiness?: Prisma.SortOrderInput | Prisma.SortOrder
+  monthlyClients?: Prisma.SortOrderInput | Prisma.SortOrder
+  referralServices?: Prisma.SortOrder
+  referralServicesOther?: Prisma.SortOrderInput | Prisma.SortOrder
+  patientOriginCountries?: Prisma.SortOrder
+  patientOriginOther?: Prisma.SortOrderInput | Prisma.SortOrder
+  estimatedMonthlyReferrals?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmNoMedicalAdvice?: Prisma.SortOrder
+  confirmCustomPackagePrices?: Prisma.SortOrder
+  confirmNoOutcomeGuarantees?: Prisma.SortOrder
+  confirmPatientPrivacy?: Prisma.SortOrder
+  confirmCompliance?: Prisma.SortOrder
+  supportingDocuments?: Prisma.SortOrder
+  commissionTierPreference?: Prisma.SortOrderInput | Prisma.SortOrder
+  remarks?: Prisma.SortOrderInput | Prisma.SortOrder
+  useMasterSignature?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  declarationAccurateInfo?: Prisma.SortOrder
+  declarationNoGuaranteeApproval?: Prisma.SortOrder
+  declarationComplianceAgreement?: Prisma.SortOrder
+  applicantName?: Prisma.SortOrderInput | Prisma.SortOrder
+  signatureDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionPercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  registrationLanguage?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   patients?: Prisma.PatientOrderByRelationAggregateInput
+  consentLogs?: Prisma.ConsentLogOrderByRelationAggregateInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenOrderByRelationAggregateInput
+  commissionPayments?: Prisma.CommissionPaymentOrderByRelationAggregateInput
 }
 
 export type AgentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  shareToken?: string
+  partnerId?: string
   AND?: Prisma.AgentWhereInput | Prisma.AgentWhereInput[]
   OR?: Prisma.AgentWhereInput[]
   NOT?: Prisma.AgentWhereInput | Prisma.AgentWhereInput[]
-  name?: Prisma.StringFilter<"Agent"> | string
-  phone?: Prisma.StringNullableFilter<"Agent"> | string | null
+  status?: Prisma.EnumAgentStatusFilter<"Agent"> | $Enums.AgentStatus
+  fullName?: Prisma.StringFilter<"Agent"> | string
+  companyName?: Prisma.StringNullableFilter<"Agent"> | string | null
+  jobTitle?: Prisma.StringNullableFilter<"Agent"> | string | null
+  countryOfResidence?: Prisma.StringNullableFilter<"Agent"> | string | null
+  businessAddress?: Prisma.StringNullableFilter<"Agent"> | string | null
+  mobileNumber?: Prisma.StringNullableFilter<"Agent"> | string | null
+  whatsapp?: Prisma.StringNullableFilter<"Agent"> | string | null
+  lineId?: Prisma.StringNullableFilter<"Agent"> | string | null
+  email?: Prisma.StringFilter<"Agent"> | string
+  website?: Prisma.StringNullableFilter<"Agent"> | string | null
+  socialFacebook?: Prisma.StringNullableFilter<"Agent"> | string | null
+  socialInstagram?: Prisma.StringNullableFilter<"Agent"> | string | null
+  socialLinkedin?: Prisma.StringNullableFilter<"Agent"> | string | null
+  socialOther?: Prisma.StringNullableFilter<"Agent"> | string | null
+  businessType?: Prisma.StringNullableListFilter<"Agent">
+  businessTypeOther?: Prisma.StringNullableFilter<"Agent"> | string | null
+  yearsInBusiness?: Prisma.StringNullableFilter<"Agent"> | string | null
+  monthlyClients?: Prisma.StringNullableFilter<"Agent"> | string | null
+  referralServices?: Prisma.StringNullableListFilter<"Agent">
+  referralServicesOther?: Prisma.StringNullableFilter<"Agent"> | string | null
+  patientOriginCountries?: Prisma.StringNullableListFilter<"Agent">
+  patientOriginOther?: Prisma.StringNullableFilter<"Agent"> | string | null
+  estimatedMonthlyReferrals?: Prisma.StringNullableFilter<"Agent"> | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFilter<"Agent"> | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFilter<"Agent"> | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFilter<"Agent"> | boolean
+  confirmPatientPrivacy?: Prisma.BoolFilter<"Agent"> | boolean
+  confirmCompliance?: Prisma.BoolFilter<"Agent"> | boolean
+  supportingDocuments?: Prisma.StringNullableListFilter<"Agent">
+  commissionTierPreference?: Prisma.StringNullableFilter<"Agent"> | string | null
+  remarks?: Prisma.StringNullableFilter<"Agent"> | string | null
+  useMasterSignature?: Prisma.BoolFilter<"Agent"> | boolean
+  signatureImageUrl?: Prisma.StringNullableFilter<"Agent"> | string | null
+  declarationAccurateInfo?: Prisma.BoolFilter<"Agent"> | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFilter<"Agent"> | boolean
+  declarationComplianceAgreement?: Prisma.BoolFilter<"Agent"> | boolean
+  applicantName?: Prisma.StringNullableFilter<"Agent"> | string | null
+  signatureDate?: Prisma.DateTimeNullableFilter<"Agent"> | Date | string | null
+  passwordHash?: Prisma.StringNullableFilter<"Agent"> | string | null
+  commissionPercent?: Prisma.FloatNullableFilter<"Agent"> | number | null
+  approvedAt?: Prisma.DateTimeNullableFilter<"Agent"> | Date | string | null
+  approvedBy?: Prisma.StringNullableFilter<"Agent"> | string | null
+  registrationLanguage?: Prisma.StringNullableFilter<"Agent"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
   patients?: Prisma.PatientListRelationFilter
-}, "id" | "shareToken">
+  consentLogs?: Prisma.ConsentLogListRelationFilter
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenListRelationFilter
+  commissionPayments?: Prisma.CommissionPaymentListRelationFilter
+}, "id" | "partnerId">
 
 export type AgentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  shareToken?: Prisma.SortOrder
+  partnerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  fullName?: Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  countryOfResidence?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  mobileNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsapp?: Prisma.SortOrderInput | Prisma.SortOrder
+  lineId?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrder
+  website?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialFacebook?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialInstagram?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialLinkedin?: Prisma.SortOrderInput | Prisma.SortOrder
+  socialOther?: Prisma.SortOrderInput | Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  businessTypeOther?: Prisma.SortOrderInput | Prisma.SortOrder
+  yearsInBusiness?: Prisma.SortOrderInput | Prisma.SortOrder
+  monthlyClients?: Prisma.SortOrderInput | Prisma.SortOrder
+  referralServices?: Prisma.SortOrder
+  referralServicesOther?: Prisma.SortOrderInput | Prisma.SortOrder
+  patientOriginCountries?: Prisma.SortOrder
+  patientOriginOther?: Prisma.SortOrderInput | Prisma.SortOrder
+  estimatedMonthlyReferrals?: Prisma.SortOrderInput | Prisma.SortOrder
+  confirmNoMedicalAdvice?: Prisma.SortOrder
+  confirmCustomPackagePrices?: Prisma.SortOrder
+  confirmNoOutcomeGuarantees?: Prisma.SortOrder
+  confirmPatientPrivacy?: Prisma.SortOrder
+  confirmCompliance?: Prisma.SortOrder
+  supportingDocuments?: Prisma.SortOrder
+  commissionTierPreference?: Prisma.SortOrderInput | Prisma.SortOrder
+  remarks?: Prisma.SortOrderInput | Prisma.SortOrder
+  useMasterSignature?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  declarationAccurateInfo?: Prisma.SortOrder
+  declarationNoGuaranteeApproval?: Prisma.SortOrder
+  declarationComplianceAgreement?: Prisma.SortOrder
+  applicantName?: Prisma.SortOrderInput | Prisma.SortOrder
+  signatureDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  passwordHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionPercent?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  registrationLanguage?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.AgentCountOrderByAggregateInput
+  _avg?: Prisma.AgentAvgOrderByAggregateInput
   _max?: Prisma.AgentMaxOrderByAggregateInput
   _min?: Prisma.AgentMinOrderByAggregateInput
+  _sum?: Prisma.AgentSumOrderByAggregateInput
 }
 
 export type AgentScalarWhereWithAggregatesInput = {
@@ -211,62 +724,426 @@ export type AgentScalarWhereWithAggregatesInput = {
   OR?: Prisma.AgentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AgentScalarWhereWithAggregatesInput | Prisma.AgentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Agent"> | string
-  name?: Prisma.StringWithAggregatesFilter<"Agent"> | string
-  phone?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
-  shareToken?: Prisma.StringWithAggregatesFilter<"Agent"> | string
+  partnerId?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  status?: Prisma.EnumAgentStatusWithAggregatesFilter<"Agent"> | $Enums.AgentStatus
+  fullName?: Prisma.StringWithAggregatesFilter<"Agent"> | string
+  companyName?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  jobTitle?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  countryOfResidence?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  businessAddress?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  mobileNumber?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  whatsapp?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  lineId?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  email?: Prisma.StringWithAggregatesFilter<"Agent"> | string
+  website?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  socialFacebook?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  socialInstagram?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  socialLinkedin?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  socialOther?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  businessType?: Prisma.StringNullableListFilter<"Agent">
+  businessTypeOther?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  yearsInBusiness?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  monthlyClients?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  referralServices?: Prisma.StringNullableListFilter<"Agent">
+  referralServicesOther?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  patientOriginCountries?: Prisma.StringNullableListFilter<"Agent">
+  patientOriginOther?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  estimatedMonthlyReferrals?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  confirmCustomPackagePrices?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  confirmPatientPrivacy?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  confirmCompliance?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  supportingDocuments?: Prisma.StringNullableListFilter<"Agent">
+  commissionTierPreference?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  remarks?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  useMasterSignature?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  signatureImageUrl?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  declarationAccurateInfo?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  declarationComplianceAgreement?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
+  applicantName?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  signatureDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Agent"> | Date | string | null
+  passwordHash?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  commissionPercent?: Prisma.FloatNullableWithAggregatesFilter<"Agent"> | number | null
+  approvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Agent"> | Date | string | null
+  approvedBy?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  registrationLanguage?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Agent"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Agent"> | Date | string
 }
 
 export type AgentCreateInput = {
   id?: string
-  name: string
-  phone?: string | null
-  shareToken?: string
-  patients?: Prisma.PatientCreateNestedManyWithoutAgentInput
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientCreateNestedManyWithoutCurrentAgentInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutAgentInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenCreateNestedManyWithoutAgentInput
+  commissionPayments?: Prisma.CommissionPaymentCreateNestedManyWithoutAgentInput
 }
 
 export type AgentUncheckedCreateInput = {
   id?: string
-  name: string
-  phone?: string | null
-  shareToken?: string
-  patients?: Prisma.PatientUncheckedCreateNestedManyWithoutAgentInput
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientUncheckedCreateNestedManyWithoutCurrentAgentInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutAgentInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUncheckedCreateNestedManyWithoutAgentInput
+  commissionPayments?: Prisma.CommissionPaymentUncheckedCreateNestedManyWithoutAgentInput
 }
 
 export type AgentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shareToken?: Prisma.StringFieldUpdateOperationsInput | string
-  patients?: Prisma.PatientUpdateManyWithoutAgentNestedInput
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUpdateManyWithoutCurrentAgentNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutAgentNestedInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUpdateManyWithoutAgentNestedInput
+  commissionPayments?: Prisma.CommissionPaymentUpdateManyWithoutAgentNestedInput
 }
 
 export type AgentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shareToken?: Prisma.StringFieldUpdateOperationsInput | string
-  patients?: Prisma.PatientUncheckedUpdateManyWithoutAgentNestedInput
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUncheckedUpdateManyWithoutCurrentAgentNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutAgentNestedInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUncheckedUpdateManyWithoutAgentNestedInput
+  commissionPayments?: Prisma.CommissionPaymentUncheckedUpdateManyWithoutAgentNestedInput
 }
 
 export type AgentCreateManyInput = {
   id?: string
-  name: string
-  phone?: string | null
-  shareToken?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AgentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shareToken?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AgentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shareToken?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AgentNullableScalarRelationFilter = {
@@ -276,23 +1153,160 @@ export type AgentNullableScalarRelationFilter = {
 
 export type AgentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  shareToken?: Prisma.SortOrder
+  partnerId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  fullName?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
+  countryOfResidence?: Prisma.SortOrder
+  businessAddress?: Prisma.SortOrder
+  mobileNumber?: Prisma.SortOrder
+  whatsapp?: Prisma.SortOrder
+  lineId?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  website?: Prisma.SortOrder
+  socialFacebook?: Prisma.SortOrder
+  socialInstagram?: Prisma.SortOrder
+  socialLinkedin?: Prisma.SortOrder
+  socialOther?: Prisma.SortOrder
+  businessType?: Prisma.SortOrder
+  businessTypeOther?: Prisma.SortOrder
+  yearsInBusiness?: Prisma.SortOrder
+  monthlyClients?: Prisma.SortOrder
+  referralServices?: Prisma.SortOrder
+  referralServicesOther?: Prisma.SortOrder
+  patientOriginCountries?: Prisma.SortOrder
+  patientOriginOther?: Prisma.SortOrder
+  estimatedMonthlyReferrals?: Prisma.SortOrder
+  confirmNoMedicalAdvice?: Prisma.SortOrder
+  confirmCustomPackagePrices?: Prisma.SortOrder
+  confirmNoOutcomeGuarantees?: Prisma.SortOrder
+  confirmPatientPrivacy?: Prisma.SortOrder
+  confirmCompliance?: Prisma.SortOrder
+  supportingDocuments?: Prisma.SortOrder
+  commissionTierPreference?: Prisma.SortOrder
+  remarks?: Prisma.SortOrder
+  useMasterSignature?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  declarationAccurateInfo?: Prisma.SortOrder
+  declarationNoGuaranteeApproval?: Prisma.SortOrder
+  declarationComplianceAgreement?: Prisma.SortOrder
+  applicantName?: Prisma.SortOrder
+  signatureDate?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  commissionPercent?: Prisma.SortOrder
+  approvedAt?: Prisma.SortOrder
+  approvedBy?: Prisma.SortOrder
+  registrationLanguage?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type AgentAvgOrderByAggregateInput = {
+  commissionPercent?: Prisma.SortOrder
 }
 
 export type AgentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  shareToken?: Prisma.SortOrder
+  partnerId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  fullName?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
+  countryOfResidence?: Prisma.SortOrder
+  businessAddress?: Prisma.SortOrder
+  mobileNumber?: Prisma.SortOrder
+  whatsapp?: Prisma.SortOrder
+  lineId?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  website?: Prisma.SortOrder
+  socialFacebook?: Prisma.SortOrder
+  socialInstagram?: Prisma.SortOrder
+  socialLinkedin?: Prisma.SortOrder
+  socialOther?: Prisma.SortOrder
+  businessTypeOther?: Prisma.SortOrder
+  yearsInBusiness?: Prisma.SortOrder
+  monthlyClients?: Prisma.SortOrder
+  referralServicesOther?: Prisma.SortOrder
+  patientOriginOther?: Prisma.SortOrder
+  estimatedMonthlyReferrals?: Prisma.SortOrder
+  confirmNoMedicalAdvice?: Prisma.SortOrder
+  confirmCustomPackagePrices?: Prisma.SortOrder
+  confirmNoOutcomeGuarantees?: Prisma.SortOrder
+  confirmPatientPrivacy?: Prisma.SortOrder
+  confirmCompliance?: Prisma.SortOrder
+  commissionTierPreference?: Prisma.SortOrder
+  remarks?: Prisma.SortOrder
+  useMasterSignature?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  declarationAccurateInfo?: Prisma.SortOrder
+  declarationNoGuaranteeApproval?: Prisma.SortOrder
+  declarationComplianceAgreement?: Prisma.SortOrder
+  applicantName?: Prisma.SortOrder
+  signatureDate?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  commissionPercent?: Prisma.SortOrder
+  approvedAt?: Prisma.SortOrder
+  approvedBy?: Prisma.SortOrder
+  registrationLanguage?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AgentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  shareToken?: Prisma.SortOrder
+  partnerId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  fullName?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
+  countryOfResidence?: Prisma.SortOrder
+  businessAddress?: Prisma.SortOrder
+  mobileNumber?: Prisma.SortOrder
+  whatsapp?: Prisma.SortOrder
+  lineId?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  website?: Prisma.SortOrder
+  socialFacebook?: Prisma.SortOrder
+  socialInstagram?: Prisma.SortOrder
+  socialLinkedin?: Prisma.SortOrder
+  socialOther?: Prisma.SortOrder
+  businessTypeOther?: Prisma.SortOrder
+  yearsInBusiness?: Prisma.SortOrder
+  monthlyClients?: Prisma.SortOrder
+  referralServicesOther?: Prisma.SortOrder
+  patientOriginOther?: Prisma.SortOrder
+  estimatedMonthlyReferrals?: Prisma.SortOrder
+  confirmNoMedicalAdvice?: Prisma.SortOrder
+  confirmCustomPackagePrices?: Prisma.SortOrder
+  confirmNoOutcomeGuarantees?: Prisma.SortOrder
+  confirmPatientPrivacy?: Prisma.SortOrder
+  confirmCompliance?: Prisma.SortOrder
+  commissionTierPreference?: Prisma.SortOrder
+  remarks?: Prisma.SortOrder
+  useMasterSignature?: Prisma.SortOrder
+  signatureImageUrl?: Prisma.SortOrder
+  declarationAccurateInfo?: Prisma.SortOrder
+  declarationNoGuaranteeApproval?: Prisma.SortOrder
+  declarationComplianceAgreement?: Prisma.SortOrder
+  applicantName?: Prisma.SortOrder
+  signatureDate?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  commissionPercent?: Prisma.SortOrder
+  approvedAt?: Prisma.SortOrder
+  approvedBy?: Prisma.SortOrder
+  registrationLanguage?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type AgentSumOrderByAggregateInput = {
+  commissionPercent?: Prisma.SortOrder
+}
+
+export type AgentScalarRelationFilter = {
+  is?: Prisma.AgentWhereInput
+  isNot?: Prisma.AgentWhereInput
 }
 
 export type AgentCreateNestedOneWithoutPatientsInput = {
@@ -311,18 +1325,204 @@ export type AgentUpdateOneWithoutPatientsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AgentUpdateToOneWithWhereWithoutPatientsInput, Prisma.AgentUpdateWithoutPatientsInput>, Prisma.AgentUncheckedUpdateWithoutPatientsInput>
 }
 
+export type AgentCreatebusinessTypeInput = {
+  set: string[]
+}
+
+export type AgentCreatereferralServicesInput = {
+  set: string[]
+}
+
+export type AgentCreatepatientOriginCountriesInput = {
+  set: string[]
+}
+
+export type AgentCreatesupportingDocumentsInput = {
+  set: string[]
+}
+
+export type EnumAgentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.AgentStatus
+}
+
+export type AgentUpdatebusinessTypeInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type AgentUpdatereferralServicesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type AgentUpdatepatientOriginCountriesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type AgentUpdatesupportingDocumentsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type AgentCreateNestedOneWithoutConsentLogsInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutConsentLogsInput, Prisma.AgentUncheckedCreateWithoutConsentLogsInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutConsentLogsInput
+  connect?: Prisma.AgentWhereUniqueInput
+}
+
+export type AgentUpdateOneWithoutConsentLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutConsentLogsInput, Prisma.AgentUncheckedCreateWithoutConsentLogsInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutConsentLogsInput
+  upsert?: Prisma.AgentUpsertWithoutConsentLogsInput
+  disconnect?: Prisma.AgentWhereInput | boolean
+  delete?: Prisma.AgentWhereInput | boolean
+  connect?: Prisma.AgentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AgentUpdateToOneWithWhereWithoutConsentLogsInput, Prisma.AgentUpdateWithoutConsentLogsInput>, Prisma.AgentUncheckedUpdateWithoutConsentLogsInput>
+}
+
+export type AgentCreateNestedOneWithoutSetPasswordTokensInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutSetPasswordTokensInput, Prisma.AgentUncheckedCreateWithoutSetPasswordTokensInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutSetPasswordTokensInput
+  connect?: Prisma.AgentWhereUniqueInput
+}
+
+export type AgentUpdateOneRequiredWithoutSetPasswordTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutSetPasswordTokensInput, Prisma.AgentUncheckedCreateWithoutSetPasswordTokensInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutSetPasswordTokensInput
+  upsert?: Prisma.AgentUpsertWithoutSetPasswordTokensInput
+  connect?: Prisma.AgentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AgentUpdateToOneWithWhereWithoutSetPasswordTokensInput, Prisma.AgentUpdateWithoutSetPasswordTokensInput>, Prisma.AgentUncheckedUpdateWithoutSetPasswordTokensInput>
+}
+
+export type AgentCreateNestedOneWithoutCommissionPaymentsInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutCommissionPaymentsInput, Prisma.AgentUncheckedCreateWithoutCommissionPaymentsInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutCommissionPaymentsInput
+  connect?: Prisma.AgentWhereUniqueInput
+}
+
+export type AgentUpdateOneRequiredWithoutCommissionPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutCommissionPaymentsInput, Prisma.AgentUncheckedCreateWithoutCommissionPaymentsInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutCommissionPaymentsInput
+  upsert?: Prisma.AgentUpsertWithoutCommissionPaymentsInput
+  connect?: Prisma.AgentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AgentUpdateToOneWithWhereWithoutCommissionPaymentsInput, Prisma.AgentUpdateWithoutCommissionPaymentsInput>, Prisma.AgentUncheckedUpdateWithoutCommissionPaymentsInput>
+}
+
 export type AgentCreateWithoutPatientsInput = {
   id?: string
-  name: string
-  phone?: string | null
-  shareToken?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutAgentInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenCreateNestedManyWithoutAgentInput
+  commissionPayments?: Prisma.CommissionPaymentCreateNestedManyWithoutAgentInput
 }
 
 export type AgentUncheckedCreateWithoutPatientsInput = {
   id?: string
-  name: string
-  phone?: string | null
-  shareToken?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutAgentInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUncheckedCreateNestedManyWithoutAgentInput
+  commissionPayments?: Prisma.CommissionPaymentUncheckedCreateNestedManyWithoutAgentInput
 }
 
 export type AgentCreateOrConnectWithoutPatientsInput = {
@@ -343,16 +1543,806 @@ export type AgentUpdateToOneWithWhereWithoutPatientsInput = {
 
 export type AgentUpdateWithoutPatientsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shareToken?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutAgentNestedInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUpdateManyWithoutAgentNestedInput
+  commissionPayments?: Prisma.CommissionPaymentUpdateManyWithoutAgentNestedInput
 }
 
 export type AgentUncheckedUpdateWithoutPatientsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  shareToken?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutAgentNestedInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUncheckedUpdateManyWithoutAgentNestedInput
+  commissionPayments?: Prisma.CommissionPaymentUncheckedUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentCreateWithoutConsentLogsInput = {
+  id?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientCreateNestedManyWithoutCurrentAgentInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenCreateNestedManyWithoutAgentInput
+  commissionPayments?: Prisma.CommissionPaymentCreateNestedManyWithoutAgentInput
+}
+
+export type AgentUncheckedCreateWithoutConsentLogsInput = {
+  id?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientUncheckedCreateNestedManyWithoutCurrentAgentInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUncheckedCreateNestedManyWithoutAgentInput
+  commissionPayments?: Prisma.CommissionPaymentUncheckedCreateNestedManyWithoutAgentInput
+}
+
+export type AgentCreateOrConnectWithoutConsentLogsInput = {
+  where: Prisma.AgentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgentCreateWithoutConsentLogsInput, Prisma.AgentUncheckedCreateWithoutConsentLogsInput>
+}
+
+export type AgentUpsertWithoutConsentLogsInput = {
+  update: Prisma.XOR<Prisma.AgentUpdateWithoutConsentLogsInput, Prisma.AgentUncheckedUpdateWithoutConsentLogsInput>
+  create: Prisma.XOR<Prisma.AgentCreateWithoutConsentLogsInput, Prisma.AgentUncheckedCreateWithoutConsentLogsInput>
+  where?: Prisma.AgentWhereInput
+}
+
+export type AgentUpdateToOneWithWhereWithoutConsentLogsInput = {
+  where?: Prisma.AgentWhereInput
+  data: Prisma.XOR<Prisma.AgentUpdateWithoutConsentLogsInput, Prisma.AgentUncheckedUpdateWithoutConsentLogsInput>
+}
+
+export type AgentUpdateWithoutConsentLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUpdateManyWithoutCurrentAgentNestedInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUpdateManyWithoutAgentNestedInput
+  commissionPayments?: Prisma.CommissionPaymentUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentUncheckedUpdateWithoutConsentLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUncheckedUpdateManyWithoutCurrentAgentNestedInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUncheckedUpdateManyWithoutAgentNestedInput
+  commissionPayments?: Prisma.CommissionPaymentUncheckedUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentCreateWithoutSetPasswordTokensInput = {
+  id?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientCreateNestedManyWithoutCurrentAgentInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutAgentInput
+  commissionPayments?: Prisma.CommissionPaymentCreateNestedManyWithoutAgentInput
+}
+
+export type AgentUncheckedCreateWithoutSetPasswordTokensInput = {
+  id?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientUncheckedCreateNestedManyWithoutCurrentAgentInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutAgentInput
+  commissionPayments?: Prisma.CommissionPaymentUncheckedCreateNestedManyWithoutAgentInput
+}
+
+export type AgentCreateOrConnectWithoutSetPasswordTokensInput = {
+  where: Prisma.AgentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgentCreateWithoutSetPasswordTokensInput, Prisma.AgentUncheckedCreateWithoutSetPasswordTokensInput>
+}
+
+export type AgentUpsertWithoutSetPasswordTokensInput = {
+  update: Prisma.XOR<Prisma.AgentUpdateWithoutSetPasswordTokensInput, Prisma.AgentUncheckedUpdateWithoutSetPasswordTokensInput>
+  create: Prisma.XOR<Prisma.AgentCreateWithoutSetPasswordTokensInput, Prisma.AgentUncheckedCreateWithoutSetPasswordTokensInput>
+  where?: Prisma.AgentWhereInput
+}
+
+export type AgentUpdateToOneWithWhereWithoutSetPasswordTokensInput = {
+  where?: Prisma.AgentWhereInput
+  data: Prisma.XOR<Prisma.AgentUpdateWithoutSetPasswordTokensInput, Prisma.AgentUncheckedUpdateWithoutSetPasswordTokensInput>
+}
+
+export type AgentUpdateWithoutSetPasswordTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUpdateManyWithoutCurrentAgentNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutAgentNestedInput
+  commissionPayments?: Prisma.CommissionPaymentUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentUncheckedUpdateWithoutSetPasswordTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUncheckedUpdateManyWithoutCurrentAgentNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutAgentNestedInput
+  commissionPayments?: Prisma.CommissionPaymentUncheckedUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentCreateWithoutCommissionPaymentsInput = {
+  id?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientCreateNestedManyWithoutCurrentAgentInput
+  consentLogs?: Prisma.ConsentLogCreateNestedManyWithoutAgentInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenCreateNestedManyWithoutAgentInput
+}
+
+export type AgentUncheckedCreateWithoutCommissionPaymentsInput = {
+  id?: string
+  partnerId?: string | null
+  status?: $Enums.AgentStatus
+  fullName: string
+  companyName?: string | null
+  jobTitle?: string | null
+  countryOfResidence?: string | null
+  businessAddress?: string | null
+  mobileNumber?: string | null
+  whatsapp?: string | null
+  lineId?: string | null
+  email: string
+  website?: string | null
+  socialFacebook?: string | null
+  socialInstagram?: string | null
+  socialLinkedin?: string | null
+  socialOther?: string | null
+  businessType?: Prisma.AgentCreatebusinessTypeInput | string[]
+  businessTypeOther?: string | null
+  yearsInBusiness?: string | null
+  monthlyClients?: string | null
+  referralServices?: Prisma.AgentCreatereferralServicesInput | string[]
+  referralServicesOther?: string | null
+  patientOriginCountries?: Prisma.AgentCreatepatientOriginCountriesInput | string[]
+  patientOriginOther?: string | null
+  estimatedMonthlyReferrals?: string | null
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: Prisma.AgentCreatesupportingDocumentsInput | string[]
+  commissionTierPreference?: string | null
+  remarks?: string | null
+  useMasterSignature?: boolean
+  signatureImageUrl?: string | null
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: string | null
+  signatureDate?: Date | string | null
+  passwordHash?: string | null
+  commissionPercent?: number | null
+  approvedAt?: Date | string | null
+  approvedBy?: string | null
+  registrationLanguage?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patients?: Prisma.PatientUncheckedCreateNestedManyWithoutCurrentAgentInput
+  consentLogs?: Prisma.ConsentLogUncheckedCreateNestedManyWithoutAgentInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUncheckedCreateNestedManyWithoutAgentInput
+}
+
+export type AgentCreateOrConnectWithoutCommissionPaymentsInput = {
+  where: Prisma.AgentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgentCreateWithoutCommissionPaymentsInput, Prisma.AgentUncheckedCreateWithoutCommissionPaymentsInput>
+}
+
+export type AgentUpsertWithoutCommissionPaymentsInput = {
+  update: Prisma.XOR<Prisma.AgentUpdateWithoutCommissionPaymentsInput, Prisma.AgentUncheckedUpdateWithoutCommissionPaymentsInput>
+  create: Prisma.XOR<Prisma.AgentCreateWithoutCommissionPaymentsInput, Prisma.AgentUncheckedCreateWithoutCommissionPaymentsInput>
+  where?: Prisma.AgentWhereInput
+}
+
+export type AgentUpdateToOneWithWhereWithoutCommissionPaymentsInput = {
+  where?: Prisma.AgentWhereInput
+  data: Prisma.XOR<Prisma.AgentUpdateWithoutCommissionPaymentsInput, Prisma.AgentUncheckedUpdateWithoutCommissionPaymentsInput>
+}
+
+export type AgentUpdateWithoutCommissionPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUpdateManyWithoutCurrentAgentNestedInput
+  consentLogs?: Prisma.ConsentLogUpdateManyWithoutAgentNestedInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentUncheckedUpdateWithoutCommissionPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAgentStatusFieldUpdateOperationsInput | $Enums.AgentStatus
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryOfResidence?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mobileNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialFacebook?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialInstagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialLinkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  socialOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  businessType?: Prisma.AgentUpdatebusinessTypeInput | string[]
+  businessTypeOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  yearsInBusiness?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  monthlyClients?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  referralServices?: Prisma.AgentUpdatereferralServicesInput | string[]
+  referralServicesOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  patientOriginCountries?: Prisma.AgentUpdatepatientOriginCountriesInput | string[]
+  patientOriginOther?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  estimatedMonthlyReferrals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  confirmNoMedicalAdvice?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCustomPackagePrices?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmNoOutcomeGuarantees?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmPatientPrivacy?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  confirmCompliance?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  supportingDocuments?: Prisma.AgentUpdatesupportingDocumentsInput | string[]
+  commissionTierPreference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  remarks?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  useMasterSignature?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signatureImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  declarationAccurateInfo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationNoGuaranteeApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  declarationComplianceAgreement?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  applicantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signatureDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  registrationLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patients?: Prisma.PatientUncheckedUpdateManyWithoutCurrentAgentNestedInput
+  consentLogs?: Prisma.ConsentLogUncheckedUpdateManyWithoutAgentNestedInput
+  setPasswordTokens?: Prisma.AgentSetPasswordTokenUncheckedUpdateManyWithoutAgentNestedInput
 }
 
 
@@ -362,10 +2352,16 @@ export type AgentUncheckedUpdateWithoutPatientsInput = {
 
 export type AgentCountOutputType = {
   patients: number
+  consentLogs: number
+  setPasswordTokens: number
+  commissionPayments: number
 }
 
 export type AgentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patients?: boolean | AgentCountOutputTypeCountPatientsArgs
+  consentLogs?: boolean | AgentCountOutputTypeCountConsentLogsArgs
+  setPasswordTokens?: boolean | AgentCountOutputTypeCountSetPasswordTokensArgs
+  commissionPayments?: boolean | AgentCountOutputTypeCountCommissionPaymentsArgs
 }
 
 /**
@@ -385,40 +2381,243 @@ export type AgentCountOutputTypeCountPatientsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.PatientWhereInput
 }
 
+/**
+ * AgentCountOutputType without action
+ */
+export type AgentCountOutputTypeCountConsentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConsentLogWhereInput
+}
+
+/**
+ * AgentCountOutputType without action
+ */
+export type AgentCountOutputTypeCountSetPasswordTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgentSetPasswordTokenWhereInput
+}
+
+/**
+ * AgentCountOutputType without action
+ */
+export type AgentCountOutputTypeCountCommissionPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommissionPaymentWhereInput
+}
+
 
 export type AgentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  phone?: boolean
-  shareToken?: boolean
+  partnerId?: boolean
+  status?: boolean
+  fullName?: boolean
+  companyName?: boolean
+  jobTitle?: boolean
+  countryOfResidence?: boolean
+  businessAddress?: boolean
+  mobileNumber?: boolean
+  whatsapp?: boolean
+  lineId?: boolean
+  email?: boolean
+  website?: boolean
+  socialFacebook?: boolean
+  socialInstagram?: boolean
+  socialLinkedin?: boolean
+  socialOther?: boolean
+  businessType?: boolean
+  businessTypeOther?: boolean
+  yearsInBusiness?: boolean
+  monthlyClients?: boolean
+  referralServices?: boolean
+  referralServicesOther?: boolean
+  patientOriginCountries?: boolean
+  patientOriginOther?: boolean
+  estimatedMonthlyReferrals?: boolean
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: boolean
+  commissionTierPreference?: boolean
+  remarks?: boolean
+  useMasterSignature?: boolean
+  signatureImageUrl?: boolean
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: boolean
+  signatureDate?: boolean
+  passwordHash?: boolean
+  commissionPercent?: boolean
+  approvedAt?: boolean
+  approvedBy?: boolean
+  registrationLanguage?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   patients?: boolean | Prisma.Agent$patientsArgs<ExtArgs>
+  consentLogs?: boolean | Prisma.Agent$consentLogsArgs<ExtArgs>
+  setPasswordTokens?: boolean | Prisma.Agent$setPasswordTokensArgs<ExtArgs>
+  commissionPayments?: boolean | Prisma.Agent$commissionPaymentsArgs<ExtArgs>
   _count?: boolean | Prisma.AgentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agent"]>
 
 export type AgentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  phone?: boolean
-  shareToken?: boolean
+  partnerId?: boolean
+  status?: boolean
+  fullName?: boolean
+  companyName?: boolean
+  jobTitle?: boolean
+  countryOfResidence?: boolean
+  businessAddress?: boolean
+  mobileNumber?: boolean
+  whatsapp?: boolean
+  lineId?: boolean
+  email?: boolean
+  website?: boolean
+  socialFacebook?: boolean
+  socialInstagram?: boolean
+  socialLinkedin?: boolean
+  socialOther?: boolean
+  businessType?: boolean
+  businessTypeOther?: boolean
+  yearsInBusiness?: boolean
+  monthlyClients?: boolean
+  referralServices?: boolean
+  referralServicesOther?: boolean
+  patientOriginCountries?: boolean
+  patientOriginOther?: boolean
+  estimatedMonthlyReferrals?: boolean
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: boolean
+  commissionTierPreference?: boolean
+  remarks?: boolean
+  useMasterSignature?: boolean
+  signatureImageUrl?: boolean
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: boolean
+  signatureDate?: boolean
+  passwordHash?: boolean
+  commissionPercent?: boolean
+  approvedAt?: boolean
+  approvedBy?: boolean
+  registrationLanguage?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["agent"]>
 
 export type AgentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  phone?: boolean
-  shareToken?: boolean
+  partnerId?: boolean
+  status?: boolean
+  fullName?: boolean
+  companyName?: boolean
+  jobTitle?: boolean
+  countryOfResidence?: boolean
+  businessAddress?: boolean
+  mobileNumber?: boolean
+  whatsapp?: boolean
+  lineId?: boolean
+  email?: boolean
+  website?: boolean
+  socialFacebook?: boolean
+  socialInstagram?: boolean
+  socialLinkedin?: boolean
+  socialOther?: boolean
+  businessType?: boolean
+  businessTypeOther?: boolean
+  yearsInBusiness?: boolean
+  monthlyClients?: boolean
+  referralServices?: boolean
+  referralServicesOther?: boolean
+  patientOriginCountries?: boolean
+  patientOriginOther?: boolean
+  estimatedMonthlyReferrals?: boolean
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: boolean
+  commissionTierPreference?: boolean
+  remarks?: boolean
+  useMasterSignature?: boolean
+  signatureImageUrl?: boolean
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: boolean
+  signatureDate?: boolean
+  passwordHash?: boolean
+  commissionPercent?: boolean
+  approvedAt?: boolean
+  approvedBy?: boolean
+  registrationLanguage?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["agent"]>
 
 export type AgentSelectScalar = {
   id?: boolean
-  name?: boolean
-  phone?: boolean
-  shareToken?: boolean
+  partnerId?: boolean
+  status?: boolean
+  fullName?: boolean
+  companyName?: boolean
+  jobTitle?: boolean
+  countryOfResidence?: boolean
+  businessAddress?: boolean
+  mobileNumber?: boolean
+  whatsapp?: boolean
+  lineId?: boolean
+  email?: boolean
+  website?: boolean
+  socialFacebook?: boolean
+  socialInstagram?: boolean
+  socialLinkedin?: boolean
+  socialOther?: boolean
+  businessType?: boolean
+  businessTypeOther?: boolean
+  yearsInBusiness?: boolean
+  monthlyClients?: boolean
+  referralServices?: boolean
+  referralServicesOther?: boolean
+  patientOriginCountries?: boolean
+  patientOriginOther?: boolean
+  estimatedMonthlyReferrals?: boolean
+  confirmNoMedicalAdvice?: boolean
+  confirmCustomPackagePrices?: boolean
+  confirmNoOutcomeGuarantees?: boolean
+  confirmPatientPrivacy?: boolean
+  confirmCompliance?: boolean
+  supportingDocuments?: boolean
+  commissionTierPreference?: boolean
+  remarks?: boolean
+  useMasterSignature?: boolean
+  signatureImageUrl?: boolean
+  declarationAccurateInfo?: boolean
+  declarationNoGuaranteeApproval?: boolean
+  declarationComplianceAgreement?: boolean
+  applicantName?: boolean
+  signatureDate?: boolean
+  passwordHash?: boolean
+  commissionPercent?: boolean
+  approvedAt?: boolean
+  approvedBy?: boolean
+  registrationLanguage?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type AgentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "shareToken", ExtArgs["result"]["agent"]>
+export type AgentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "partnerId" | "status" | "fullName" | "companyName" | "jobTitle" | "countryOfResidence" | "businessAddress" | "mobileNumber" | "whatsapp" | "lineId" | "email" | "website" | "socialFacebook" | "socialInstagram" | "socialLinkedin" | "socialOther" | "businessType" | "businessTypeOther" | "yearsInBusiness" | "monthlyClients" | "referralServices" | "referralServicesOther" | "patientOriginCountries" | "patientOriginOther" | "estimatedMonthlyReferrals" | "confirmNoMedicalAdvice" | "confirmCustomPackagePrices" | "confirmNoOutcomeGuarantees" | "confirmPatientPrivacy" | "confirmCompliance" | "supportingDocuments" | "commissionTierPreference" | "remarks" | "useMasterSignature" | "signatureImageUrl" | "declarationAccurateInfo" | "declarationNoGuaranteeApproval" | "declarationComplianceAgreement" | "applicantName" | "signatureDate" | "passwordHash" | "commissionPercent" | "approvedAt" | "approvedBy" | "registrationLanguage" | "createdAt" | "updatedAt", ExtArgs["result"]["agent"]>
 export type AgentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patients?: boolean | Prisma.Agent$patientsArgs<ExtArgs>
+  consentLogs?: boolean | Prisma.Agent$consentLogsArgs<ExtArgs>
+  setPasswordTokens?: boolean | Prisma.Agent$setPasswordTokensArgs<ExtArgs>
+  commissionPayments?: boolean | Prisma.Agent$commissionPaymentsArgs<ExtArgs>
   _count?: boolean | Prisma.AgentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AgentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -428,12 +2627,59 @@ export type $AgentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Agent"
   objects: {
     patients: Prisma.$PatientPayload<ExtArgs>[]
+    consentLogs: Prisma.$ConsentLogPayload<ExtArgs>[]
+    setPasswordTokens: Prisma.$AgentSetPasswordTokenPayload<ExtArgs>[]
+    commissionPayments: Prisma.$CommissionPaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    name: string
-    phone: string | null
-    shareToken: string
+    partnerId: string | null
+    status: $Enums.AgentStatus
+    fullName: string
+    companyName: string | null
+    jobTitle: string | null
+    countryOfResidence: string | null
+    businessAddress: string | null
+    mobileNumber: string | null
+    whatsapp: string | null
+    lineId: string | null
+    email: string
+    website: string | null
+    socialFacebook: string | null
+    socialInstagram: string | null
+    socialLinkedin: string | null
+    socialOther: string | null
+    businessType: string[]
+    businessTypeOther: string | null
+    yearsInBusiness: string | null
+    monthlyClients: string | null
+    referralServices: string[]
+    referralServicesOther: string | null
+    patientOriginCountries: string[]
+    patientOriginOther: string | null
+    estimatedMonthlyReferrals: string | null
+    confirmNoMedicalAdvice: boolean
+    confirmCustomPackagePrices: boolean
+    confirmNoOutcomeGuarantees: boolean
+    confirmPatientPrivacy: boolean
+    confirmCompliance: boolean
+    supportingDocuments: string[]
+    commissionTierPreference: string | null
+    remarks: string | null
+    useMasterSignature: boolean
+    signatureImageUrl: string | null
+    declarationAccurateInfo: boolean
+    declarationNoGuaranteeApproval: boolean
+    declarationComplianceAgreement: boolean
+    applicantName: string | null
+    signatureDate: Date | null
+    passwordHash: string | null
+    commissionPercent: number | null
+    approvedAt: Date | null
+    approvedBy: string | null
+    registrationLanguage: string | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["agent"]>
   composites: {}
 }
@@ -829,6 +3075,9 @@ readonly fields: AgentFieldRefs;
 export interface Prisma__AgentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   patients<T extends Prisma.Agent$patientsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$patientsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  consentLogs<T extends Prisma.Agent$consentLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$consentLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConsentLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  setPasswordTokens<T extends Prisma.Agent$setPasswordTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$setPasswordTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentSetPasswordTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  commissionPayments<T extends Prisma.Agent$commissionPaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$commissionPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommissionPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -859,9 +3108,53 @@ export interface Prisma__AgentClient<T, Null = never, ExtArgs extends runtime.Ty
  */
 export interface AgentFieldRefs {
   readonly id: Prisma.FieldRef<"Agent", 'String'>
-  readonly name: Prisma.FieldRef<"Agent", 'String'>
-  readonly phone: Prisma.FieldRef<"Agent", 'String'>
-  readonly shareToken: Prisma.FieldRef<"Agent", 'String'>
+  readonly partnerId: Prisma.FieldRef<"Agent", 'String'>
+  readonly status: Prisma.FieldRef<"Agent", 'AgentStatus'>
+  readonly fullName: Prisma.FieldRef<"Agent", 'String'>
+  readonly companyName: Prisma.FieldRef<"Agent", 'String'>
+  readonly jobTitle: Prisma.FieldRef<"Agent", 'String'>
+  readonly countryOfResidence: Prisma.FieldRef<"Agent", 'String'>
+  readonly businessAddress: Prisma.FieldRef<"Agent", 'String'>
+  readonly mobileNumber: Prisma.FieldRef<"Agent", 'String'>
+  readonly whatsapp: Prisma.FieldRef<"Agent", 'String'>
+  readonly lineId: Prisma.FieldRef<"Agent", 'String'>
+  readonly email: Prisma.FieldRef<"Agent", 'String'>
+  readonly website: Prisma.FieldRef<"Agent", 'String'>
+  readonly socialFacebook: Prisma.FieldRef<"Agent", 'String'>
+  readonly socialInstagram: Prisma.FieldRef<"Agent", 'String'>
+  readonly socialLinkedin: Prisma.FieldRef<"Agent", 'String'>
+  readonly socialOther: Prisma.FieldRef<"Agent", 'String'>
+  readonly businessType: Prisma.FieldRef<"Agent", 'String[]'>
+  readonly businessTypeOther: Prisma.FieldRef<"Agent", 'String'>
+  readonly yearsInBusiness: Prisma.FieldRef<"Agent", 'String'>
+  readonly monthlyClients: Prisma.FieldRef<"Agent", 'String'>
+  readonly referralServices: Prisma.FieldRef<"Agent", 'String[]'>
+  readonly referralServicesOther: Prisma.FieldRef<"Agent", 'String'>
+  readonly patientOriginCountries: Prisma.FieldRef<"Agent", 'String[]'>
+  readonly patientOriginOther: Prisma.FieldRef<"Agent", 'String'>
+  readonly estimatedMonthlyReferrals: Prisma.FieldRef<"Agent", 'String'>
+  readonly confirmNoMedicalAdvice: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly confirmCustomPackagePrices: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly confirmNoOutcomeGuarantees: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly confirmPatientPrivacy: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly confirmCompliance: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly supportingDocuments: Prisma.FieldRef<"Agent", 'String[]'>
+  readonly commissionTierPreference: Prisma.FieldRef<"Agent", 'String'>
+  readonly remarks: Prisma.FieldRef<"Agent", 'String'>
+  readonly useMasterSignature: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly signatureImageUrl: Prisma.FieldRef<"Agent", 'String'>
+  readonly declarationAccurateInfo: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly declarationNoGuaranteeApproval: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly declarationComplianceAgreement: Prisma.FieldRef<"Agent", 'Boolean'>
+  readonly applicantName: Prisma.FieldRef<"Agent", 'String'>
+  readonly signatureDate: Prisma.FieldRef<"Agent", 'DateTime'>
+  readonly passwordHash: Prisma.FieldRef<"Agent", 'String'>
+  readonly commissionPercent: Prisma.FieldRef<"Agent", 'Float'>
+  readonly approvedAt: Prisma.FieldRef<"Agent", 'DateTime'>
+  readonly approvedBy: Prisma.FieldRef<"Agent", 'String'>
+  readonly registrationLanguage: Prisma.FieldRef<"Agent", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Agent", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Agent", 'DateTime'>
 }
     
 
@@ -1276,6 +3569,78 @@ export type Agent$patientsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.PatientScalarFieldEnum | Prisma.PatientScalarFieldEnum[]
+}
+
+/**
+ * Agent.consentLogs
+ */
+export type Agent$consentLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ConsentLog
+   */
+  select?: Prisma.ConsentLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ConsentLog
+   */
+  omit?: Prisma.ConsentLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConsentLogInclude<ExtArgs> | null
+  where?: Prisma.ConsentLogWhereInput
+  orderBy?: Prisma.ConsentLogOrderByWithRelationInput | Prisma.ConsentLogOrderByWithRelationInput[]
+  cursor?: Prisma.ConsentLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConsentLogScalarFieldEnum | Prisma.ConsentLogScalarFieldEnum[]
+}
+
+/**
+ * Agent.setPasswordTokens
+ */
+export type Agent$setPasswordTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentSetPasswordToken
+   */
+  select?: Prisma.AgentSetPasswordTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentSetPasswordToken
+   */
+  omit?: Prisma.AgentSetPasswordTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentSetPasswordTokenInclude<ExtArgs> | null
+  where?: Prisma.AgentSetPasswordTokenWhereInput
+  orderBy?: Prisma.AgentSetPasswordTokenOrderByWithRelationInput | Prisma.AgentSetPasswordTokenOrderByWithRelationInput[]
+  cursor?: Prisma.AgentSetPasswordTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgentSetPasswordTokenScalarFieldEnum | Prisma.AgentSetPasswordTokenScalarFieldEnum[]
+}
+
+/**
+ * Agent.commissionPayments
+ */
+export type Agent$commissionPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommissionPayment
+   */
+  select?: Prisma.CommissionPaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommissionPayment
+   */
+  omit?: Prisma.CommissionPaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommissionPaymentInclude<ExtArgs> | null
+  where?: Prisma.CommissionPaymentWhereInput
+  orderBy?: Prisma.CommissionPaymentOrderByWithRelationInput | Prisma.CommissionPaymentOrderByWithRelationInput[]
+  cursor?: Prisma.CommissionPaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommissionPaymentScalarFieldEnum | Prisma.CommissionPaymentScalarFieldEnum[]
 }
 
 /**

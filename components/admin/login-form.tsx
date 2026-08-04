@@ -41,8 +41,8 @@ export function LoginForm() {
       return;
     }
 
-    router.push("/dashboard");
-    router.refresh();
+    // Navigate once — avoid push+refresh race that can leave the router unstable.
+    router.replace("/dashboard/patients");
   }
 
   return (

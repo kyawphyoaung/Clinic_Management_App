@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { createAgent } from "@/lib/actions/agents";
+import { createAgentPlaceholder } from "@/lib/actions/agents";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,9 +20,10 @@ export function AgentForm() {
     const formData = new FormData(e.currentTarget);
 
     startTransition(async () => {
-      const result = await createAgent({
-        name: formData.get("name") as string,
-        phone: (formData.get("phone") as string) || "",
+      const result = await createAgentPlaceholder({
+        fullName: formData.get("name") as string,
+        email: formData.get("email") as string,
+        mobileNumber: (formData.get("phone") as string) || undefined,
       });
 
       if (!result.success) {
@@ -40,6 +41,10 @@ export function AgentForm() {
       <div className="space-y-1.5">
         <Label htmlFor="agent-name">Agent Name</Label>
         <Input id="agent-name" name="name" required />
+      </div>
+      <div className="space-y-1.5">
+        <Label htmlFor="agent-email">Email</Label>
+        <Input id="agent-email" name="email" type="email" required />
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="agent-phone">Phone</Label>

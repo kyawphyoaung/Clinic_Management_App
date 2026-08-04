@@ -22,10 +22,38 @@ export const PATIENT_STATUS_LABELS: Record<
   PatientStatus,
   Record<SupportedLanguage, string>
 > = {
-  PENDING: { en: "Pending", mm: "စောင့်ဆိုင်းဆဲ", zh: "待处理" },
-  APPOINTED: { en: "Appointed", mm: "ချိန်းဆိုပြီး", zh: "已预约" },
-  TREATING: { en: "Treating", mm: "ကုသဆဲ", zh: "治疗中" },
+  INQUIRY: { en: "Inquiry", mm: "စုံစမ်းမေးမြန်းမှု", zh: "咨询" },
+  QUOTATION_SENT: { en: "Quotation Sent", mm: "စျေးနှုန်းပေးပို့ပြီး", zh: "已发送报价" },
+  BOOKING_DEPOSIT_RECEIVED: {
+    en: "Booking Deposit Received",
+    mm: "ကြိုတင်ငွေလက်ခံပြီး",
+    zh: "已收到订金",
+  },
+  TELEMEDICINE_SCHEDULED: {
+    en: "Telemedicine Scheduled",
+    mm: "အွန်လိုင်းဆေးခန်းချိန်းဆိုပြီး",
+    zh: "已安排远程医疗",
+  },
+  APPOINTMENT_CONFIRMED: {
+    en: "Appointment Confirmed",
+    mm: "ချိန်းဆိုမှု အတည်ပြုပြီး",
+    zh: "预约已确认",
+  },
+  TRAVELING: { en: "Traveling", mm: "ခရီးသွားနေသည်", zh: "旅途中" },
+  PATIENT_ARRIVED: { en: "Patient Arrived", mm: "လူနာရောက်ရှိပြီး", zh: "患者已到达" },
+  TREATMENT: { en: "Treatment", mm: "ကုသဆဲ", zh: "治疗中" },
   COMPLETED: { en: "Completed", mm: "ပြီးမြောက်", zh: "已完成" },
+  RESCHEDULED_FOR_FOLLOW_UP: {
+    en: "Rescheduled for Follow-up",
+    mm: "နောက်မှ ပြန်ချိန်းဆိုရန်",
+    zh: "改期随访",
+  },
+  TREATMENT_CANCELLED: {
+    en: "Treatment Cancelled",
+    mm: "ကုသမှု ပယ်ဖျက်သည်",
+    zh: "治疗已取消",
+  },
+  REFUNDED: { en: "Refunded", mm: "ငွေပြန်အမ်းပြီး", zh: "已退款" },
 };
 
 export const PATIENT_SOURCE_LABELS: Record<

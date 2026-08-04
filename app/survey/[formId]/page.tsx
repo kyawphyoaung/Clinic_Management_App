@@ -24,12 +24,12 @@ export default async function SurveyPage({ params, searchParams }: PageProps) {
   if (patientId) {
     const patient = await prisma.patient.findUnique({
       where: { id: patientId },
-      select: { name: true },
+      select: { fullName: true, preferredName: true },
     });
     if (!patient) {
       notFound();
     }
-    patientName = patient.name;
+    patientName = patient.preferredName ?? patient.fullName;
   }
 
   return (
