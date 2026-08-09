@@ -1,19 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LandingContactIcon } from "@/components/landing/landing-contact-icons";
 import { LANDING, LANDING_NAV } from "@/lib/landing";
+import type { LandingContactChannel } from "@/lib/landing";
 
 const FOOTER_LINKS = LANDING_NAV.filter((item) =>
   ["#home", "#treatments", "#contact"].includes(item.href)
 );
 
+const MESSAGING_CHANNELS: {
+  id: LandingContactChannel["id"];
+  label: string;
+  href: string;
+}[] = [
+  { id: "line", label: "LINE", href: "https://line.me/ti/p/pBFzTGejr5" },
+  {
+    id: "whatsapp",
+    label: "WhatsApp",
+    href: "https://wa.me/qr/MC2O4KUZ6VWKO1",
+  },
+  {
+    id: "viber",
+    label: "Viber",
+    href: "viber://chat?number=%2B886966906232",
+  },
+  {
+    id: "telegram",
+    label: "Telegram",
+    href: "https://t.me/revivora",
+  },
+];
+
 export function LandingFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer
-      id="contact"
-      className="scroll-mt-24 bg-[var(--landing-footer)] text-[var(--landing-cream)]"
-    >
+    <footer className="bg-[var(--landing-footer)] text-[var(--landing-cream)]">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-14 sm:px-8 lg:grid-cols-3 lg:gap-10 lg:py-16">
         <div>
           <div className="relative mb-5 h-9 w-[140px]">
@@ -28,26 +50,9 @@ export function LandingFooter() {
             {LANDING.brand}
           </p>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-[var(--landing-cream)]/70">
-            {LANDING.address}
+            An online medical platform connecting patients with trusted care in
+            Taipei.
           </p>
-          <a
-            href={LANDING.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-block text-xs tracking-[0.14em] text-[var(--landing-gold)] uppercase transition-colors hover:text-[var(--landing-gold-soft)]"
-          >
-            Open in Google Maps →
-          </a>
-          <div className="mt-5 overflow-hidden border border-[var(--landing-gold)]/20">
-            <iframe
-              title="REVIVORA clinic location"
-              src={LANDING.mapsEmbed}
-              className="h-40 w-full grayscale-[20%] contrast-110"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-          </div>
         </div>
 
         <div>
@@ -60,6 +65,28 @@ export function LandingFooter() {
           >
             {LANDING.email}
           </a>
+
+          <p className="mt-7 text-xs font-medium tracking-[0.16em] text-[var(--landing-cream)]/50 uppercase">
+            Messaging channels
+          </p>
+          <ul className="mt-3 space-y-2.5">
+            {MESSAGING_CHANNELS.map((channel) => (
+              <li key={channel.id}>
+                <a
+                  href={channel.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 text-sm text-[var(--landing-cream)]/80 underline decoration-transparent underline-offset-4 transition-colors hover:text-[var(--landing-gold-soft)] hover:decoration-[var(--landing-gold)]/70"
+                >
+                  <LandingContactIcon
+                    id={channel.id}
+                    className="size-4 shrink-0 text-[var(--landing-gold)]"
+                  />
+                  <span>{channel.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div>
@@ -77,6 +104,14 @@ export function LandingFooter() {
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href="#partners"
+                className="text-sm text-[var(--landing-cream)]/75 transition-colors hover:text-[var(--landing-gold-soft)]"
+              >
+                Partner Clinics
+              </a>
+            </li>
             <li>
               <Link
                 href={LANDING.registerHref}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LandingAbout } from "@/components/landing/landing-about";
+import { LandingContact } from "@/components/landing/landing-contact";
 import { LandingDoctors } from "@/components/landing/landing-doctors";
 import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingHeader } from "@/components/landing/landing-header";
@@ -26,6 +27,7 @@ export default function HomePage() {
         <LandingAbout />
         <LandingDoctors />
         <LandingPartner />
+        <LandingContact />
       </main>
       <LandingFooter />
     </div>
