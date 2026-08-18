@@ -1,12 +1,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getPatients, getAgentsForAssignment } from "@/lib/actions/patients";
+import { getPatients, getAgentsForAssignment } from "@/lib/data/patients";
 import { PatientSource, PatientStatus } from "@/prisma/generated/prisma/client";
 import {
   getPatientStatusLabel,
   StatusBadge,
 } from "@/components/admin/status-badge";
 import { CopyRegistrationLinkButton } from "@/components/admin/copy-registration-link-button";
+import { PatientsFilterForm } from "@/components/admin/patients-filter-form";
 import { TablePagination } from "@/components/admin/table-pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -110,7 +111,7 @@ export default async function PatientsPage({ searchParams }: PageProps) {
           <CardTitle className="text-base">Search & Filter</CardTitle>
         </CardHeader>
         <CardContent>
-          <form method="GET" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+          <PatientsFilterForm className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
             <div className="space-y-1.5 sm:col-span-2">
               <Label htmlFor="search">Search by name, display ID, or phone</Label>
               <Input
@@ -182,7 +183,7 @@ export default async function PatientsPage({ searchParams }: PageProps) {
                 Clear
               </Button>
             </div>
-          </form>
+          </PatientsFilterForm>
         </CardContent>
       </Card>
 

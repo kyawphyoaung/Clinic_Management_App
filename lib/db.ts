@@ -5,13 +5,16 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+// Runtime DATABASE_URL uses Supabase transaction pooler (:6543). A single
+// Next.js process routinely runs parallel queries (count + findMany + agents).
+// max:1 caused "timeout exceeded when trying to connect" under concurrent RSC
+// renders. Keep a small cap so serverless isolates don't open huge pools.
+const POOL_MAX = process.env.NODE_ENV === "production" ? 3 : 5;
+
 function createPrismaClient() {
-  // Prisma 7 uses the pg driver adapter for pooling. On Vercel, each warm
-  // isolate can open its own pool — default max=10 quickly exhausts Supabase
-  // session-mode slots (pool_size ≈ 15 → EMAXCONNSESSION). Cap hard for serverless.
   const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL,
-    max: 1,
+    max: POOL_MAX,
     idleTimeoutMillis: 10_000,
     connectionTimeoutMillis: 10_000,
   });

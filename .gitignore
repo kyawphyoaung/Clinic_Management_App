@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# local agent debug logs (keep rules if any)
+.cursor/debug-*.log
+.cursor/*.log
+
 # production
 /build
 

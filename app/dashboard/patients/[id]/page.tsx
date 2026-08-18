@@ -6,7 +6,7 @@ import {
   getAgentsForAssignment,
   getClinicsForSelect,
   getPatientById,
-} from "@/lib/actions/patients";
+} from "@/lib/data/patients";
 import { getTreatmentsForPatient } from "@/lib/actions/treatments";
 import { getAppointmentsForPatient } from "@/lib/actions/appointments";
 import { listPatientNotes } from "@/lib/actions/patient-notes";

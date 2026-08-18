@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Providers } from "@/components/providers";
+import { getOptionalAuthSession } from "@/lib/session";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -31,11 +32,14 @@ export const metadata: Metadata = {
     "Expert medical care in Taipei — Men's Health, Aesthetics, and Wellness with REVIVORA.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Read-only JWT decode — do not use auth()/getSession (they Set-Cookie every time).
+  const session = await getOptionalAuthSession();
+
   return (
     <html
       lang="en"
@@ -50,7 +54,7 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Providers>{children}</Providers>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );
