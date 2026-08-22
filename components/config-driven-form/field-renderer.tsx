@@ -13,10 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { PhoneNumberInput } from "@/components/ui/phone-number-input";
 import { SignatureCanvas } from "@/components/config-driven-form/signature-canvas";
 
 const E164_PHONE = /^\+[1-9]\d{1,14}$/;
-const PHONE_PLUS_ERROR = "Phone number must start with '+'";
+const PHONE_ERROR = "Enter a valid phone number";
 
 function currentYearMonth(): string {
   const now = new Date();
@@ -29,14 +30,6 @@ function todayDateString(): string {
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");
   return `${now.getFullYear()}-${month}-${day}`;
-}
-
-function normalizeTelInput(raw: string): string {
-  const trimmed = raw.trim();
-  if (!trimmed) return "";
-  if (trimmed.startsWith("+")) return trimmed.replace(/\s+/g, "");
-  if (/^\d/.test(trimmed)) return `+${trimmed.replace(/\s+/g, "")}`;
-  return trimmed;
 }
 
 function RequiredMark({ required }: { required?: boolean }) {
@@ -309,24 +302,20 @@ export function FieldRenderer({
     const telValue = String(fieldValue ?? "");
     const telError =
       error ??
-      (telValue && !telValue.startsWith("+")
-        ? PHONE_PLUS_ERROR
-        : telValue && !E164_PHONE.test(telValue.replace(/\s+/g, ""))
-          ? PHONE_PLUS_ERROR
-          : undefined);
+      (telValue && !E164_PHONE.test(telValue.replace(/\s+/g, ""))
+        ? PHONE_ERROR
+        : undefined);
     const hasTelError = Boolean(telError);
 
     return (
       <div className={`space-y-2 ${colSpan}`}>
         <FieldLabel label={label} required={field.required} />
-        <Input
-          type="tel"
+        <PhoneNumberInput
           value={telValue}
           placeholder={placeholder}
           readOnly={readOnly}
-          aria-invalid={hasTelError}
-          className={hasTelError ? "border-destructive focus-visible:ring-destructive/40" : undefined}
-          onChange={(e) => onChange(name, normalizeTelInput(e.target.value))}
+          invalid={hasTelError}
+          onChange={(e164) => onChange(name, e164)}
         />
         {telError && <p className="text-sm text-destructive">{telError}</p>}
       </div>

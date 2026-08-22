@@ -7,7 +7,7 @@ import { requireAuth } from "@/lib/session";
 import { requirePermission, hasPermission } from "@/lib/permissions";
 import { getPartnerSessionAgentId } from "@/lib/partner-session";
 import { encrypt } from "@/lib/utils/encryption";
-import { generateDisplayId } from "@/lib/utils/display-id";
+import { createPatientWithVisit } from "@/lib/utils/create-patient-with-visit";
 import { getFirstZodError } from "@/lib/utils/zod";
 import {
   SLOT_MINUTES,
@@ -165,14 +165,18 @@ export async function createPublicAppointment(input: unknown) {
     }
 
     const appointment = await prisma.$transaction(async (tx) => {
-      const displayId = await generateDisplayId(tx, {
-        clinicCode: "00",
-        agentCode: "000",
-      });
       const bookingShareToken = newToken();
-      const patient = await tx.patient.create({
-        data: {
-          displayId,
+      const agent = agentId
+        ? await tx.agent.findUnique({
+            where: { id: agentId },
+            select: { partnerId: true },
+          })
+        : null;
+      const { patient } = await createPatientWithVisit(
+        tx,
+        {
+          displayId: "pending",
+          patientNumber: "pending",
           fullName: data.fullName,
           gender: data.gender,
           dateOfBirth: new Date(data.dateOfBirth),
@@ -186,7 +190,12 @@ export async function createPublicAppointment(input: unknown) {
           appointmentDate: startsAt,
           appointmentStatus: "CONFIRMED",
         },
-      });
+        {
+          agentId,
+          agentCode: agent?.partnerId,
+          source: agentId ? "AGENT_REFERRAL" : "WALKIN",
+        }
+      );
 
       const aptDisplayId = await generateAppointmentDisplayId(tx);
       const publicId = await generateAppointmentPublicId(tx);
@@ -238,7 +247,7 @@ export async function createPublicAppointment(input: unknown) {
       service: appointment.apt.service,
       doctorName: doctor?.fullName ?? "",
       patientName: appointment.patient.fullName,
-      patientFacingId: toPatientFacingId(appointment.patient.displayId),
+      patientFacingId: toPatientFacingId(appointment.patient.patientNumber),
     };
   } catch (err) {
     if (isUniqueViolation(err) || (err instanceof Error && err.message === SLOT_CONFLICT_MESSAGE)) {
@@ -320,7 +329,7 @@ export async function createAppointmentViaPatientLink(input: unknown) {
       service: appointment.service,
       doctorName: doctor?.fullName ?? "",
       patientName: patient.fullName,
-      patientFacingId: toPatientFacingId(patient.displayId),
+      patientFacingId: toPatientFacingId(patient.patientNumber),
     };
   } catch (err) {
     if (isUniqueViolation(err) || (err instanceof Error && err.message === SLOT_CONFLICT_MESSAGE)) {

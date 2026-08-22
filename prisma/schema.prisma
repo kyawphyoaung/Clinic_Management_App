@@ -101,13 +101,37 @@ enum CommissionReviewStatus {
   PAID
 }
 
+enum VisitType {
+  FIRST_VISIT
+  REVISIT
+  FOLLOW_UP
+}
+
+enum VisitSource {
+  AGENT_REFERRAL
+  WALKIN
+}
+
+enum PasswordActorType {
+  AGENT
+  DOCTOR
+}
+
+enum RequestedDepositStatus {
+  REQUESTED
+  SENT
+  PAID
+  CANCELLED
+}
+
 // =============================================================================
 // Patient
 // =============================================================================
 
 model Patient {
-  id        String        @id @default(uuid())
-  displayId String        @unique @map("display_id")
+  id            String @id @default(uuid())
+  displayId     String @unique @map("display_id")
+  patientNumber String @unique @map("patient_number")
 
   // Section A – Personal Information
   fullName            String   @map("full_name")
@@ -212,6 +236,8 @@ model Patient {
   treatments         Treatment[]
   patientNotes       PatientNote[]
   deposits           PatientDeposit[]
+  requestedDeposits  RequestedDeposit[]
+  visits             Visit[]
 
   @@map("patients")
 }
@@ -227,8 +253,37 @@ model Clinic {
 
   patients     Patient[]
   appointments Appointment[]
+  visits       Visit[]
 
   @@map("clinics")
+}
+
+// =============================================================================
+// Visit
+// =============================================================================
+
+model Visit {
+  id        String      @id @default(uuid())
+  displayId String      @unique @map("display_id")
+  patientId String      @map("patient_id")
+  clinicId  String      @map("clinic_id")
+  agentId   String?     @map("agent_id")
+  visitDate DateTime    @map("visit_date") @db.Date
+  visitType VisitType   @map("visit_type")
+  source    VisitSource
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+
+  patient    Patient     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  clinic     Clinic      @relation(fields: [clinicId], references: [id])
+  agent      Agent?      @relation(fields: [agentId], references: [id])
+  treatments Treatment[]
+
+  @@index([patientId])
+  @@index([clinicId])
+  @@index([agentId])
+  @@index([visitDate])
+  @@map("visits")
 }
 
 // =============================================================================
@@ -241,9 +296,10 @@ model Agent {
   status    AgentStatus @default(PENDING)
 
   // Section A – Applicant Information
-  fullName            String  @map("full_name")
-  companyName         String? @map("company_name")
-  jobTitle            String? @map("job_title")
+  fullName            String    @map("full_name")
+  companyName         String?   @map("company_name")
+  jobTitle            String?   @map("job_title")
+  dateOfBirth         DateTime? @map("date_of_birth") @db.Date
   countryOfResidence  String? @map("country_of_residence")
   businessAddress     String? @map("business_address")
   mobileNumber        String? @map("mobile_number")
@@ -306,6 +362,8 @@ model Agent {
   consentLogs         ConsentLog[]
   setPasswordTokens   AgentSetPasswordToken[]
   commissionPayments  CommissionPayment[]
+  visits              Visit[]
+  passwordChangeLogs  PasswordChangeLog[]
 
   @@map("agents")
 }
@@ -343,6 +401,13 @@ model YearlyPatientSequence {
   lastSeq Int @default(0) @map("last_seq")
 
   @@map("yearly_patient_sequences")
+}
+
+model SequenceCounter {
+  key     String @id
+  lastSeq Int    @default(0) @map("last_seq")
+
+  @@map("sequence_counters")
 }
 
 model AgentSetPasswordToken {
@@ -572,6 +637,7 @@ model User {
   passwordHash String   @map("password_hash")
   fullName     String   @map("full_name")
   role         UserRole
+  doctorCode   String?  @unique @map("doctor_code")
   isActive     Boolean  @default(true) @map("is_active")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
@@ -584,13 +650,50 @@ model User {
   specializations          DoctorSpecialization[]
   patientNotesCreated      PatientNote[]                @relation("PatientNoteAuthor")
   depositsRecorded         PatientDeposit[]             @relation("DepositRecorder")
+  passwordResetTokens      UserPasswordResetToken[]
+  passwordChangeLogs       PasswordChangeLog[]
+  depositTransfers         DepositTransfer[]            @relation("DepositTransferRecorder")
+  requestedDeposits        RequestedDeposit[]           @relation("RequestedDepositCreator")
 
   @@map("users")
 }
 
+model UserPasswordResetToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  userId    String    @map("user_id")
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_password_reset_tokens")
+}
+
+model PasswordChangeLog {
+  id        String            @id @default(uuid())
+  actorType PasswordActorType @map("actor_type")
+  userId    String?           @map("user_id")
+  agentId   String?           @map("agent_id")
+  ipAddress String?           @map("ip_address")
+  createdAt DateTime          @default(now()) @map("created_at")
+
+  user  User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agent Agent? @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([agentId])
+  @@index([createdAt])
+  @@map("password_change_logs")
+}
+
 model Treatment {
   id            String          @id @default(uuid())
+  shortId       String          @unique @map("short_id")
   patientId     String          @map("patient_id")
+  visitId       String          @map("visit_id")
   treatmentDate DateTime        @map("treatment_date") @db.Date
   endDate       DateTime?       @map("end_date") @db.Date
   diagnosis     String?
@@ -601,26 +704,31 @@ model Treatment {
   updatedAt     DateTime        @updatedAt @map("updated_at")
 
   patient            Patient             @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  visit              Visit               @relation(fields: [visitId], references: [id], onDelete: Cascade)
   doctor             User?               @relation("TreatmentDoctor", fields: [doctorId], references: [id])
   charges            TreatmentCharge[]
   payments           TreatmentPayment[]
   commissionPayments CommissionPayment[]
   patientNotes       PatientNote[]
+  requestedDeposits  RequestedDeposit[]
 
   @@index([patientId])
+  @@index([visitId])
   @@index([doctorId])
   @@index([endDate])
   @@map("treatments")
 }
 
 model TreatmentCharge {
-  id             String   @id @default(uuid())
-  treatmentId    String   @map("treatment_id")
-  totalPrice     Decimal  @map("total_price") @db.Decimal(12, 2)
-  discount       Decimal  @default(0) @db.Decimal(12, 2)
-  depositApplied Decimal  @default(0) @map("deposit_applied") @db.Decimal(12, 2)
-  netPrice       Decimal  @map("net_price") @db.Decimal(12, 2)
-  createdAt      DateTime @default(now()) @map("created_at")
+  id              String   @id @default(uuid())
+  shortId         String   @unique @map("short_id")
+  treatmentId     String   @map("treatment_id")
+  totalPrice      Decimal  @map("total_price") @db.Decimal(12, 2)
+  discount        Decimal  @default(0) @db.Decimal(12, 2)
+  depositApplied  Decimal  @default(0) @map("deposit_applied") @db.Decimal(12, 2)
+  netPrice        Decimal  @map("net_price") @db.Decimal(12, 2)
+  isAgentRelated  Boolean  @default(true) @map("is_agent_related")
+  createdAt       DateTime @default(now()) @map("created_at")
 
   treatment   Treatment             @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
   lines       TreatmentChargeLine[]
@@ -646,15 +754,16 @@ model TreatmentChargeLine {
 }
 
 model TreatmentPayment {
-  id           String        @id @default(uuid())
-  treatmentId  String        @map("treatment_id")
-  amount       Decimal       @db.Decimal(12, 2)
-  method       PaymentMethod
-  paymentDate  DateTime      @map("payment_date") @db.Date
-  reference    String?
-  notes        String?
-  recordedById String?       @map("recorded_by_id")
-  createdAt    DateTime      @default(now()) @map("created_at")
+  id                    String        @id @default(uuid())
+  treatmentId           String        @map("treatment_id")
+  amount                Decimal       @db.Decimal(12, 2)
+  method                PaymentMethod
+  paymentDate           DateTime      @map("payment_date") @db.Date
+  reference             String?
+  notes                 String?
+  depositAppliedAmount  Decimal       @default(0) @map("deposit_applied_amount") @db.Decimal(12, 2)
+  recordedById          String?       @map("recorded_by_id")
+  createdAt             DateTime      @default(now()) @map("created_at")
 
   treatment   Treatment           @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
   recordedBy  User?               @relation("PaymentRecorder", fields: [recordedById], references: [id])
@@ -683,11 +792,19 @@ model PatientNote {
   patientId       String   @map("patient_id")
   title           String
   content         String?
+  subjective      String?
+  objective       String?
+  assessment      String?
+  plan            String?
   bloodPressure   String?  @map("blood_pressure")
   heartRate       Int?     @map("heart_rate")
   weight          Decimal? @db.Decimal(6, 2)
   height          Decimal? @db.Decimal(6, 2)
   bodyTemperature Decimal? @map("body_temperature") @db.Decimal(4, 1)
+  /// FULL_BODY_FRONT | FULL_BODY_BACK | UROLOGY | BRAIN
+  diagramType     String?  @map("diagram_type")
+  /// [{ label, x, y, description }] — x/y are 0–1 relative to diagram image
+  pins            Json?
   appointmentId   String?  @map("appointment_id")
   treatmentId     String?  @map("treatment_id")
   createdById     String   @map("created_by_id")
@@ -706,10 +823,45 @@ model PatientNote {
   @@map("patient_notes")
 }
 
+model DepositReceiver {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  contactInfo String?  @map("contact_info")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  deposits  PatientDeposit[]
+  transfers DepositTransfer[]
+
+  @@map("deposit_receivers")
+}
+
+model DepositTransfer {
+  id             String   @id @default(uuid())
+  receiverId     String   @map("receiver_id")
+  amountTwd      Decimal  @map("amount_twd") @db.Decimal(12, 2)
+  transferredAt  DateTime @map("transferred_at") @db.Date
+  notes          String?
+  createdById    String?  @map("created_by_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  receiver  DepositReceiver @relation(fields: [receiverId], references: [id], onDelete: Cascade)
+  createdBy User?           @relation("DepositTransferRecorder", fields: [createdById], references: [id])
+
+  @@index([receiverId])
+  @@index([transferredAt])
+  @@map("deposit_transfers")
+}
+
 model PatientDeposit {
   id           String        @id @default(uuid())
   patientId    String        @map("patient_id")
+  receiverId   String?       @map("receiver_id")
   amount       Decimal       @db.Decimal(12, 2)
+  currency     String        @default("TWD")
+  exchangeRate Decimal       @default(1) @map("exchange_rate") @db.Decimal(12, 6)
+  amountTwd    Decimal       @map("amount_twd") @db.Decimal(12, 2)
   method       PaymentMethod
   paymentDate  DateTime      @map("payment_date") @db.Date
   reference    String?
@@ -717,10 +869,39 @@ model PatientDeposit {
   createdById  String?       @map("created_by_id")
   createdAt    DateTime      @default(now()) @map("created_at")
 
-  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  createdBy User?   @relation("DepositRecorder", fields: [createdById], references: [id])
+  patient   Patient          @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  receiver  DepositReceiver? @relation(fields: [receiverId], references: [id])
+  createdBy User?            @relation("DepositRecorder", fields: [createdById], references: [id])
 
   @@index([patientId])
+  @@index([receiverId])
   @@index([paymentDate])
   @@map("patient_deposits")
+}
+
+model RequestedDeposit {
+  id             String                 @id @default(uuid())
+  patientId      String                 @map("patient_id")
+  treatmentId    String?                @map("treatment_id")
+  amount         Decimal                @db.Decimal(12, 2)
+  currency       String                 @default("TWD")
+  exchangeRate   Decimal                @default(1) @map("exchange_rate") @db.Decimal(12, 6)
+  amountTwd      Decimal                @map("amount_twd") @db.Decimal(12, 2)
+  status         RequestedDepositStatus @default(REQUESTED)
+  requestedAt    DateTime               @default(now()) @map("requested_at")
+  paidAt         DateTime?              @map("paid_at")
+  reference      String?
+  notes          String?
+  createdById    String?                @map("created_by_id")
+  createdAt      DateTime               @default(now()) @map("created_at")
+  updatedAt      DateTime               @updatedAt @map("updated_at")
+
+  patient   Patient    @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  treatment Treatment? @relation(fields: [treatmentId], references: [id], onDelete: SetNull)
+  createdBy User?      @relation("RequestedDepositCreator", fields: [createdById], references: [id])
+
+  @@index([patientId])
+  @@index([treatmentId])
+  @@index([status])
+  @@map("requested_deposits")
 }

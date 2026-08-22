@@ -196,6 +196,15 @@ export async function getDashboardData(): Promise<DashboardData> {
     }),
   ]);
 
+  const recentPasswordLogs = await prisma.passwordChangeLog.findMany({
+    take: 8,
+    orderBy: { createdAt: "desc" },
+    include: {
+      user: { select: { fullName: true } },
+      agent: { select: { fullName: true } },
+    },
+  });
+
   const revenueThisMonth = Number(revenueAgg._sum.amount ?? 0);
   const revenueLastMonth = Number(lastRevenueAgg._sum.amount ?? 0);
   const commissionThisMonth = Number(commissionAgg._sum.amount ?? 0);
@@ -252,6 +261,15 @@ export async function getDashboardData(): Promise<DashboardData> {
       id: `pat-${p.id}`,
       at: p.createdAt,
       text: `${actor} ${action} at ${formatTaiwanTime(p.createdAt)} on ${formatActivityDate(p.createdAt)}.`,
+    });
+  }
+
+  for (const log of recentPasswordLogs) {
+    const who = log.agent?.fullName ?? log.user?.fullName ?? "A user";
+    raw.push({
+      id: `pwd-${log.id}`,
+      at: log.createdAt,
+      text: `${who} changed their password at ${formatTaiwanTime(log.createdAt)} on ${formatActivityDate(log.createdAt)}.`,
     });
   }
 

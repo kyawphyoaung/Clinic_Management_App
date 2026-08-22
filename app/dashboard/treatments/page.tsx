@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getTreatments } from "@/lib/actions/treatments";
+import { getTreatments, suggestTreatments } from "@/lib/actions/treatments";
 import { getDoctorsForSelect } from "@/lib/actions/users";
 import { TreatmentStatus } from "@/prisma/generated/prisma/client";
 import { getTreatmentStatusLabel } from "@/components/admin/treatment-status-badge";
 import { TreatmentsTable } from "@/components/admin/treatments-table";
+import { SearchSuggestInput } from "@/components/admin/search-suggest-input";
 import { TablePagination } from "@/components/admin/table-pagination";
 import { requireAuth } from "@/lib/session";
 import { canWriteTreatments } from "@/lib/permissions";
@@ -83,13 +84,17 @@ export default async function TreatmentsPage({ searchParams }: PageProps) {
         </CardHeader>
         <CardContent>
           <form method="GET" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="search">Search patient, diagnosis, or doctor</Label>
-              <Input
+            <input type="hidden" name="pageSize" value={String(size)} />
+            <div className="space-y-1.5 sm:col-span-2 lg:col-span-4">
+              <Label htmlFor="search">
+                Search patient name, patient ID, or diagnosis
+              </Label>
+              <SearchSuggestInput
                 id="search"
                 name="search"
                 defaultValue={params.search ?? ""}
                 placeholder="Search..."
+                suggest={suggestTreatments}
               />
             </div>
             <div className="space-y-1.5">
@@ -113,7 +118,7 @@ export default async function TreatmentsPage({ searchParams }: PageProps) {
                 <option value="">All doctors</option>
                 {doctors.map((d) => (
                   <option key={d.id} value={d.id}>
-                    {d.fullName}
+                    {d.doctorCode ? `${d.doctorCode} · ${d.fullName}` : d.fullName}
                   </option>
                 ))}
               </Select>
@@ -144,14 +149,6 @@ export default async function TreatmentsPage({ searchParams }: PageProps) {
                 <option value="date">Treatment Date</option>
                 <option value="diagnosis">Diagnosis</option>
                 <option value="status">Status</option>
-              </Select>
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="pageSize">Rows per page</Label>
-              <Select id="pageSize" name="pageSize" defaultValue={String(size)}>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
               </Select>
             </div>
             <div className="flex items-end gap-2 sm:col-span-2 lg:col-span-4">

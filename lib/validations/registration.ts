@@ -14,7 +14,7 @@ function zodForField(field: FormField): z.ZodTypeAny {
     case "tel":
       return z
         .string()
-        .regex(/^\+[1-9]\d{1,14}$/, "Phone number must start with '+'");
+        .regex(/^\+[1-9]\d{1,14}$/, "Enter a valid phone number");
     case "date":
     case "month":
       return z.string().min(1, "Date is required");
@@ -74,7 +74,7 @@ function optionalFieldSchema(field: FormField): z.ZodTypeAny {
   if (field.type === "tel") {
     return z
       .string()
-      .regex(/^\+[1-9]\d{1,14}$/, "Phone number must start with '+'")
+      .regex(/^\+[1-9]\d{1,14}$/, "Enter a valid phone number")
       .or(z.literal(""))
       .optional();
   }

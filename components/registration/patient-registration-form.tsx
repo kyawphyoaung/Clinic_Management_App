@@ -66,6 +66,7 @@ export function PatientRegistrationForm({
           return {
             success: result.success,
             displayId: result.displayId,
+            patientNumber: result.patientNumber,
             error: result.error,
           };
         }
@@ -74,6 +75,7 @@ export function PatientRegistrationForm({
         return {
           success: result.success,
           displayId: result.displayId,
+          patientNumber: result.patientNumber,
           error: result.error,
         };
       }}

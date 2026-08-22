@@ -9,7 +9,7 @@ import {
 } from "@/lib/data/patients";
 import { getTreatmentsForPatient } from "@/lib/actions/treatments";
 import { getAppointmentsForPatient } from "@/lib/actions/appointments";
-import { listPatientNotes } from "@/lib/actions/patient-notes";
+import { getVisitsForPatient } from "@/lib/data/visits";
 import { getDoctorsForSelect } from "@/lib/actions/users";
 import { requireAuth } from "@/lib/session";
 import { canWriteTreatments, hasPermission } from "@/lib/permissions";
@@ -39,14 +39,14 @@ import { PatientSurveyGenerator } from "@/components/admin/patient-survey-genera
 import { DeletePatientButton } from "@/components/admin/delete-patient-button";
 import { GenerateBookingLinkButton } from "@/components/admin/generate-booking-link-button";
 import { TreatmentCreateModal } from "@/components/admin/treatment-create-modal";
-import { PatientNotesSection } from "@/components/admin/patient-notes-section";
 import { PatientAppointmentsSection } from "@/components/admin/patient-appointments-section";
 import { PatientDepositsSection } from "@/components/admin/patient-deposits-section";
+import { PatientVisitsSection } from "@/components/admin/patient-visits-section";
 import {
   getPatientDepositBalance,
   listPatientDeposits,
+  listRequestedDeposits,
 } from "@/lib/actions/deposits";
-import { formatTaiwanDateTime } from "@/lib/utils/taiwan-time";
 import {
   Table,
   TableBody,
@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function PatientDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const [patient, clinics, agents, treatments, doctors, session, appointments, notes, deposits, depositBalance] =
+  const [patient, clinics, agents, treatments, doctors, session, appointments, deposits, requestedDeposits, depositBalance, visits] =
     await Promise.all([
       getPatientById(id),
       getClinicsForSelect(),
@@ -79,9 +79,10 @@ export default async function PatientDetailPage({ params }: PageProps) {
       getDoctorsForSelect(),
       requireAuth(),
       getAppointmentsForPatient(id),
-      listPatientNotes(id),
       listPatientDeposits(id),
+      listRequestedDeposits(id),
       getPatientDepositBalance(id),
+      getVisitsForPatient(id),
     ]);
 
   if (!patient) {
@@ -138,7 +139,19 @@ export default async function PatientDetailPage({ params }: PageProps) {
         },
         { label: "Age", value: age },
         { label: "Gender", value: patient.gender ?? "—" },
+        { label: "Nationality", value: patient.nationality ?? "—" },
+        {
+          label: "Country of Residence",
+          value: patient.countryOfResidence ?? "—",
+        },
+        { label: "Street Address", value: "", encryptedKey: "streetAddress" },
+        { label: "City", value: "", encryptedKey: "city" },
+        { label: "State / Province", value: "", encryptedKey: "stateProvince" },
+        { label: "Postal Code", value: "", encryptedKey: "postalCode" },
         { label: "Phone Number", value: "", encryptedKey: "mobileNumber" },
+        { label: "WhatsApp", value: "", encryptedKey: "whatsapp" },
+        { label: "LINE ID", value: "", encryptedKey: "lineId" },
+        { label: "Email", value: "", encryptedKey: "email" },
       ],
     },
     {
@@ -296,7 +309,7 @@ export default async function PatientDetailPage({ params }: PageProps) {
         <div className="flex-1">
           <h1 className="text-2xl font-semibold">{patient.fullName}</h1>
           <p className="text-sm text-muted-foreground">
-            Display ID: {patient.displayId}
+            Patient ID: {patient.patientNumber}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -307,14 +320,28 @@ export default async function PatientDetailPage({ params }: PageProps) {
 
       <PatientActionBar
         patientId={patient.id}
-        currentClinicId={patient.clinicId}
         currentStatus={patient.status}
         currentAgentId={patient.currentAgentId}
-        clinics={clinics}
         agents={agents}
         statusOptions={statusOptions}
       />
-      <PatientSurveyGenerator patientId={patient.id} />
+      <details>
+        <summary className="cursor-pointer text-sm font-medium text-muted-foreground">Survey Links</summary>
+        <div className="mt-3">
+          <PatientSurveyGenerator patientId={patient.id} />
+        </div>
+      </details>
+
+      <PatientDepositsSection
+        patientId={patient.id}
+        patientName={patient.fullName}
+        patientCountry={patient.countryOfResidence ?? patient.nationality ?? undefined}
+        deposits={deposits}
+        requestedDeposits={requestedDeposits}
+        treatments={treatments.map((t) => ({ id: t.id, shortId: t.shortId }))}
+        balance={depositBalance}
+        canWrite={hasPermission(session.user.role, "patients:write")}
+      />
 
       <PatientAppointmentsSection
         appointments={appointments.map((a) => ({
@@ -333,11 +360,33 @@ export default async function PatientDetailPage({ params }: PageProps) {
         canWrite={hasPermission(session.user.role, "appointments:write")}
       />
 
+      <PatientVisitsSection
+        patientId={patient.id}
+        visits={visits}
+        clinics={clinics}
+        agents={agents}
+        doctors={doctors}
+        patientTreatments={treatments.map((t) => ({
+          id: t.id,
+          shortId: t.shortId,
+          visitId: t.visitId,
+        }))}
+        canWrite={hasPermission(session.user.role, "patients:write")}
+      />
+
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Treatments</h2>
           {canWrite && (
-            <TreatmentCreateModal patientId={patient.id} doctors={doctors} />
+            <TreatmentCreateModal
+              patientId={patient.id}
+              doctors={doctors}
+              visits={visits.map((v) => ({
+                id: v.id,
+                displayId: v.displayId,
+                visitDate: v.visitDate.toISOString().slice(0, 10),
+              }))}
+            />
           )}
         </div>
         <Card>
@@ -346,6 +395,7 @@ export default async function PatientDetailPage({ params }: PageProps) {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead>Treatment ID</TableHead>
                     <TableHead>Start Date</TableHead>
                     <TableHead>Diagnosis</TableHead>
                     <TableHead>Doctor</TableHead>
@@ -360,7 +410,7 @@ export default async function PatientDetailPage({ params }: PageProps) {
                   {treatments.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        colSpan={8}
+                        colSpan={9}
                         className="py-8 text-center text-muted-foreground"
                       >
                         No treatments yet
@@ -379,6 +429,9 @@ export default async function PatientDetailPage({ params }: PageProps) {
                       const balance = totalCharges - totalPaid;
                       return (
                         <TableRow key={treatment.id}>
+                          <TableCell className="font-mono text-xs">
+                            {treatment.shortId}
+                          </TableCell>
                           <TableCell>
                             {treatment.treatmentDate.toLocaleDateString()}
                           </TableCell>
@@ -448,6 +501,9 @@ export default async function PatientDetailPage({ params }: PageProps) {
                           </p>
                           <TreatmentStatusBadge status={treatment.status} />
                         </div>
+                        <p className="font-mono text-xs text-muted-foreground">
+                          {treatment.shortId}
+                        </p>
                         <p className="text-sm text-muted-foreground">
                           Start: {treatment.treatmentDate.toLocaleDateString()}
                         </p>
@@ -492,45 +548,26 @@ export default async function PatientDetailPage({ params }: PageProps) {
         </Card>
       </div>
 
-      <PatientNotesSection
-        patientId={patient.id}
-        notes={notes}
-        appointments={appointments.map((a) => ({
-          id: a.id,
-          label: `${a.publicId} · ${formatTaiwanDateTime(a.startsAt)}`,
-        }))}
-        treatments={treatments.map((t) => ({
-          id: t.id,
-          label: `${t.treatmentDate.toLocaleDateString()} · ${t.diagnosis ?? "Treatment"}`,
-        }))}
-        canWrite={hasPermission(session.user.role, "patients:write")}
-      />
-
-      <PatientDepositsSection
-        patientId={patient.id}
-        deposits={deposits}
-        balance={depositBalance}
-        canWrite={hasPermission(session.user.role, "patients:write")}
-      />
-
       <PatientDemographics
         patientId={patient.id}
         sections={demographicSections}
         signatureAvailable={Boolean(patient.signatureImageUrl)}
       />
 
-      <PatientConsents consentLogs={patient.consentLogs} />
+      <details>
+        <summary className="cursor-pointer text-sm font-medium text-muted-foreground">Consents</summary>
+        <div className="mt-3">
+          <PatientConsents consentLogs={patient.consentLogs} />
+        </div>
+      </details>
 
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold">Survey Results</h2>
-        {patient.surveys.length === 0 ? (
-          <Card>
-            <CardContent className="py-10 text-center text-muted-foreground">
-              No survey responses yet
-            </CardContent>
-          </Card>
-        ) : (
-          patient.surveys.map((survey) => {
+      <details>
+        <summary className="cursor-pointer text-sm font-medium text-muted-foreground">Survey Results</summary>
+        <div className="mt-3 space-y-4">
+          {patient.surveys.length === 0 ? (
+            <Card><CardContent className="py-10 text-center text-muted-foreground">No survey responses yet</CardContent></Card>
+          ) : (
+            patient.surveys.map((survey) => {
             const questionnaire = QUESTIONNAIRES[survey.formType];
             const rawAnswers = survey.rawAnswers as Record<string, unknown>;
             const scoreResult = calculateScore(survey.formType, rawAnswers);
@@ -585,44 +622,27 @@ export default async function PatientDetailPage({ params }: PageProps) {
                 </CardContent>
               </Card>
             );
-          })
-        )}
-      </div>
+            })
+          )}
+        </div>
+      </details>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Registration Info</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Registered</span>
-            <span>{patient.createdAt.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Last Updated</span>
-            <span>{patient.updatedAt.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Total Surveys</span>
-            <span>{patient.surveys.length}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Consents</span>
-            <span>{patient.consentLogs.length}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Current Status</span>
-            <StatusBadge
-              status={patient.status}
-              label={getPatientStatusLabel(patient.status)}
-            />
-          </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Location</span>
-            <span>{latestPaperConsent?.physicalLocation ?? "—"}</span>
-          </div>
-        </CardContent>
-      </Card>
+      <details>
+        <summary className="cursor-pointer text-sm font-medium text-muted-foreground">Registration Info</summary>
+        <Card className="mt-3">
+          <CardHeader>
+            <CardTitle className="text-base">Registration Info</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            <div className="flex justify-between"><span className="text-muted-foreground">Registered</span><span>{patient.createdAt.toLocaleString()}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Last Updated</span><span>{patient.updatedAt.toLocaleString()}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Total Surveys</span><span>{patient.surveys.length}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Consents</span><span>{patient.consentLogs.length}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Current Status</span><StatusBadge status={patient.status} label={getPatientStatusLabel(patient.status)} /></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Location</span><span>{latestPaperConsent?.physicalLocation ?? "—"}</span></div>
+          </CardContent>
+        </Card>
+      </details>
 
       {canDelete && <DeletePatientButton patientId={patient.id} />}
     </div>

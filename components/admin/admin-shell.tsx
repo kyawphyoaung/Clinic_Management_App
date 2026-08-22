@@ -42,8 +42,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen overflow-x-hidden">
-      {/* Desktop sidebar */}
-      <div className="sticky top-0 hidden h-screen shrink-0 self-start md:block">
+      {/* Desktop sidebar: fixed so it never scrolls with page content */}
+      <div className="hidden w-64 shrink-0 md:block" aria-hidden />
+      <div className="fixed inset-y-0 left-0 z-30 hidden w-64 md:block">
         <AdminSidebar />
       </div>
 

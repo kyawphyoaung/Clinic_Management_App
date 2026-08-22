@@ -46,7 +46,13 @@ type ConfigDrivenFormProps = {
   readOnlyOverrides?: Record<string, boolean>;
   onSubmit: (
     payload: RegistrationSubmitPayload
-  ) => Promise<{ success: boolean; displayId?: string; agentId?: string; error?: string }>;
+  ) => Promise<{
+    success: boolean;
+    displayId?: string;
+    patientNumber?: string;
+    agentId?: string;
+    error?: string;
+  }>;
 };
 
 export function ConfigDrivenForm({
@@ -233,11 +239,16 @@ export function ConfigDrivenForm({
     setIsSubmitting(false);
 
     if (result.success) {
-      setSuccessMessage(
-        result.displayId
-          ? `Registration successful. Your Display ID is ${result.displayId}.`
-          : "Application submitted successfully."
-      );
+      if (formType === "patient") {
+        const patientId = result.patientNumber ?? result.displayId;
+        setSuccessMessage(
+          patientId
+            ? `Registration successful. Your Patient ID is ${patientId}.`
+            : "Registration successful."
+        );
+      } else {
+        setSuccessMessage("Application submitted successfully.");
+      }
       return;
     }
 

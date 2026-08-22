@@ -28,10 +28,12 @@ export type AggregateTreatmentPayment = {
 
 export type TreatmentPaymentAvgAggregateOutputType = {
   amount: runtime.Decimal | null
+  depositAppliedAmount: runtime.Decimal | null
 }
 
 export type TreatmentPaymentSumAggregateOutputType = {
   amount: runtime.Decimal | null
+  depositAppliedAmount: runtime.Decimal | null
 }
 
 export type TreatmentPaymentMinAggregateOutputType = {
@@ -42,6 +44,7 @@ export type TreatmentPaymentMinAggregateOutputType = {
   paymentDate: Date | null
   reference: string | null
   notes: string | null
+  depositAppliedAmount: runtime.Decimal | null
   recordedById: string | null
   createdAt: Date | null
 }
@@ -54,6 +57,7 @@ export type TreatmentPaymentMaxAggregateOutputType = {
   paymentDate: Date | null
   reference: string | null
   notes: string | null
+  depositAppliedAmount: runtime.Decimal | null
   recordedById: string | null
   createdAt: Date | null
 }
@@ -66,6 +70,7 @@ export type TreatmentPaymentCountAggregateOutputType = {
   paymentDate: number
   reference: number
   notes: number
+  depositAppliedAmount: number
   recordedById: number
   createdAt: number
   _all: number
@@ -74,10 +79,12 @@ export type TreatmentPaymentCountAggregateOutputType = {
 
 export type TreatmentPaymentAvgAggregateInputType = {
   amount?: true
+  depositAppliedAmount?: true
 }
 
 export type TreatmentPaymentSumAggregateInputType = {
   amount?: true
+  depositAppliedAmount?: true
 }
 
 export type TreatmentPaymentMinAggregateInputType = {
@@ -88,6 +95,7 @@ export type TreatmentPaymentMinAggregateInputType = {
   paymentDate?: true
   reference?: true
   notes?: true
+  depositAppliedAmount?: true
   recordedById?: true
   createdAt?: true
 }
@@ -100,6 +108,7 @@ export type TreatmentPaymentMaxAggregateInputType = {
   paymentDate?: true
   reference?: true
   notes?: true
+  depositAppliedAmount?: true
   recordedById?: true
   createdAt?: true
 }
@@ -112,6 +121,7 @@ export type TreatmentPaymentCountAggregateInputType = {
   paymentDate?: true
   reference?: true
   notes?: true
+  depositAppliedAmount?: true
   recordedById?: true
   createdAt?: true
   _all?: true
@@ -211,6 +221,7 @@ export type TreatmentPaymentGroupByOutputType = {
   paymentDate: Date
   reference: string | null
   notes: string | null
+  depositAppliedAmount: runtime.Decimal
   recordedById: string | null
   createdAt: Date
   _count: TreatmentPaymentCountAggregateOutputType | null
@@ -246,6 +257,7 @@ export type TreatmentPaymentWhereInput = {
   paymentDate?: Prisma.DateTimeFilter<"TreatmentPayment"> | Date | string
   reference?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
   notes?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
+  depositAppliedAmount?: Prisma.DecimalFilter<"TreatmentPayment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TreatmentPayment"> | Date | string
   treatment?: Prisma.XOR<Prisma.TreatmentScalarRelationFilter, Prisma.TreatmentWhereInput>
@@ -261,6 +273,7 @@ export type TreatmentPaymentOrderByWithRelationInput = {
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  depositAppliedAmount?: Prisma.SortOrder
   recordedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   treatment?: Prisma.TreatmentOrderByWithRelationInput
@@ -279,6 +292,7 @@ export type TreatmentPaymentWhereUniqueInput = Prisma.AtLeast<{
   paymentDate?: Prisma.DateTimeFilter<"TreatmentPayment"> | Date | string
   reference?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
   notes?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
+  depositAppliedAmount?: Prisma.DecimalFilter<"TreatmentPayment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TreatmentPayment"> | Date | string
   treatment?: Prisma.XOR<Prisma.TreatmentScalarRelationFilter, Prisma.TreatmentWhereInput>
@@ -294,6 +308,7 @@ export type TreatmentPaymentOrderByWithAggregationInput = {
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  depositAppliedAmount?: Prisma.SortOrder
   recordedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.TreatmentPaymentCountOrderByAggregateInput
@@ -314,6 +329,7 @@ export type TreatmentPaymentScalarWhereWithAggregatesInput = {
   paymentDate?: Prisma.DateTimeWithAggregatesFilter<"TreatmentPayment"> | Date | string
   reference?: Prisma.StringNullableWithAggregatesFilter<"TreatmentPayment"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"TreatmentPayment"> | string | null
+  depositAppliedAmount?: Prisma.DecimalWithAggregatesFilter<"TreatmentPayment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.StringNullableWithAggregatesFilter<"TreatmentPayment"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TreatmentPayment"> | Date | string
 }
@@ -325,6 +341,7 @@ export type TreatmentPaymentCreateInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   treatment: Prisma.TreatmentCreateNestedOneWithoutPaymentsInput
   recordedBy?: Prisma.UserCreateNestedOneWithoutPaymentsRecordedInput
@@ -339,6 +356,7 @@ export type TreatmentPaymentUncheckedCreateInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: string | null
   createdAt?: Date | string
   allocations?: Prisma.PaymentAllocationUncheckedCreateNestedManyWithoutPaymentInput
@@ -351,6 +369,7 @@ export type TreatmentPaymentUpdateInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   treatment?: Prisma.TreatmentUpdateOneRequiredWithoutPaymentsNestedInput
   recordedBy?: Prisma.UserUpdateOneWithoutPaymentsRecordedNestedInput
@@ -365,6 +384,7 @@ export type TreatmentPaymentUncheckedUpdateInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.PaymentAllocationUncheckedUpdateManyWithoutPaymentNestedInput
@@ -378,6 +398,7 @@ export type TreatmentPaymentCreateManyInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: string | null
   createdAt?: Date | string
 }
@@ -389,6 +410,7 @@ export type TreatmentPaymentUpdateManyMutationInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -400,6 +422,7 @@ export type TreatmentPaymentUncheckedUpdateManyInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -422,12 +445,14 @@ export type TreatmentPaymentCountOrderByAggregateInput = {
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  depositAppliedAmount?: Prisma.SortOrder
   recordedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type TreatmentPaymentAvgOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  depositAppliedAmount?: Prisma.SortOrder
 }
 
 export type TreatmentPaymentMaxOrderByAggregateInput = {
@@ -438,6 +463,7 @@ export type TreatmentPaymentMaxOrderByAggregateInput = {
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  depositAppliedAmount?: Prisma.SortOrder
   recordedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -450,12 +476,14 @@ export type TreatmentPaymentMinOrderByAggregateInput = {
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  depositAppliedAmount?: Prisma.SortOrder
   recordedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type TreatmentPaymentSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  depositAppliedAmount?: Prisma.SortOrder
 }
 
 export type TreatmentPaymentScalarRelationFilter = {
@@ -568,6 +596,7 @@ export type TreatmentPaymentCreateWithoutRecordedByInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   treatment: Prisma.TreatmentCreateNestedOneWithoutPaymentsInput
   allocations?: Prisma.PaymentAllocationCreateNestedManyWithoutPaymentInput
@@ -581,6 +610,7 @@ export type TreatmentPaymentUncheckedCreateWithoutRecordedByInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   allocations?: Prisma.PaymentAllocationUncheckedCreateNestedManyWithoutPaymentInput
 }
@@ -622,6 +652,7 @@ export type TreatmentPaymentScalarWhereInput = {
   paymentDate?: Prisma.DateTimeFilter<"TreatmentPayment"> | Date | string
   reference?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
   notes?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
+  depositAppliedAmount?: Prisma.DecimalFilter<"TreatmentPayment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.StringNullableFilter<"TreatmentPayment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TreatmentPayment"> | Date | string
 }
@@ -633,6 +664,7 @@ export type TreatmentPaymentCreateWithoutTreatmentInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   recordedBy?: Prisma.UserCreateNestedOneWithoutPaymentsRecordedInput
   allocations?: Prisma.PaymentAllocationCreateNestedManyWithoutPaymentInput
@@ -645,6 +677,7 @@ export type TreatmentPaymentUncheckedCreateWithoutTreatmentInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: string | null
   createdAt?: Date | string
   allocations?: Prisma.PaymentAllocationUncheckedCreateNestedManyWithoutPaymentInput
@@ -683,6 +716,7 @@ export type TreatmentPaymentCreateWithoutAllocationsInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
   treatment: Prisma.TreatmentCreateNestedOneWithoutPaymentsInput
   recordedBy?: Prisma.UserCreateNestedOneWithoutPaymentsRecordedInput
@@ -696,6 +730,7 @@ export type TreatmentPaymentUncheckedCreateWithoutAllocationsInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: string | null
   createdAt?: Date | string
 }
@@ -723,6 +758,7 @@ export type TreatmentPaymentUpdateWithoutAllocationsInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   treatment?: Prisma.TreatmentUpdateOneRequiredWithoutPaymentsNestedInput
   recordedBy?: Prisma.UserUpdateOneWithoutPaymentsRecordedNestedInput
@@ -736,6 +772,7 @@ export type TreatmentPaymentUncheckedUpdateWithoutAllocationsInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -748,6 +785,7 @@ export type TreatmentPaymentCreateManyRecordedByInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
 }
 
@@ -758,6 +796,7 @@ export type TreatmentPaymentUpdateWithoutRecordedByInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   treatment?: Prisma.TreatmentUpdateOneRequiredWithoutPaymentsNestedInput
   allocations?: Prisma.PaymentAllocationUpdateManyWithoutPaymentNestedInput
@@ -771,6 +810,7 @@ export type TreatmentPaymentUncheckedUpdateWithoutRecordedByInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.PaymentAllocationUncheckedUpdateManyWithoutPaymentNestedInput
 }
@@ -783,6 +823,7 @@ export type TreatmentPaymentUncheckedUpdateManyWithoutRecordedByInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -793,6 +834,7 @@ export type TreatmentPaymentCreateManyTreatmentInput = {
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
+  depositAppliedAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: string | null
   createdAt?: Date | string
 }
@@ -804,6 +846,7 @@ export type TreatmentPaymentUpdateWithoutTreatmentInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recordedBy?: Prisma.UserUpdateOneWithoutPaymentsRecordedNestedInput
   allocations?: Prisma.PaymentAllocationUpdateManyWithoutPaymentNestedInput
@@ -816,6 +859,7 @@ export type TreatmentPaymentUncheckedUpdateWithoutTreatmentInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.PaymentAllocationUncheckedUpdateManyWithoutPaymentNestedInput
@@ -828,6 +872,7 @@ export type TreatmentPaymentUncheckedUpdateManyWithoutTreatmentInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAppliedAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   recordedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -871,6 +916,7 @@ export type TreatmentPaymentSelect<ExtArgs extends runtime.Types.Extensions.Inte
   paymentDate?: boolean
   reference?: boolean
   notes?: boolean
+  depositAppliedAmount?: boolean
   recordedById?: boolean
   createdAt?: boolean
   treatment?: boolean | Prisma.TreatmentDefaultArgs<ExtArgs>
@@ -887,6 +933,7 @@ export type TreatmentPaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   paymentDate?: boolean
   reference?: boolean
   notes?: boolean
+  depositAppliedAmount?: boolean
   recordedById?: boolean
   createdAt?: boolean
   treatment?: boolean | Prisma.TreatmentDefaultArgs<ExtArgs>
@@ -901,6 +948,7 @@ export type TreatmentPaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   paymentDate?: boolean
   reference?: boolean
   notes?: boolean
+  depositAppliedAmount?: boolean
   recordedById?: boolean
   createdAt?: boolean
   treatment?: boolean | Prisma.TreatmentDefaultArgs<ExtArgs>
@@ -915,11 +963,12 @@ export type TreatmentPaymentSelectScalar = {
   paymentDate?: boolean
   reference?: boolean
   notes?: boolean
+  depositAppliedAmount?: boolean
   recordedById?: boolean
   createdAt?: boolean
 }
 
-export type TreatmentPaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "treatmentId" | "amount" | "method" | "paymentDate" | "reference" | "notes" | "recordedById" | "createdAt", ExtArgs["result"]["treatmentPayment"]>
+export type TreatmentPaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "treatmentId" | "amount" | "method" | "paymentDate" | "reference" | "notes" | "depositAppliedAmount" | "recordedById" | "createdAt", ExtArgs["result"]["treatmentPayment"]>
 export type TreatmentPaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   treatment?: boolean | Prisma.TreatmentDefaultArgs<ExtArgs>
   recordedBy?: boolean | Prisma.TreatmentPayment$recordedByArgs<ExtArgs>
@@ -950,6 +999,7 @@ export type $TreatmentPaymentPayload<ExtArgs extends runtime.Types.Extensions.In
     paymentDate: Date
     reference: string | null
     notes: string | null
+    depositAppliedAmount: runtime.Decimal
     recordedById: string | null
     createdAt: Date
   }, ExtArgs["result"]["treatmentPayment"]>
@@ -1385,6 +1435,7 @@ export interface TreatmentPaymentFieldRefs {
   readonly paymentDate: Prisma.FieldRef<"TreatmentPayment", 'DateTime'>
   readonly reference: Prisma.FieldRef<"TreatmentPayment", 'String'>
   readonly notes: Prisma.FieldRef<"TreatmentPayment", 'String'>
+  readonly depositAppliedAmount: Prisma.FieldRef<"TreatmentPayment", 'Decimal'>
   readonly recordedById: Prisma.FieldRef<"TreatmentPayment", 'String'>
   readonly createdAt: Prisma.FieldRef<"TreatmentPayment", 'DateTime'>
 }

@@ -29,8 +29,10 @@ async function queryPatients(filters?: PatientListFilters) {
     where.OR = [
       { fullName: { contains: filters.search, mode: "insensitive" } },
       { displayId: { contains: filters.search, mode: "insensitive" } },
+      { patientNumber: { contains: filters.search, mode: "insensitive" } },
       { mobileNumber: { contains: filters.search, mode: "insensitive" } },
       { preferredName: { contains: filters.search, mode: "insensitive" } },
+      { visits: { some: { displayId: { contains: filters.search, mode: "insensitive" } } } },
     ];
   }
 
@@ -66,6 +68,11 @@ async function queryPatients(filters?: PatientListFilters) {
       include: {
         currentAgent: {
           select: { id: true, fullName: true, partnerId: true },
+        },
+        visits: {
+          orderBy: { visitDate: "desc" },
+          take: 1,
+          select: { displayId: true },
         },
       },
       orderBy,

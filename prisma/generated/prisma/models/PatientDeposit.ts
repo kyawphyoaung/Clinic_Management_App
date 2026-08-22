@@ -28,16 +28,24 @@ export type AggregatePatientDeposit = {
 
 export type PatientDepositAvgAggregateOutputType = {
   amount: runtime.Decimal | null
+  exchangeRate: runtime.Decimal | null
+  amountTwd: runtime.Decimal | null
 }
 
 export type PatientDepositSumAggregateOutputType = {
   amount: runtime.Decimal | null
+  exchangeRate: runtime.Decimal | null
+  amountTwd: runtime.Decimal | null
 }
 
 export type PatientDepositMinAggregateOutputType = {
   id: string | null
   patientId: string | null
+  receiverId: string | null
   amount: runtime.Decimal | null
+  currency: string | null
+  exchangeRate: runtime.Decimal | null
+  amountTwd: runtime.Decimal | null
   method: $Enums.PaymentMethod | null
   paymentDate: Date | null
   reference: string | null
@@ -49,7 +57,11 @@ export type PatientDepositMinAggregateOutputType = {
 export type PatientDepositMaxAggregateOutputType = {
   id: string | null
   patientId: string | null
+  receiverId: string | null
   amount: runtime.Decimal | null
+  currency: string | null
+  exchangeRate: runtime.Decimal | null
+  amountTwd: runtime.Decimal | null
   method: $Enums.PaymentMethod | null
   paymentDate: Date | null
   reference: string | null
@@ -61,7 +73,11 @@ export type PatientDepositMaxAggregateOutputType = {
 export type PatientDepositCountAggregateOutputType = {
   id: number
   patientId: number
+  receiverId: number
   amount: number
+  currency: number
+  exchangeRate: number
+  amountTwd: number
   method: number
   paymentDate: number
   reference: number
@@ -74,16 +90,24 @@ export type PatientDepositCountAggregateOutputType = {
 
 export type PatientDepositAvgAggregateInputType = {
   amount?: true
+  exchangeRate?: true
+  amountTwd?: true
 }
 
 export type PatientDepositSumAggregateInputType = {
   amount?: true
+  exchangeRate?: true
+  amountTwd?: true
 }
 
 export type PatientDepositMinAggregateInputType = {
   id?: true
   patientId?: true
+  receiverId?: true
   amount?: true
+  currency?: true
+  exchangeRate?: true
+  amountTwd?: true
   method?: true
   paymentDate?: true
   reference?: true
@@ -95,7 +119,11 @@ export type PatientDepositMinAggregateInputType = {
 export type PatientDepositMaxAggregateInputType = {
   id?: true
   patientId?: true
+  receiverId?: true
   amount?: true
+  currency?: true
+  exchangeRate?: true
+  amountTwd?: true
   method?: true
   paymentDate?: true
   reference?: true
@@ -107,7 +135,11 @@ export type PatientDepositMaxAggregateInputType = {
 export type PatientDepositCountAggregateInputType = {
   id?: true
   patientId?: true
+  receiverId?: true
   amount?: true
+  currency?: true
+  exchangeRate?: true
+  amountTwd?: true
   method?: true
   paymentDate?: true
   reference?: true
@@ -206,7 +238,11 @@ export type PatientDepositGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type PatientDepositGroupByOutputType = {
   id: string
   patientId: string
+  receiverId: string | null
   amount: runtime.Decimal
+  currency: string
+  exchangeRate: runtime.Decimal
+  amountTwd: runtime.Decimal
   method: $Enums.PaymentMethod
   paymentDate: Date
   reference: string | null
@@ -241,7 +277,11 @@ export type PatientDepositWhereInput = {
   NOT?: Prisma.PatientDepositWhereInput | Prisma.PatientDepositWhereInput[]
   id?: Prisma.StringFilter<"PatientDeposit"> | string
   patientId?: Prisma.StringFilter<"PatientDeposit"> | string
+  receiverId?: Prisma.StringNullableFilter<"PatientDeposit"> | string | null
   amount?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFilter<"PatientDeposit"> | string
+  exchangeRate?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFilter<"PatientDeposit"> | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFilter<"PatientDeposit"> | Date | string
   reference?: Prisma.StringNullableFilter<"PatientDeposit"> | string | null
@@ -249,13 +289,18 @@ export type PatientDepositWhereInput = {
   createdById?: Prisma.StringNullableFilter<"PatientDeposit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PatientDeposit"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
+  receiver?: Prisma.XOR<Prisma.DepositReceiverNullableScalarRelationFilter, Prisma.DepositReceiverWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type PatientDepositOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
+  amountTwd?: Prisma.SortOrder
   method?: Prisma.SortOrder
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -263,6 +308,7 @@ export type PatientDepositOrderByWithRelationInput = {
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   patient?: Prisma.PatientOrderByWithRelationInput
+  receiver?: Prisma.DepositReceiverOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -272,7 +318,11 @@ export type PatientDepositWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PatientDepositWhereInput[]
   NOT?: Prisma.PatientDepositWhereInput | Prisma.PatientDepositWhereInput[]
   patientId?: Prisma.StringFilter<"PatientDeposit"> | string
+  receiverId?: Prisma.StringNullableFilter<"PatientDeposit"> | string | null
   amount?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFilter<"PatientDeposit"> | string
+  exchangeRate?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFilter<"PatientDeposit"> | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFilter<"PatientDeposit"> | Date | string
   reference?: Prisma.StringNullableFilter<"PatientDeposit"> | string | null
@@ -280,13 +330,18 @@ export type PatientDepositWhereUniqueInput = Prisma.AtLeast<{
   createdById?: Prisma.StringNullableFilter<"PatientDeposit"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PatientDeposit"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
+  receiver?: Prisma.XOR<Prisma.DepositReceiverNullableScalarRelationFilter, Prisma.DepositReceiverWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type PatientDepositOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
+  amountTwd?: Prisma.SortOrder
   method?: Prisma.SortOrder
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -306,7 +361,11 @@ export type PatientDepositScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PatientDepositScalarWhereWithAggregatesInput | Prisma.PatientDepositScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PatientDeposit"> | string
   patientId?: Prisma.StringWithAggregatesFilter<"PatientDeposit"> | string
+  receiverId?: Prisma.StringNullableWithAggregatesFilter<"PatientDeposit"> | string | null
   amount?: Prisma.DecimalWithAggregatesFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringWithAggregatesFilter<"PatientDeposit"> | string
+  exchangeRate?: Prisma.DecimalWithAggregatesFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalWithAggregatesFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodWithAggregatesFilter<"PatientDeposit"> | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeWithAggregatesFilter<"PatientDeposit"> | Date | string
   reference?: Prisma.StringNullableWithAggregatesFilter<"PatientDeposit"> | string | null
@@ -318,19 +377,27 @@ export type PatientDepositScalarWhereWithAggregatesInput = {
 export type PatientDepositCreateInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
   createdAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutDepositsInput
+  receiver?: Prisma.DepositReceiverCreateNestedOneWithoutDepositsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutDepositsRecordedInput
 }
 
 export type PatientDepositUncheckedCreateInput = {
   id?: string
   patientId: string
+  receiverId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
@@ -342,19 +409,27 @@ export type PatientDepositUncheckedCreateInput = {
 export type PatientDepositUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutDepositsNestedInput
+  receiver?: Prisma.DepositReceiverUpdateOneWithoutDepositsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutDepositsRecordedNestedInput
 }
 
 export type PatientDepositUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -366,7 +441,11 @@ export type PatientDepositUncheckedUpdateInput = {
 export type PatientDepositCreateManyInput = {
   id?: string
   patientId: string
+  receiverId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
@@ -378,6 +457,9 @@ export type PatientDepositCreateManyInput = {
 export type PatientDepositUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -388,7 +470,11 @@ export type PatientDepositUpdateManyMutationInput = {
 export type PatientDepositUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -410,7 +496,11 @@ export type PatientDepositOrderByRelationAggregateInput = {
 export type PatientDepositCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
+  amountTwd?: Prisma.SortOrder
   method?: Prisma.SortOrder
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrder
@@ -421,12 +511,18 @@ export type PatientDepositCountOrderByAggregateInput = {
 
 export type PatientDepositAvgOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
+  amountTwd?: Prisma.SortOrder
 }
 
 export type PatientDepositMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
+  amountTwd?: Prisma.SortOrder
   method?: Prisma.SortOrder
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrder
@@ -438,7 +534,11 @@ export type PatientDepositMaxOrderByAggregateInput = {
 export type PatientDepositMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  receiverId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
+  currency?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
+  amountTwd?: Prisma.SortOrder
   method?: Prisma.SortOrder
   paymentDate?: Prisma.SortOrder
   reference?: Prisma.SortOrder
@@ -449,6 +549,8 @@ export type PatientDepositMinOrderByAggregateInput = {
 
 export type PatientDepositSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  exchangeRate?: Prisma.SortOrder
+  amountTwd?: Prisma.SortOrder
 }
 
 export type PatientDepositCreateNestedManyWithoutPatientInput = {
@@ -535,20 +637,70 @@ export type PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput = {
   deleteMany?: Prisma.PatientDepositScalarWhereInput | Prisma.PatientDepositScalarWhereInput[]
 }
 
+export type PatientDepositCreateNestedManyWithoutReceiverInput = {
+  create?: Prisma.XOR<Prisma.PatientDepositCreateWithoutReceiverInput, Prisma.PatientDepositUncheckedCreateWithoutReceiverInput> | Prisma.PatientDepositCreateWithoutReceiverInput[] | Prisma.PatientDepositUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.PatientDepositCreateOrConnectWithoutReceiverInput | Prisma.PatientDepositCreateOrConnectWithoutReceiverInput[]
+  createMany?: Prisma.PatientDepositCreateManyReceiverInputEnvelope
+  connect?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+}
+
+export type PatientDepositUncheckedCreateNestedManyWithoutReceiverInput = {
+  create?: Prisma.XOR<Prisma.PatientDepositCreateWithoutReceiverInput, Prisma.PatientDepositUncheckedCreateWithoutReceiverInput> | Prisma.PatientDepositCreateWithoutReceiverInput[] | Prisma.PatientDepositUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.PatientDepositCreateOrConnectWithoutReceiverInput | Prisma.PatientDepositCreateOrConnectWithoutReceiverInput[]
+  createMany?: Prisma.PatientDepositCreateManyReceiverInputEnvelope
+  connect?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+}
+
+export type PatientDepositUpdateManyWithoutReceiverNestedInput = {
+  create?: Prisma.XOR<Prisma.PatientDepositCreateWithoutReceiverInput, Prisma.PatientDepositUncheckedCreateWithoutReceiverInput> | Prisma.PatientDepositCreateWithoutReceiverInput[] | Prisma.PatientDepositUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.PatientDepositCreateOrConnectWithoutReceiverInput | Prisma.PatientDepositCreateOrConnectWithoutReceiverInput[]
+  upsert?: Prisma.PatientDepositUpsertWithWhereUniqueWithoutReceiverInput | Prisma.PatientDepositUpsertWithWhereUniqueWithoutReceiverInput[]
+  createMany?: Prisma.PatientDepositCreateManyReceiverInputEnvelope
+  set?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+  disconnect?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+  delete?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+  connect?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+  update?: Prisma.PatientDepositUpdateWithWhereUniqueWithoutReceiverInput | Prisma.PatientDepositUpdateWithWhereUniqueWithoutReceiverInput[]
+  updateMany?: Prisma.PatientDepositUpdateManyWithWhereWithoutReceiverInput | Prisma.PatientDepositUpdateManyWithWhereWithoutReceiverInput[]
+  deleteMany?: Prisma.PatientDepositScalarWhereInput | Prisma.PatientDepositScalarWhereInput[]
+}
+
+export type PatientDepositUncheckedUpdateManyWithoutReceiverNestedInput = {
+  create?: Prisma.XOR<Prisma.PatientDepositCreateWithoutReceiverInput, Prisma.PatientDepositUncheckedCreateWithoutReceiverInput> | Prisma.PatientDepositCreateWithoutReceiverInput[] | Prisma.PatientDepositUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.PatientDepositCreateOrConnectWithoutReceiverInput | Prisma.PatientDepositCreateOrConnectWithoutReceiverInput[]
+  upsert?: Prisma.PatientDepositUpsertWithWhereUniqueWithoutReceiverInput | Prisma.PatientDepositUpsertWithWhereUniqueWithoutReceiverInput[]
+  createMany?: Prisma.PatientDepositCreateManyReceiverInputEnvelope
+  set?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+  disconnect?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+  delete?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+  connect?: Prisma.PatientDepositWhereUniqueInput | Prisma.PatientDepositWhereUniqueInput[]
+  update?: Prisma.PatientDepositUpdateWithWhereUniqueWithoutReceiverInput | Prisma.PatientDepositUpdateWithWhereUniqueWithoutReceiverInput[]
+  updateMany?: Prisma.PatientDepositUpdateManyWithWhereWithoutReceiverInput | Prisma.PatientDepositUpdateManyWithWhereWithoutReceiverInput[]
+  deleteMany?: Prisma.PatientDepositScalarWhereInput | Prisma.PatientDepositScalarWhereInput[]
+}
+
 export type PatientDepositCreateWithoutPatientInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
   createdAt?: Date | string
+  receiver?: Prisma.DepositReceiverCreateNestedOneWithoutDepositsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutDepositsRecordedInput
 }
 
 export type PatientDepositUncheckedCreateWithoutPatientInput = {
   id?: string
+  receiverId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
@@ -589,7 +741,11 @@ export type PatientDepositScalarWhereInput = {
   NOT?: Prisma.PatientDepositScalarWhereInput | Prisma.PatientDepositScalarWhereInput[]
   id?: Prisma.StringFilter<"PatientDeposit"> | string
   patientId?: Prisma.StringFilter<"PatientDeposit"> | string
+  receiverId?: Prisma.StringNullableFilter<"PatientDeposit"> | string | null
   amount?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFilter<"PatientDeposit"> | string
+  exchangeRate?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFilter<"PatientDeposit"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFilter<"PatientDeposit"> | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFilter<"PatientDeposit"> | Date | string
   reference?: Prisma.StringNullableFilter<"PatientDeposit"> | string | null
@@ -601,18 +757,26 @@ export type PatientDepositScalarWhereInput = {
 export type PatientDepositCreateWithoutCreatedByInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
   notes?: string | null
   createdAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutDepositsInput
+  receiver?: Prisma.DepositReceiverCreateNestedOneWithoutDepositsInput
 }
 
 export type PatientDepositUncheckedCreateWithoutCreatedByInput = {
   id?: string
   patientId: string
+  receiverId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
@@ -646,9 +810,69 @@ export type PatientDepositUpdateManyWithWhereWithoutCreatedByInput = {
   data: Prisma.XOR<Prisma.PatientDepositUpdateManyMutationInput, Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByInput>
 }
 
-export type PatientDepositCreateManyPatientInput = {
+export type PatientDepositCreateWithoutReceiverInput = {
   id?: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
+  method: $Enums.PaymentMethod
+  paymentDate: Date | string
+  reference?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  patient: Prisma.PatientCreateNestedOneWithoutDepositsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutDepositsRecordedInput
+}
+
+export type PatientDepositUncheckedCreateWithoutReceiverInput = {
+  id?: string
+  patientId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
+  method: $Enums.PaymentMethod
+  paymentDate: Date | string
+  reference?: string | null
+  notes?: string | null
+  createdById?: string | null
+  createdAt?: Date | string
+}
+
+export type PatientDepositCreateOrConnectWithoutReceiverInput = {
+  where: Prisma.PatientDepositWhereUniqueInput
+  create: Prisma.XOR<Prisma.PatientDepositCreateWithoutReceiverInput, Prisma.PatientDepositUncheckedCreateWithoutReceiverInput>
+}
+
+export type PatientDepositCreateManyReceiverInputEnvelope = {
+  data: Prisma.PatientDepositCreateManyReceiverInput | Prisma.PatientDepositCreateManyReceiverInput[]
+  skipDuplicates?: boolean
+}
+
+export type PatientDepositUpsertWithWhereUniqueWithoutReceiverInput = {
+  where: Prisma.PatientDepositWhereUniqueInput
+  update: Prisma.XOR<Prisma.PatientDepositUpdateWithoutReceiverInput, Prisma.PatientDepositUncheckedUpdateWithoutReceiverInput>
+  create: Prisma.XOR<Prisma.PatientDepositCreateWithoutReceiverInput, Prisma.PatientDepositUncheckedCreateWithoutReceiverInput>
+}
+
+export type PatientDepositUpdateWithWhereUniqueWithoutReceiverInput = {
+  where: Prisma.PatientDepositWhereUniqueInput
+  data: Prisma.XOR<Prisma.PatientDepositUpdateWithoutReceiverInput, Prisma.PatientDepositUncheckedUpdateWithoutReceiverInput>
+}
+
+export type PatientDepositUpdateManyWithWhereWithoutReceiverInput = {
+  where: Prisma.PatientDepositScalarWhereInput
+  data: Prisma.XOR<Prisma.PatientDepositUpdateManyMutationInput, Prisma.PatientDepositUncheckedUpdateManyWithoutReceiverInput>
+}
+
+export type PatientDepositCreateManyPatientInput = {
+  id?: string
+  receiverId?: string | null
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
@@ -660,17 +884,25 @@ export type PatientDepositCreateManyPatientInput = {
 export type PatientDepositUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  receiver?: Prisma.DepositReceiverUpdateOneWithoutDepositsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutDepositsRecordedNestedInput
 }
 
 export type PatientDepositUncheckedUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -681,7 +913,11 @@ export type PatientDepositUncheckedUpdateWithoutPatientInput = {
 
 export type PatientDepositUncheckedUpdateManyWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -693,7 +929,11 @@ export type PatientDepositUncheckedUpdateManyWithoutPatientInput = {
 export type PatientDepositCreateManyCreatedByInput = {
   id?: string
   patientId: string
+  receiverId?: string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
   method: $Enums.PaymentMethod
   paymentDate: Date | string
   reference?: string | null
@@ -704,18 +944,26 @@ export type PatientDepositCreateManyCreatedByInput = {
 export type PatientDepositUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutDepositsNestedInput
+  receiver?: Prisma.DepositReceiverUpdateOneWithoutDepositsNestedInput
 }
 
 export type PatientDepositUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -726,11 +974,75 @@ export type PatientDepositUncheckedUpdateWithoutCreatedByInput = {
 export type PatientDepositUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PatientDepositCreateManyReceiverInput = {
+  id?: string
+  patientId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  exchangeRate?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd: runtime.Decimal | runtime.DecimalJsLike | number | string
+  method: $Enums.PaymentMethod
+  paymentDate: Date | string
+  reference?: string | null
+  notes?: string | null
+  createdById?: string | null
+  createdAt?: Date | string
+}
+
+export type PatientDepositUpdateWithoutReceiverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patient?: Prisma.PatientUpdateOneRequiredWithoutDepositsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutDepositsRecordedNestedInput
+}
+
+export type PatientDepositUncheckedUpdateWithoutReceiverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PatientDepositUncheckedUpdateManyWithoutReceiverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  exchangeRate?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  amountTwd?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -739,7 +1051,11 @@ export type PatientDepositUncheckedUpdateManyWithoutCreatedByInput = {
 export type PatientDepositSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  receiverId?: boolean
   amount?: boolean
+  currency?: boolean
+  exchangeRate?: boolean
+  amountTwd?: boolean
   method?: boolean
   paymentDate?: boolean
   reference?: boolean
@@ -747,13 +1063,18 @@ export type PatientDepositSelect<ExtArgs extends runtime.Types.Extensions.Intern
   createdById?: boolean
   createdAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.PatientDeposit$receiverArgs<ExtArgs>
   createdBy?: boolean | Prisma.PatientDeposit$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["patientDeposit"]>
 
 export type PatientDepositSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  receiverId?: boolean
   amount?: boolean
+  currency?: boolean
+  exchangeRate?: boolean
+  amountTwd?: boolean
   method?: boolean
   paymentDate?: boolean
   reference?: boolean
@@ -761,13 +1082,18 @@ export type PatientDepositSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   createdById?: boolean
   createdAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.PatientDeposit$receiverArgs<ExtArgs>
   createdBy?: boolean | Prisma.PatientDeposit$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["patientDeposit"]>
 
 export type PatientDepositSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  receiverId?: boolean
   amount?: boolean
+  currency?: boolean
+  exchangeRate?: boolean
+  amountTwd?: boolean
   method?: boolean
   paymentDate?: boolean
   reference?: boolean
@@ -775,13 +1101,18 @@ export type PatientDepositSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   createdById?: boolean
   createdAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.PatientDeposit$receiverArgs<ExtArgs>
   createdBy?: boolean | Prisma.PatientDeposit$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["patientDeposit"]>
 
 export type PatientDepositSelectScalar = {
   id?: boolean
   patientId?: boolean
+  receiverId?: boolean
   amount?: boolean
+  currency?: boolean
+  exchangeRate?: boolean
+  amountTwd?: boolean
   method?: boolean
   paymentDate?: boolean
   reference?: boolean
@@ -790,17 +1121,20 @@ export type PatientDepositSelectScalar = {
   createdAt?: boolean
 }
 
-export type PatientDepositOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "amount" | "method" | "paymentDate" | "reference" | "notes" | "createdById" | "createdAt", ExtArgs["result"]["patientDeposit"]>
+export type PatientDepositOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "receiverId" | "amount" | "currency" | "exchangeRate" | "amountTwd" | "method" | "paymentDate" | "reference" | "notes" | "createdById" | "createdAt", ExtArgs["result"]["patientDeposit"]>
 export type PatientDepositInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.PatientDeposit$receiverArgs<ExtArgs>
   createdBy?: boolean | Prisma.PatientDeposit$createdByArgs<ExtArgs>
 }
 export type PatientDepositIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.PatientDeposit$receiverArgs<ExtArgs>
   createdBy?: boolean | Prisma.PatientDeposit$createdByArgs<ExtArgs>
 }
 export type PatientDepositIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.PatientDeposit$receiverArgs<ExtArgs>
   createdBy?: boolean | Prisma.PatientDeposit$createdByArgs<ExtArgs>
 }
 
@@ -808,12 +1142,17 @@ export type $PatientDepositPayload<ExtArgs extends runtime.Types.Extensions.Inte
   name: "PatientDeposit"
   objects: {
     patient: Prisma.$PatientPayload<ExtArgs>
+    receiver: Prisma.$DepositReceiverPayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     patientId: string
+    receiverId: string | null
     amount: runtime.Decimal
+    currency: string
+    exchangeRate: runtime.Decimal
+    amountTwd: runtime.Decimal
     method: $Enums.PaymentMethod
     paymentDate: Date
     reference: string | null
@@ -1215,6 +1554,7 @@ readonly fields: PatientDepositFieldRefs;
 export interface Prisma__PatientDepositClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   patient<T extends Prisma.PatientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PatientDefaultArgs<ExtArgs>>): Prisma.Prisma__PatientClient<runtime.Types.Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  receiver<T extends Prisma.PatientDeposit$receiverArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PatientDeposit$receiverArgs<ExtArgs>>): Prisma.Prisma__DepositReceiverClient<runtime.Types.Result.GetResult<Prisma.$DepositReceiverPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.PatientDeposit$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PatientDeposit$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1247,7 +1587,11 @@ export interface Prisma__PatientDepositClient<T, Null = never, ExtArgs extends r
 export interface PatientDepositFieldRefs {
   readonly id: Prisma.FieldRef<"PatientDeposit", 'String'>
   readonly patientId: Prisma.FieldRef<"PatientDeposit", 'String'>
+  readonly receiverId: Prisma.FieldRef<"PatientDeposit", 'String'>
   readonly amount: Prisma.FieldRef<"PatientDeposit", 'Decimal'>
+  readonly currency: Prisma.FieldRef<"PatientDeposit", 'String'>
+  readonly exchangeRate: Prisma.FieldRef<"PatientDeposit", 'Decimal'>
+  readonly amountTwd: Prisma.FieldRef<"PatientDeposit", 'Decimal'>
   readonly method: Prisma.FieldRef<"PatientDeposit", 'PaymentMethod'>
   readonly paymentDate: Prisma.FieldRef<"PatientDeposit", 'DateTime'>
   readonly reference: Prisma.FieldRef<"PatientDeposit", 'String'>
@@ -1652,6 +1996,25 @@ export type PatientDepositDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many PatientDeposits to delete.
    */
   limit?: number
+}
+
+/**
+ * PatientDeposit.receiver
+ */
+export type PatientDeposit$receiverArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DepositReceiver
+   */
+  select?: Prisma.DepositReceiverSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DepositReceiver
+   */
+  omit?: Prisma.DepositReceiverOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DepositReceiverInclude<ExtArgs> | null
+  where?: Prisma.DepositReceiverWhereInput
 }
 
 /**

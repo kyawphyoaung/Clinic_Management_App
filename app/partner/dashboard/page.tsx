@@ -19,19 +19,39 @@ export default async function PartnerDashboardPage() {
         companyName: agent.companyName,
         commissionPercent: agent.commissionPercent ?? 10,
       }}
-      patients={agent.patients.map((p) => ({
-        id: p.id,
-        displayId: p.displayId,
-        fullName: p.fullName,
-        preferredName: p.preferredName,
-        status: p.status,
-        createdAt: p.createdAt.toISOString(),
-        treatments: p.treatments.map((t) => ({
-          id: t.id,
-          status: t.status,
-          diagnosis: t.diagnosis,
-        })),
-      }))}
+      patients={agent.patients.map((p) => {
+        const latestRequest = p.requestedDeposits[0] ?? null;
+        const receivedTotal = p.deposits.reduce(
+          (s, d) => s + Number(d.amountTwd),
+          0
+        );
+        let depositAmount = 0;
+        let depositStatus: "awaiting" | "received" | "none" = "none";
+        if (latestRequest) {
+          depositAmount = Number(latestRequest.amountTwd);
+          depositStatus =
+            latestRequest.status === "PAID" ? "received" : "awaiting";
+        } else if (receivedTotal > 0) {
+          depositAmount = receivedTotal;
+          depositStatus = "received";
+        }
+        return {
+          id: p.id,
+          displayId: p.displayId,
+          patientNumber: p.patientNumber,
+          fullName: p.fullName,
+          preferredName: p.preferredName,
+          status: p.status,
+          createdAt: p.createdAt.toISOString(),
+          depositAmount,
+          depositStatus,
+          treatments: p.treatments.map((t) => ({
+            id: t.id,
+            status: t.status,
+            diagnosis: t.diagnosis,
+          })),
+        };
+      })}
       commissions={agent.commissionPayments.map((c) => ({
         id: c.id,
         patientId: c.patientId,

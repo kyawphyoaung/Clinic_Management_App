@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getAgentByIdForAdmin } from "@/lib/actions/agents";
 import { AgentApprovalActions } from "@/components/admin/agent-approval-actions";
+import { AgentPasswordResetButton } from "@/components/admin/agent-password-reset-button";
 import { AgentDemographics } from "@/components/admin/agent-demographics";
 import { EncryptedFieldView } from "@/components/admin/encrypted-field-view";
 import { MonthlyCommissionTable } from "@/components/admin/monthly-commission-table";
@@ -54,8 +55,9 @@ export default async function AgentDetailPage({ params }: PageProps) {
         { label: "Full Name", value: agent.fullName },
         { label: "Company Name", value: agent.companyName ?? "—" },
         { label: "Job Title", value: agent.jobTitle ?? "—" },
+        { label: "Date of Birth", value: agent.dateOfBirth?.toLocaleDateString() ?? "—" },
         { label: "Country of Residence", value: agent.countryOfResidence ?? "—" },
-        { label: "Business Address", value: "", encryptedKey: "businessAddress" },
+        { label: "Contact Address", value: "", encryptedKey: "businessAddress" },
         { label: "Mobile Number", value: "", encryptedKey: "mobileNumber" },
         { label: "WhatsApp", value: "", encryptedKey: "whatsapp" },
         { label: "LINE ID", value: "", encryptedKey: "lineId" },
@@ -179,6 +181,7 @@ export default async function AgentDetailPage({ params }: PageProps) {
       </div>
 
       {agent.status === "PENDING" && <AgentApprovalActions agentId={agent.id} />}
+      {agent.status === "ACTIVE" && <AgentPasswordResetButton agentId={agent.id} />}
 
       <Card>
         <CardHeader>
@@ -233,7 +236,7 @@ export default async function AgentDetailPage({ params }: PageProps) {
                   return (
                     <TableRow key={patient.id}>
                       <TableCell className="font-mono text-xs">
-                        {patient.displayId}
+                        {patient.patientNumber ?? patient.displayId}
                       </TableCell>
                       <TableCell>{patient.fullName}</TableCell>
                       <TableCell>{patient.countryOfResidence ?? "—"}</TableCell>

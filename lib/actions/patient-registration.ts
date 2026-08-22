@@ -9,7 +9,7 @@ import {
   configNameToPrismaKey,
   mapFormValuesToPatientData,
 } from "@/lib/utils/config-driven-form";
-import { generateDisplayId } from "@/lib/utils/display-id";
+import { createPatientWithVisit } from "@/lib/utils/create-patient-with-visit";
 import {
   ENCRYPTED_PATIENT_FIELDS,
   encrypt,
@@ -46,17 +46,6 @@ async function resolveAgentId(partnerId?: string | null): Promise<string | null>
   });
 
   return agent?.id ?? null;
-}
-
-async function resolveClinicCode(clinicId?: string | null): Promise<string | null> {
-  if (!clinicId) return null;
-
-  const clinic = await prisma.clinic.findUnique({
-    where: { id: clinicId },
-    select: { code: true },
-  });
-
-  return clinic?.code ?? null;
 }
 
 function encryptPatientRecord(
@@ -112,7 +101,6 @@ async function createPatientFromRegistration(
 
     const partnerId = (input.values.partner_id as string | undefined)?.toUpperCase();
     const currentAgentId = await resolveAgentId(partnerId);
-    const agentCode = partnerId && currentAgentId ? partnerId : "000";
 
     const encryptedData = encryptPatientRecord({
       ...mapped,
@@ -126,21 +114,25 @@ async function createPatientFromRegistration(
     });
 
     const result = await prisma.$transaction(async (tx) => {
-      const clinicCode = await resolveClinicCode(
-        encryptedData.clinicId as string | undefined
-      );
-      const displayId = await generateDisplayId(tx, {
-        clinicCode,
-        agentCode,
-      });
+      const clinicId = encryptedData.clinicId as string | undefined;
+      const visitSource =
+        options.source === "AGENT" || currentAgentId ? "AGENT_REFERRAL" : "WALKIN";
 
-      const patient = await tx.patient.create({
-        data: {
+      const { patient } = await createPatientWithVisit(
+        tx,
+        {
           ...(encryptedData as Prisma.PatientUncheckedCreateInput),
-          displayId,
           fullName: String(input.values.full_name ?? ""),
+          displayId: "pending",
+          patientNumber: "pending",
         },
-      });
+        {
+          clinicId: clinicId ?? null,
+          agentId: currentAgentId,
+          agentCode: currentAgentId ? partnerId : null,
+          source: visitSource,
+        }
+      );
 
       await linkConsentLogsToPatient(input.consentLogIds, patient.id, tx);
 
@@ -165,7 +157,7 @@ async function createPatientFromRegistration(
 
     revalidatePath("/dashboard/patients");
 
-    return { success: true as const, displayId: result.displayId };
+    return { success: true as const, displayId: result.displayId, patientNumber: result.patientNumber };
   } catch (error) {
     console.error("Patient registration failed:", error);
     return { success: false as const, error: "Failed to register patient" };

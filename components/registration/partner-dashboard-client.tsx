@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { logoutPartner } from "@/lib/actions/partner-auth";
@@ -16,6 +17,10 @@ import {
   type PartnerLang,
 } from "@/lib/partner-i18n";
 import { ResponsiveList, MobileField } from "@/components/admin/responsive-list";
+import {
+  ClientTablePagination,
+  paginateSlice,
+} from "@/components/admin/client-table-pagination";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -37,10 +42,13 @@ import {
 type PartnerPatient = {
   id: string;
   displayId: string;
+  patientNumber?: string | null;
   fullName: string;
   preferredName: string | null;
   status: string;
   createdAt: string;
+  depositAmount: number;
+  depositStatus: "awaiting" | "received" | "none";
   treatments: Array<{
     id: string;
     status: string;
@@ -79,6 +87,12 @@ function currentPeriodMonth() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 }
 
+function patientSearchId(patient: PartnerPatient) {
+  return (
+    patient.patientNumber ?? numericPatientId(patient.displayId)
+  ).toLowerCase();
+}
+
 export function PartnerDashboardClient({
   agent,
   patients,
@@ -86,6 +100,11 @@ export function PartnerDashboardClient({
 }: PartnerDashboardClientProps) {
   const [lang, setLang] = useState<PartnerLang>("en");
   const [marketingOpen, setMarketingOpen] = useState(false);
+  const [patientSearch, setPatientSearch] = useState("");
+  const [patientPage, setPatientPage] = useState(1);
+  const [patientPageSize, setPatientPageSize] = useState(20);
+  const [historyPage, setHistoryPage] = useState(1);
+  const [historyPageSize, setHistoryPageSize] = useState(20);
   const t = getPartnerDict(lang);
   const periodMonth = currentPeriodMonth();
   const monthName = formatMonthLabel(periodMonth);
@@ -120,6 +139,12 @@ export function PartnerDashboardClient({
     0
   );
   const thisMonthCompletedTreatments = thisMonthCommissions.length;
+  const thisMonthCommissionColor = (() => {
+    if (thisMonthCommissions.length === 0) return "#6b7280";
+    const allPaid = thisMonthCommissions.every((c) => c.reviewStatus === "PAID");
+    if (allPaid) return "#10b981";
+    return "#f59e0b"; // pending review / pending payment
+  })();
 
   const monthlyRows = useMemo(() => {
     const map = new Map<
@@ -167,6 +192,132 @@ export function PartnerDashboardClient({
       })
       .sort((a, b) => b.key.localeCompare(a.key));
   }, [commissions, agent.partnerId]);
+
+  const filteredPatients = useMemo(() => {
+    const q = patientSearch.trim().toLowerCase();
+    if (!q) return patients;
+    return patients.filter((p) => {
+      const name = p.fullName.toLowerCase();
+      const preferred = (p.preferredName ?? "").toLowerCase();
+      const id = patientSearchId(p);
+      const display = p.displayId.toLowerCase();
+      return (
+        name.includes(q) ||
+        preferred.includes(q) ||
+        id.includes(q) ||
+        display.includes(q)
+      );
+    });
+  }, [patients, patientSearch]);
+
+  const pagedPatients = useMemo(
+    () => paginateSlice(filteredPatients, patientPage, patientPageSize),
+    [filteredPatients, patientPage, patientPageSize]
+  );
+
+  const pagedMonthlyRows = useMemo(
+    () => paginateSlice(monthlyRows, historyPage, historyPageSize),
+    [monthlyRows, historyPage, historyPageSize]
+  );
+
+  function renderPatientRow(patient: PartnerPatient) {
+    const completedCount = patient.treatments.filter(
+      (tx) => tx.status === "COMPLETED"
+    ).length;
+    const commission = commissionByPatient.get(patient.id);
+    const amount = commission?.amount ?? 0;
+    const color = !commission?.hasRows
+      ? "#6b7280"
+      : commission.paid
+        ? "#10b981"
+        : "#f59e0b";
+    const depositColor =
+      patient.depositStatus === "awaiting"
+        ? "#ef4444"
+        : patient.depositStatus === "received"
+          ? "#10b981"
+          : "#6b7280";
+    return (
+      <TableRow key={patient.id}>
+        <TableCell className="font-mono text-xs">
+          {patient.patientNumber ?? numericPatientId(patient.displayId)}
+        </TableCell>
+        <TableCell>{patient.fullName}</TableCell>
+        <TableCell>{patient.status}</TableCell>
+        <TableCell>
+          {new Date(patient.createdAt).toLocaleDateString()}
+        </TableCell>
+        <TableCell
+          className="font-medium"
+          style={{
+            color: depositColor,
+            backgroundColor:
+              patient.depositStatus === "awaiting"
+                ? "rgba(239,68,68,0.08)"
+                : patient.depositStatus === "received"
+                  ? "rgba(16,185,129,0.08)"
+                  : undefined,
+          }}
+        >
+          {patient.depositStatus === "none"
+            ? "—"
+            : formatMoney(patient.depositAmount)}
+        </TableCell>
+        <TableCell>{completedCount}</TableCell>
+        <TableCell style={{ color }} className="font-medium">
+          {formatMoney(amount)}
+        </TableCell>
+      </TableRow>
+    );
+  }
+
+  function renderPatientCard(patient: PartnerPatient) {
+    const completedCount = patient.treatments.filter(
+      (tx) => tx.status === "COMPLETED"
+    ).length;
+    const commission = commissionByPatient.get(patient.id);
+    const amount = commission?.amount ?? 0;
+    const color = !commission?.hasRows
+      ? "#6b7280"
+      : commission.paid
+        ? "#10b981"
+        : "#f59e0b";
+    const depositColor =
+      patient.depositStatus === "awaiting"
+        ? "#ef4444"
+        : patient.depositStatus === "received"
+          ? "#10b981"
+          : "#6b7280";
+    return (
+      <Card key={patient.id} className="shadow-sm">
+        <CardContent className="space-y-2 p-4">
+          <div className="flex items-start justify-between gap-2">
+            <p className="font-medium">{patient.fullName}</p>
+            <p className="font-mono text-xs text-muted-foreground">
+              {patient.patientNumber ?? numericPatientId(patient.displayId)}
+            </p>
+          </div>
+          <MobileField label={t.status}>{patient.status}</MobileField>
+          <MobileField label={t.registeredAt}>
+            {new Date(patient.createdAt).toLocaleDateString()}
+          </MobileField>
+          <MobileField label="Deposit Amount">
+            <span style={{ color: depositColor }} className="font-medium">
+              {patient.depositStatus === "none"
+                ? "—"
+                : formatMoney(patient.depositAmount)}
+            </span>
+          </MobileField>
+          <MobileField label={t.completedTx}>{completedCount}</MobileField>
+          <MobileField label={t.commissionAmount}>
+            <span style={{ color }} className="font-medium">
+              {formatMoney(amount)}
+            </span>
+          </MobileField>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="partner-luxury mx-auto w-full max-w-6xl space-y-6 px-3 py-6 sm:px-4 sm:py-8">
@@ -273,7 +424,10 @@ export function PartnerDashboardClient({
             <CardDescription>
               {t.totalCommission} ({monthName})
             </CardDescription>
-            <CardTitle className="text-3xl text-success">
+            <CardTitle
+              className="text-3xl"
+              style={{ color: thisMonthCommissionColor }}
+            >
               {formatMoney(thisMonthAmount)}
             </CardTitle>
           </CardHeader>
@@ -291,8 +445,56 @@ export function PartnerDashboardClient({
       </div>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="space-y-3">
           <CardTitle className="text-base">{t.referredPatients}</CardTitle>
+          <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="font-medium text-foreground">Deposit Amount:</span>
+              <span className="inline-flex items-center gap-1">
+                <span
+                  className="inline-block size-2 rounded-full bg-red-500"
+                  aria-hidden
+                />
+                Awaiting
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <span
+                  className="inline-block size-2 rounded-full bg-emerald-500"
+                  aria-hidden
+                />
+                Received
+              </span>
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="font-medium text-foreground">
+                Commission Amount:
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <span
+                  className="inline-block size-2 rounded-full bg-amber-500"
+                  aria-hidden
+                />
+                Under Review
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <span
+                  className="inline-block size-2 rounded-full bg-emerald-500"
+                  aria-hidden
+                />
+                Paid
+              </span>
+            </span>
+          </div>
+          <input
+            type="search"
+            value={patientSearch}
+            onChange={(e) => {
+              setPatientSearch(e.target.value);
+              setPatientPage(1);
+            }}
+            placeholder="Search by name or patient ID…"
+            className="h-9 w-full max-w-md rounded-md border border-input bg-transparent px-3 text-sm"
+          />
         </CardHeader>
         <CardContent className="p-0">
           <ResponsiveList
@@ -304,106 +506,52 @@ export function PartnerDashboardClient({
                     <TableHead>{t.fullName}</TableHead>
                     <TableHead>{t.status}</TableHead>
                     <TableHead>{t.registeredAt}</TableHead>
+                    <TableHead>Deposit Amount</TableHead>
                     <TableHead>{t.completedTx}</TableHead>
                     <TableHead>{t.commissionAmount}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {patients.length === 0 ? (
+                  {filteredPatients.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        colSpan={6}
+                        colSpan={7}
                         className="py-8 text-center text-muted-foreground"
                       >
-                        {t.noPatients}
+                        {patients.length === 0
+                          ? t.noPatients
+                          : "No matching patients."}
                       </TableCell>
                     </TableRow>
                   ) : (
-                    patients.map((patient) => {
-                      const completed = patient.treatments
-                        .filter((tx) => tx.status === "COMPLETED")
-                        .map((tx) => tx.diagnosis?.trim())
-                        .filter((d): d is string => Boolean(d));
-                      const commission = commissionByPatient.get(patient.id);
-                      const amount = commission?.amount ?? 0;
-                      const color = !commission?.hasRows
-                        ? "#6b7280"
-                        : commission.paid
-                          ? "#10b981"
-                          : "#f59e0b";
-                      return (
-                        <TableRow key={patient.id}>
-                          <TableCell className="font-mono text-xs">
-                            {numericPatientId(patient.displayId)}
-                          </TableCell>
-                          <TableCell>{patient.fullName}</TableCell>
-                          <TableCell>{patient.status}</TableCell>
-                          <TableCell>
-                            {new Date(patient.createdAt).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            {completed.length > 0 ? completed.join(", ") : "—"}
-                          </TableCell>
-                          <TableCell style={{ color }} className="font-medium">
-                            {formatMoney(amount)}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })
+                    pagedPatients.map(renderPatientRow)
                   )}
                 </TableBody>
               </Table>
             }
             cards={
               <div className="space-y-3 p-4">
-                {patients.length === 0 ? (
+                {filteredPatients.length === 0 ? (
                   <p className="py-8 text-center text-sm text-muted-foreground">
-                    {t.noPatients}
+                    {patients.length === 0
+                      ? t.noPatients
+                      : "No matching patients."}
                   </p>
                 ) : (
-                  patients.map((patient) => {
-                    const completed = patient.treatments
-                      .filter((tx) => tx.status === "COMPLETED")
-                      .map((tx) => tx.diagnosis?.trim())
-                      .filter((d): d is string => Boolean(d));
-                    const commission = commissionByPatient.get(patient.id);
-                    const amount = commission?.amount ?? 0;
-                    const color = !commission?.hasRows
-                      ? "#6b7280"
-                      : commission.paid
-                        ? "#10b981"
-                        : "#f59e0b";
-                    return (
-                      <Card key={patient.id} className="shadow-sm">
-                        <CardContent className="space-y-2 p-4">
-                          <div className="flex items-start justify-between gap-2">
-                            <p className="font-medium">{patient.fullName}</p>
-                            <p className="font-mono text-xs text-muted-foreground">
-                              {numericPatientId(patient.displayId)}
-                            </p>
-                          </div>
-                          <MobileField label={t.status}>
-                            {patient.status}
-                          </MobileField>
-                          <MobileField label={t.registeredAt}>
-                            {new Date(patient.createdAt).toLocaleDateString()}
-                          </MobileField>
-                          <MobileField label={t.completedTx}>
-                            {completed.length > 0 ? completed.join(", ") : "—"}
-                          </MobileField>
-                          <MobileField label={t.commissionAmount}>
-                            <span style={{ color }} className="font-medium">
-                              {formatMoney(amount)}
-                            </span>
-                          </MobileField>
-                        </CardContent>
-                      </Card>
-                    );
-                  })
+                  pagedPatients.map(renderPatientCard)
                 )}
               </div>
             }
           />
+          {filteredPatients.length > 0 ? (
+            <ClientTablePagination
+              page={patientPage}
+              pageSize={patientPageSize}
+              total={filteredPatients.length}
+              onPageChange={setPatientPage}
+              onPageSizeChange={setPatientPageSize}
+            />
+          ) : null}
         </CardContent>
       </Card>
 
@@ -438,7 +586,7 @@ export function PartnerDashboardClient({
                       </TableCell>
                     </TableRow>
                   ) : (
-                    monthlyRows.map((row) => (
+                    pagedMonthlyRows.map((row) => (
                       <TableRow key={row.key}>
                         <TableCell className="font-mono text-xs">
                           {row.billingId ?? "—"}
@@ -491,7 +639,7 @@ export function PartnerDashboardClient({
                     {t.noHistory}
                   </p>
                 ) : (
-                  monthlyRows.map((row) => (
+                  pagedMonthlyRows.map((row) => (
                     <Card key={row.key} className="shadow-sm">
                       <CardContent className="space-y-2 p-4">
                         <p className="font-mono text-xs">
@@ -542,8 +690,41 @@ export function PartnerDashboardClient({
               </div>
             }
           />
+          {monthlyRows.length > 0 ? (
+            <ClientTablePagination
+              page={historyPage}
+              pageSize={historyPageSize}
+              total={monthlyRows.length}
+              onPageChange={setHistoryPage}
+              onPageSizeChange={setHistoryPageSize}
+            />
+          ) : null}
         </CardContent>
       </Card>
+
+      <footer className="mt-10 border-t border-border/60 pt-8 pb-4 text-center">
+        <div className="relative mx-auto mb-3 h-8 w-[100px]">
+          <Image
+            src="/images/main_logo.svg"
+            alt="Revivora"
+            fill
+            className="object-contain"
+          />
+        </div>
+        <p className="mx-auto max-w-md text-xs leading-relaxed text-muted-foreground">
+          An online medical platform connecting patients with trusted care in
+          Taipei
+        </p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Contact:{" "}
+          <a
+            href="mailto:uroadrian.tw@gmail.com"
+            className="underline decoration-transparent underline-offset-2 hover:decoration-current"
+          >
+            uroadrian.tw@gmail.com
+          </a>
+        </p>
+      </footer>
     </div>
   );
 }

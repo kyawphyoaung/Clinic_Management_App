@@ -24,7 +24,7 @@ export type TreatmentsTableRow = {
   endDate: Date | null;
   diagnosis: string | null;
   status: TreatmentStatus;
-  patient: { id: string; fullName: string; displayId: string };
+  patient: { id: string; fullName: string; displayId: string; patientNumber?: string };
   doctor: { fullName: string } | null;
 };
 

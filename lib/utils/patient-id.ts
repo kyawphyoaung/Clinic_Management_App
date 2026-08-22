@@ -1,6 +1,10 @@
-/** Patient-facing ID: last 7 digits of internal displayId. */
-export function toPatientFacingId(displayId: string): string {
-  const digits = displayId.replace(/\D/g, "");
-  if (digits.length >= 7) return digits.slice(-7);
-  return digits.padStart(7, "0");
+/** Patient-facing 6-digit ID. Prefer `patientNumber` when available. */
+export function toPatientFacingId(
+  patientNumberOrDisplayId: string | null | undefined
+): string {
+  if (!patientNumberOrDisplayId) return "";
+  if (/^\d{6}$/.test(patientNumberOrDisplayId)) return patientNumberOrDisplayId;
+  const digits = patientNumberOrDisplayId.replace(/\D/g, "");
+  if (digits.length >= 6) return digits.slice(-6);
+  return digits.padStart(6, "0");
 }

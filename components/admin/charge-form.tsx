@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
-import { addCharge } from "@/lib/actions/treatments";
+import { addCharge, updateCharge } from "@/lib/actions/treatments";
 import type { ServiceCategory } from "@/prisma/generated/prisma/enums";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,43 +31,74 @@ type DraftLine = {
 
 type ChargeFormProps = {
   treatmentId: string;
-  depositBalance: number;
+  defaultAgentRelated?: boolean;
+  mode?: "create" | "edit";
+  chargeId?: string;
+  initialLines?: DraftLine[];
+  initialIsAgentRelated?: boolean;
+  triggerLabel?: string;
+  onSaved?: () => void;
 };
 
-export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
+export function ChargeForm({
+  treatmentId,
+  defaultAgentRelated = false,
+  mode = "create",
+  chargeId,
+  initialLines = [],
+  initialIsAgentRelated,
+  triggerLabel,
+  onSaved,
+}: ChargeFormProps) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(mode === "edit");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [lines, setLines] = useState<DraftLine[]>([]);
+  const [lines, setLines] = useState<DraftLine[]>(initialLines);
   const [category, setCategory] = useState<ServiceCategory>("CONSULTATION");
   const [notes, setNotes] = useState("");
+  const [customName, setCustomName] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [unitPrice, setUnitPrice] = useState(0);
-  const [depositInput, setDepositInput] = useState("");
-  const [depositApplied, setDepositApplied] = useState(0);
+  const [priceText, setPriceText] = useState("");
+  const [isAgentRelated, setIsAgentRelated] = useState(
+    initialIsAgentRelated ?? defaultAgentRelated
+  );
 
   const totalPrice = lines.reduce(
     (sum, l) => sum + l.quantity * l.unitPrice,
     0
   );
-  const netPrice = Math.max(0, totalPrice - depositApplied);
 
   function resetDraft() {
     setCategory("CONSULTATION");
     setNotes("");
+    setCustomName("");
     setQuantity(1);
-    setUnitPrice(0);
+    setPriceText("");
   }
 
   function addLine() {
-    if (quantity < 1 || unitPrice < 0) return;
+    if (!priceText.trim()) {
+      window.alert("Please enter a price before adding the line.");
+      return;
+    }
+    const unitPrice = Number(priceText);
+    if (Number.isNaN(unitPrice) || unitPrice < 0) {
+      window.alert("Please enter a valid price.");
+      return;
+    }
+    if (quantity < 1) return;
+    if (category === "OTHER" && !customName.trim() && !notes.trim()) {
+      window.alert("Please enter a custom name for OTHER.");
+      return;
+    }
+    const otherLabel = customName.trim() || notes.trim();
     setLines((prev) => [
       ...prev,
       {
         key: `${Date.now()}-${prev.length}`,
         serviceCategory: category,
-        notes,
+        notes: category === "OTHER" ? otherLabel : notes,
         quantity,
         unitPrice,
       },
@@ -75,19 +106,12 @@ export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
     resetDraft();
   }
 
-  function applyDeposit(amount: number) {
-    const capped = Math.min(Math.max(0, amount), depositBalance, totalPrice);
-    setDepositApplied(capped);
-    setDepositInput(String(capped));
-  }
-
   function close() {
     setOpen(false);
-    setLines([]);
-    setDepositApplied(0);
-    setDepositInput("");
     setError(null);
+    if (mode === "create") setLines([]);
     resetDraft();
+    onSaved?.();
   }
 
   function handleSubmit() {
@@ -97,17 +121,20 @@ export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
       return;
     }
     startTransition(async () => {
-      const result = await addCharge({
-        treatmentId,
-        depositApplied,
+      const payload = {
         discount: 0,
+        isAgentRelated,
         lineItems: lines.map((l) => ({
           serviceCategory: l.serviceCategory,
           notes: l.notes || null,
           quantity: l.quantity,
           unitPrice: l.unitPrice,
         })),
-      });
+      };
+      const result =
+        mode === "edit" && chargeId
+          ? await updateCharge({ chargeId, ...payload })
+          : await addCharge({ treatmentId, ...payload });
       if (!result.success) {
         setError(result.error);
         return;
@@ -119,9 +146,11 @@ export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
 
   return (
     <>
-      <Button type="button" variant="outline" onClick={() => setOpen(true)}>
-        Add Charge
-      </Button>
+      {mode === "create" && (
+        <Button type="button" variant="outline" onClick={() => setOpen(true)}>
+          {triggerLabel ?? "Add Invoice"}
+        </Button>
+      )}
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg border border-border bg-card p-6 shadow-lg">
@@ -133,7 +162,9 @@ export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
             >
               <X className="size-5" />
             </button>
-            <h3 className="text-lg font-semibold">Add Charge</h3>
+            <h3 className="text-lg font-semibold">
+              {mode === "edit" ? "Edit Invoice" : "Add Invoice"}
+            </h3>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="space-y-1.5 sm:col-span-2">
@@ -152,10 +183,24 @@ export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
                   ))}
                 </select>
               </div>
-              <div className="space-y-1.5 sm:col-span-2">
-                <Label>Notes</Label>
-                <Input value={notes} onChange={(e) => setNotes(e.target.value)} />
-              </div>
+              {category === "OTHER" ? (
+                <div className="space-y-1.5 sm:col-span-2">
+                  <Label>Custom name</Label>
+                  <Input
+                    value={customName}
+                    onChange={(e) => setCustomName(e.target.value)}
+                    placeholder="Describe the service"
+                  />
+                </div>
+              ) : (
+                <div className="space-y-1.5 sm:col-span-2">
+                  <Label>Notes</Label>
+                  <Input
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                  />
+                </div>
+              )}
               <div className="space-y-1.5">
                 <Label>Quantity</Label>
                 <Input
@@ -168,11 +213,10 @@ export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
               <div className="space-y-1.5">
                 <Label>Price</Label>
                 <Input
-                  type="number"
-                  min={0}
-                  step="0.01"
-                  value={unitPrice}
-                  onChange={(e) => setUnitPrice(Number(e.target.value) || 0)}
+                  inputMode="decimal"
+                  value={priceText}
+                  onChange={(e) => setPriceText(e.target.value)}
+                  placeholder="0.00"
                 />
               </div>
               <div className="sm:col-span-2">
@@ -209,49 +253,17 @@ export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
               </ul>
             )}
 
-            <div className="mt-4 space-y-2 rounded-md border border-border p-3">
-              <p className="text-sm font-medium">
-                Total: {formatMoney(totalPrice)}
-              </p>
-              <p className="text-sm font-medium">
-                Deposit Balance: {formatMoney(depositBalance)}
-              </p>
-              <div className="flex flex-wrap items-end gap-2">
-                <div className="space-y-1.5">
-                  <Label>Amount</Label>
-                  <Input
-                    type="number"
-                    min={0}
-                    step="0.01"
-                    className="w-32"
-                    value={depositInput}
-                    onChange={(e) => setDepositInput(e.target.value)}
-                  />
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => applyDeposit(Number(depositInput) || 0)}
-                >
-                  Apply
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    applyDeposit(Math.min(depositBalance, totalPrice))
-                  }
-                >
-                  Apply All
-                </Button>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Applied: {formatMoney(depositApplied)} · Net:{" "}
-                {formatMoney(netPrice)}
-              </p>
-            </div>
+            <label className="mt-4 flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                className="size-4 accent-primary"
+                checked={isAgentRelated}
+                onChange={(e) => setIsAgentRelated(e.target.checked)}
+              />
+              Agent-related (include in commission)
+            </label>
+
+            <p className="mt-3 text-sm font-medium">Total: {formatMoney(totalPrice)}</p>
 
             {error && (
               <Alert className="mt-3 border-destructive/50">
@@ -270,7 +282,11 @@ export function ChargeForm({ treatmentId, depositBalance }: ChargeFormProps) {
                 disabled={isPending || lines.length === 0}
                 onClick={handleSubmit}
               >
-                {isPending ? "Adding…" : "Add Charge"}
+                {isPending
+                  ? "Saving…"
+                  : mode === "edit"
+                    ? "Save Invoice"
+                    : "Add Invoice"}
               </Button>
             </div>
           </div>

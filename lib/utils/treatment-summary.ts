@@ -2,6 +2,7 @@ export function summarizeTreatment(treatment: {
   charges: { netPrice: { toString(): string } | number }[];
   payments: {
     amount: { toString(): string } | number;
+    depositAppliedAmount?: { toString(): string } | number;
     paymentDate: Date;
     id: string;
   }[];
@@ -11,7 +12,8 @@ export function summarizeTreatment(treatment: {
     0
   );
   const totalPaid = treatment.payments.reduce(
-    (sum, p) => sum + Number(p.amount),
+    (sum, p) =>
+      sum + Number(p.amount) + Number(p.depositAppliedAmount ?? 0),
     0
   );
   let running = totalCharges;

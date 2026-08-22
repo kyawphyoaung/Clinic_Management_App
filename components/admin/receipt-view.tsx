@@ -25,6 +25,8 @@ type ReceiptViewProps = {
     remainingBalance: number;
     totalCharges: number;
     totalPaid: number;
+    depositApplied?: number;
+    charges?: { description: string; amount: number }[];
   };
 };
 
@@ -48,6 +50,7 @@ export function ReceiptView({ receipt }: ReceiptViewProps) {
       head: [["Field", "Value"]],
       body: [
         ["Payment Amount", formatMoney(receipt.paymentAmount)],
+        ["Deposit Applied", formatMoney(receipt.depositApplied ?? 0)],
         ["Payment Method", receipt.paymentMethod],
         ["Date", receipt.paymentDate],
         ["Time", receipt.paymentTime],
@@ -102,6 +105,12 @@ export function ReceiptView({ receipt }: ReceiptViewProps) {
                 <p className="text-muted-foreground">Payment Amount</p>
                 <p className="text-lg font-semibold">
                   {formatMoney(receipt.paymentAmount)}
+                </p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Deposit Applied</p>
+                <p className="font-medium">
+                  {formatMoney(receipt.depositApplied ?? 0)}
                 </p>
               </div>
               <div>

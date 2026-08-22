@@ -45,11 +45,16 @@ export type PatientNoteMinAggregateOutputType = {
   patientId: string | null
   title: string | null
   content: string | null
+  subjective: string | null
+  objective: string | null
+  assessment: string | null
+  plan: string | null
   bloodPressure: string | null
   heartRate: number | null
   weight: runtime.Decimal | null
   height: runtime.Decimal | null
   bodyTemperature: runtime.Decimal | null
+  diagramType: string | null
   appointmentId: string | null
   treatmentId: string | null
   createdById: string | null
@@ -62,11 +67,16 @@ export type PatientNoteMaxAggregateOutputType = {
   patientId: string | null
   title: string | null
   content: string | null
+  subjective: string | null
+  objective: string | null
+  assessment: string | null
+  plan: string | null
   bloodPressure: string | null
   heartRate: number | null
   weight: runtime.Decimal | null
   height: runtime.Decimal | null
   bodyTemperature: runtime.Decimal | null
+  diagramType: string | null
   appointmentId: string | null
   treatmentId: string | null
   createdById: string | null
@@ -79,11 +89,17 @@ export type PatientNoteCountAggregateOutputType = {
   patientId: number
   title: number
   content: number
+  subjective: number
+  objective: number
+  assessment: number
+  plan: number
   bloodPressure: number
   heartRate: number
   weight: number
   height: number
   bodyTemperature: number
+  diagramType: number
+  pins: number
   appointmentId: number
   treatmentId: number
   createdById: number
@@ -112,11 +128,16 @@ export type PatientNoteMinAggregateInputType = {
   patientId?: true
   title?: true
   content?: true
+  subjective?: true
+  objective?: true
+  assessment?: true
+  plan?: true
   bloodPressure?: true
   heartRate?: true
   weight?: true
   height?: true
   bodyTemperature?: true
+  diagramType?: true
   appointmentId?: true
   treatmentId?: true
   createdById?: true
@@ -129,11 +150,16 @@ export type PatientNoteMaxAggregateInputType = {
   patientId?: true
   title?: true
   content?: true
+  subjective?: true
+  objective?: true
+  assessment?: true
+  plan?: true
   bloodPressure?: true
   heartRate?: true
   weight?: true
   height?: true
   bodyTemperature?: true
+  diagramType?: true
   appointmentId?: true
   treatmentId?: true
   createdById?: true
@@ -146,11 +172,17 @@ export type PatientNoteCountAggregateInputType = {
   patientId?: true
   title?: true
   content?: true
+  subjective?: true
+  objective?: true
+  assessment?: true
+  plan?: true
   bloodPressure?: true
   heartRate?: true
   weight?: true
   height?: true
   bodyTemperature?: true
+  diagramType?: true
+  pins?: true
   appointmentId?: true
   treatmentId?: true
   createdById?: true
@@ -250,11 +282,17 @@ export type PatientNoteGroupByOutputType = {
   patientId: string
   title: string
   content: string | null
+  subjective: string | null
+  objective: string | null
+  assessment: string | null
+  plan: string | null
   bloodPressure: string | null
   heartRate: number | null
   weight: runtime.Decimal | null
   height: runtime.Decimal | null
   bodyTemperature: runtime.Decimal | null
+  diagramType: string | null
+  pins: runtime.JsonValue | null
   appointmentId: string | null
   treatmentId: string | null
   createdById: string
@@ -290,11 +328,17 @@ export type PatientNoteWhereInput = {
   patientId?: Prisma.StringFilter<"PatientNote"> | string
   title?: Prisma.StringFilter<"PatientNote"> | string
   content?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  subjective?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  objective?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  assessment?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  plan?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   bloodPressure?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   heartRate?: Prisma.IntNullableFilter<"PatientNote"> | number | null
   weight?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  pins?: Prisma.JsonNullableFilter<"PatientNote">
   appointmentId?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   treatmentId?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   createdById?: Prisma.StringFilter<"PatientNote"> | string
@@ -311,11 +355,17 @@ export type PatientNoteOrderByWithRelationInput = {
   patientId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrderInput | Prisma.SortOrder
+  subjective?: Prisma.SortOrderInput | Prisma.SortOrder
+  objective?: Prisma.SortOrderInput | Prisma.SortOrder
+  assessment?: Prisma.SortOrderInput | Prisma.SortOrder
+  plan?: Prisma.SortOrderInput | Prisma.SortOrder
   bloodPressure?: Prisma.SortOrderInput | Prisma.SortOrder
   heartRate?: Prisma.SortOrderInput | Prisma.SortOrder
   weight?: Prisma.SortOrderInput | Prisma.SortOrder
   height?: Prisma.SortOrderInput | Prisma.SortOrder
   bodyTemperature?: Prisma.SortOrderInput | Prisma.SortOrder
+  diagramType?: Prisma.SortOrderInput | Prisma.SortOrder
+  pins?: Prisma.SortOrderInput | Prisma.SortOrder
   appointmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   treatmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -335,11 +385,17 @@ export type PatientNoteWhereUniqueInput = Prisma.AtLeast<{
   patientId?: Prisma.StringFilter<"PatientNote"> | string
   title?: Prisma.StringFilter<"PatientNote"> | string
   content?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  subjective?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  objective?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  assessment?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  plan?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   bloodPressure?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   heartRate?: Prisma.IntNullableFilter<"PatientNote"> | number | null
   weight?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  pins?: Prisma.JsonNullableFilter<"PatientNote">
   appointmentId?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   treatmentId?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   createdById?: Prisma.StringFilter<"PatientNote"> | string
@@ -356,11 +412,17 @@ export type PatientNoteOrderByWithAggregationInput = {
   patientId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrderInput | Prisma.SortOrder
+  subjective?: Prisma.SortOrderInput | Prisma.SortOrder
+  objective?: Prisma.SortOrderInput | Prisma.SortOrder
+  assessment?: Prisma.SortOrderInput | Prisma.SortOrder
+  plan?: Prisma.SortOrderInput | Prisma.SortOrder
   bloodPressure?: Prisma.SortOrderInput | Prisma.SortOrder
   heartRate?: Prisma.SortOrderInput | Prisma.SortOrder
   weight?: Prisma.SortOrderInput | Prisma.SortOrder
   height?: Prisma.SortOrderInput | Prisma.SortOrder
   bodyTemperature?: Prisma.SortOrderInput | Prisma.SortOrder
+  diagramType?: Prisma.SortOrderInput | Prisma.SortOrder
+  pins?: Prisma.SortOrderInput | Prisma.SortOrder
   appointmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   treatmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -381,11 +443,17 @@ export type PatientNoteScalarWhereWithAggregatesInput = {
   patientId?: Prisma.StringWithAggregatesFilter<"PatientNote"> | string
   title?: Prisma.StringWithAggregatesFilter<"PatientNote"> | string
   content?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
+  subjective?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
+  objective?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
+  assessment?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
+  plan?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
   bloodPressure?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
   heartRate?: Prisma.IntNullableWithAggregatesFilter<"PatientNote"> | number | null
   weight?: Prisma.DecimalNullableWithAggregatesFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.DecimalNullableWithAggregatesFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.DecimalNullableWithAggregatesFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
+  pins?: Prisma.JsonNullableWithAggregatesFilter<"PatientNote">
   appointmentId?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
   treatmentId?: Prisma.StringNullableWithAggregatesFilter<"PatientNote"> | string | null
   createdById?: Prisma.StringWithAggregatesFilter<"PatientNote"> | string
@@ -397,11 +465,17 @@ export type PatientNoteCreateInput = {
   id?: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutPatientNotesInput
@@ -415,11 +489,17 @@ export type PatientNoteUncheckedCreateInput = {
   patientId: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: string | null
   treatmentId?: string | null
   createdById: string
@@ -431,11 +511,17 @@ export type PatientNoteUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutPatientNotesNestedInput
@@ -449,11 +535,17 @@ export type PatientNoteUncheckedUpdateInput = {
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   treatmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -466,11 +558,17 @@ export type PatientNoteCreateManyInput = {
   patientId: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: string | null
   treatmentId?: string | null
   createdById: string
@@ -482,11 +580,17 @@ export type PatientNoteUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -496,11 +600,17 @@ export type PatientNoteUncheckedUpdateManyInput = {
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   treatmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -523,11 +633,17 @@ export type PatientNoteCountOrderByAggregateInput = {
   patientId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  subjective?: Prisma.SortOrder
+  objective?: Prisma.SortOrder
+  assessment?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   bloodPressure?: Prisma.SortOrder
   heartRate?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   height?: Prisma.SortOrder
   bodyTemperature?: Prisma.SortOrder
+  diagramType?: Prisma.SortOrder
+  pins?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   treatmentId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -547,11 +663,16 @@ export type PatientNoteMaxOrderByAggregateInput = {
   patientId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  subjective?: Prisma.SortOrder
+  objective?: Prisma.SortOrder
+  assessment?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   bloodPressure?: Prisma.SortOrder
   heartRate?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   height?: Prisma.SortOrder
   bodyTemperature?: Prisma.SortOrder
+  diagramType?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   treatmentId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -564,11 +685,16 @@ export type PatientNoteMinOrderByAggregateInput = {
   patientId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  subjective?: Prisma.SortOrder
+  objective?: Prisma.SortOrder
+  assessment?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   bloodPressure?: Prisma.SortOrder
   heartRate?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   height?: Prisma.SortOrder
   bodyTemperature?: Prisma.SortOrder
+  diagramType?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   treatmentId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
@@ -763,11 +889,17 @@ export type PatientNoteCreateWithoutPatientInput = {
   id?: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   appointment?: Prisma.AppointmentCreateNestedOneWithoutPatientNotesInput
@@ -779,11 +911,17 @@ export type PatientNoteUncheckedCreateWithoutPatientInput = {
   id?: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: string | null
   treatmentId?: string | null
   createdById: string
@@ -825,11 +963,17 @@ export type PatientNoteScalarWhereInput = {
   patientId?: Prisma.StringFilter<"PatientNote"> | string
   title?: Prisma.StringFilter<"PatientNote"> | string
   content?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  subjective?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  objective?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  assessment?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  plan?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   bloodPressure?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   heartRate?: Prisma.IntNullableFilter<"PatientNote"> | number | null
   weight?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.DecimalNullableFilter<"PatientNote"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.StringNullableFilter<"PatientNote"> | string | null
+  pins?: Prisma.JsonNullableFilter<"PatientNote">
   appointmentId?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   treatmentId?: Prisma.StringNullableFilter<"PatientNote"> | string | null
   createdById?: Prisma.StringFilter<"PatientNote"> | string
@@ -841,11 +985,17 @@ export type PatientNoteCreateWithoutAppointmentInput = {
   id?: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutPatientNotesInput
@@ -858,11 +1008,17 @@ export type PatientNoteUncheckedCreateWithoutAppointmentInput = {
   patientId: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   treatmentId?: string | null
   createdById: string
   createdAt?: Date | string
@@ -899,11 +1055,17 @@ export type PatientNoteCreateWithoutCreatedByInput = {
   id?: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutPatientNotesInput
@@ -916,11 +1078,17 @@ export type PatientNoteUncheckedCreateWithoutCreatedByInput = {
   patientId: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: string | null
   treatmentId?: string | null
   createdAt?: Date | string
@@ -957,11 +1125,17 @@ export type PatientNoteCreateWithoutTreatmentInput = {
   id?: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutPatientNotesInput
@@ -974,11 +1148,17 @@ export type PatientNoteUncheckedCreateWithoutTreatmentInput = {
   patientId: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: string | null
   createdById: string
   createdAt?: Date | string
@@ -1015,11 +1195,17 @@ export type PatientNoteCreateManyPatientInput = {
   id?: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: string | null
   treatmentId?: string | null
   createdById: string
@@ -1031,11 +1217,17 @@ export type PatientNoteUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   appointment?: Prisma.AppointmentUpdateOneWithoutPatientNotesNestedInput
@@ -1047,11 +1239,17 @@ export type PatientNoteUncheckedUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   treatmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1063,11 +1261,17 @@ export type PatientNoteUncheckedUpdateManyWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   treatmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1080,11 +1284,17 @@ export type PatientNoteCreateManyAppointmentInput = {
   patientId: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   treatmentId?: string | null
   createdById: string
   createdAt?: Date | string
@@ -1095,11 +1305,17 @@ export type PatientNoteUpdateWithoutAppointmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutPatientNotesNestedInput
@@ -1112,11 +1328,17 @@ export type PatientNoteUncheckedUpdateWithoutAppointmentInput = {
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   treatmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1128,11 +1350,17 @@ export type PatientNoteUncheckedUpdateManyWithoutAppointmentInput = {
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   treatmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1144,11 +1372,17 @@ export type PatientNoteCreateManyCreatedByInput = {
   patientId: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: string | null
   treatmentId?: string | null
   createdAt?: Date | string
@@ -1159,11 +1393,17 @@ export type PatientNoteUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutPatientNotesNestedInput
@@ -1176,11 +1416,17 @@ export type PatientNoteUncheckedUpdateWithoutCreatedByInput = {
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   treatmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1192,11 +1438,17 @@ export type PatientNoteUncheckedUpdateManyWithoutCreatedByInput = {
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   treatmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1208,11 +1460,17 @@ export type PatientNoteCreateManyTreatmentInput = {
   patientId: string
   title: string
   content?: string | null
+  subjective?: string | null
+  objective?: string | null
+  assessment?: string | null
+  plan?: string | null
   bloodPressure?: string | null
   heartRate?: number | null
   weight?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: string | null
   createdById: string
   createdAt?: Date | string
@@ -1223,11 +1481,17 @@ export type PatientNoteUpdateWithoutTreatmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutPatientNotesNestedInput
@@ -1240,11 +1504,17 @@ export type PatientNoteUncheckedUpdateWithoutTreatmentInput = {
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1256,11 +1526,17 @@ export type PatientNoteUncheckedUpdateManyWithoutTreatmentInput = {
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subjective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objective?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bloodPressure?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heartRate?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   weight?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   height?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   bodyTemperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  diagramType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pins?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   appointmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1274,11 +1550,17 @@ export type PatientNoteSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   patientId?: boolean
   title?: boolean
   content?: boolean
+  subjective?: boolean
+  objective?: boolean
+  assessment?: boolean
+  plan?: boolean
   bloodPressure?: boolean
   heartRate?: boolean
   weight?: boolean
   height?: boolean
   bodyTemperature?: boolean
+  diagramType?: boolean
+  pins?: boolean
   appointmentId?: boolean
   treatmentId?: boolean
   createdById?: boolean
@@ -1295,11 +1577,17 @@ export type PatientNoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   patientId?: boolean
   title?: boolean
   content?: boolean
+  subjective?: boolean
+  objective?: boolean
+  assessment?: boolean
+  plan?: boolean
   bloodPressure?: boolean
   heartRate?: boolean
   weight?: boolean
   height?: boolean
   bodyTemperature?: boolean
+  diagramType?: boolean
+  pins?: boolean
   appointmentId?: boolean
   treatmentId?: boolean
   createdById?: boolean
@@ -1316,11 +1604,17 @@ export type PatientNoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   patientId?: boolean
   title?: boolean
   content?: boolean
+  subjective?: boolean
+  objective?: boolean
+  assessment?: boolean
+  plan?: boolean
   bloodPressure?: boolean
   heartRate?: boolean
   weight?: boolean
   height?: boolean
   bodyTemperature?: boolean
+  diagramType?: boolean
+  pins?: boolean
   appointmentId?: boolean
   treatmentId?: boolean
   createdById?: boolean
@@ -1337,11 +1631,17 @@ export type PatientNoteSelectScalar = {
   patientId?: boolean
   title?: boolean
   content?: boolean
+  subjective?: boolean
+  objective?: boolean
+  assessment?: boolean
+  plan?: boolean
   bloodPressure?: boolean
   heartRate?: boolean
   weight?: boolean
   height?: boolean
   bodyTemperature?: boolean
+  diagramType?: boolean
+  pins?: boolean
   appointmentId?: boolean
   treatmentId?: boolean
   createdById?: boolean
@@ -1349,7 +1649,7 @@ export type PatientNoteSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PatientNoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "title" | "content" | "bloodPressure" | "heartRate" | "weight" | "height" | "bodyTemperature" | "appointmentId" | "treatmentId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["patientNote"]>
+export type PatientNoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "title" | "content" | "subjective" | "objective" | "assessment" | "plan" | "bloodPressure" | "heartRate" | "weight" | "height" | "bodyTemperature" | "diagramType" | "pins" | "appointmentId" | "treatmentId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["patientNote"]>
 export type PatientNoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   appointment?: boolean | Prisma.PatientNote$appointmentArgs<ExtArgs>
@@ -1382,11 +1682,23 @@ export type $PatientNotePayload<ExtArgs extends runtime.Types.Extensions.Interna
     patientId: string
     title: string
     content: string | null
+    subjective: string | null
+    objective: string | null
+    assessment: string | null
+    plan: string | null
     bloodPressure: string | null
     heartRate: number | null
     weight: runtime.Decimal | null
     height: runtime.Decimal | null
     bodyTemperature: runtime.Decimal | null
+    /**
+     * FULL_BODY_FRONT | FULL_BODY_BACK | UROLOGY | BRAIN
+     */
+    diagramType: string | null
+    /**
+     * [{ label, x, y, description }] — x/y are 0–1 relative to diagram image
+     */
+    pins: runtime.JsonValue | null
     appointmentId: string | null
     treatmentId: string | null
     createdById: string
@@ -1823,11 +2135,17 @@ export interface PatientNoteFieldRefs {
   readonly patientId: Prisma.FieldRef<"PatientNote", 'String'>
   readonly title: Prisma.FieldRef<"PatientNote", 'String'>
   readonly content: Prisma.FieldRef<"PatientNote", 'String'>
+  readonly subjective: Prisma.FieldRef<"PatientNote", 'String'>
+  readonly objective: Prisma.FieldRef<"PatientNote", 'String'>
+  readonly assessment: Prisma.FieldRef<"PatientNote", 'String'>
+  readonly plan: Prisma.FieldRef<"PatientNote", 'String'>
   readonly bloodPressure: Prisma.FieldRef<"PatientNote", 'String'>
   readonly heartRate: Prisma.FieldRef<"PatientNote", 'Int'>
   readonly weight: Prisma.FieldRef<"PatientNote", 'Decimal'>
   readonly height: Prisma.FieldRef<"PatientNote", 'Decimal'>
   readonly bodyTemperature: Prisma.FieldRef<"PatientNote", 'Decimal'>
+  readonly diagramType: Prisma.FieldRef<"PatientNote", 'String'>
+  readonly pins: Prisma.FieldRef<"PatientNote", 'Json'>
   readonly appointmentId: Prisma.FieldRef<"PatientNote", 'String'>
   readonly treatmentId: Prisma.FieldRef<"PatientNote", 'String'>
   readonly createdById: Prisma.FieldRef<"PatientNote", 'String'>

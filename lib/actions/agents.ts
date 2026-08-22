@@ -52,6 +52,7 @@ export async function getAgentByIdForAdmin(id: string) {
         select: {
           id: true,
           displayId: true,
+          patientNumber: true,
           fullName: true,
           preferredName: true,
           countryOfResidence: true,
@@ -181,25 +182,70 @@ export async function setPartnerPassword(token: string, password: string) {
   }
 
   const hashed = await bcrypt.hash(password, 10);
+  const { clientIpAddress } = await import("@/lib/utils/mailer");
+  const ip = await clientIpAddress();
   await prisma.$transaction(async (tx) => {
     await tx.agent.update({
       where: { id: record.agentId },
       data: { passwordHash: hashed },
+    });
+    await tx.passwordChangeLog.create({
+      data: {
+        actorType: "AGENT",
+        agentId: record.agentId,
+        ipAddress: ip,
+      },
     });
     await tx.agentSetPasswordToken.delete({ where: { id: record.id } });
   });
   return { success: true as const };
 }
 
-export async function requestPartnerPasswordReset(partnerId: string) {
+export async function requestPartnerPasswordReset(input: {
+  email: string;
+  dateOfBirth: string;
+}) {
+  const email = input.email.trim().toLowerCase();
+  const dob = input.dateOfBirth;
   const agent = await prisma.agent.findFirst({
-    where: { partnerId: partnerId.toUpperCase(), status: "ACTIVE" },
+    where: {
+      email: { equals: email, mode: "insensitive" },
+      status: "ACTIVE",
+      dateOfBirth: dob ? new Date(dob) : undefined,
+    },
+    select: { id: true, email: true, fullName: true, partnerId: true, dateOfBirth: true },
+  });
+
+  if (agent?.dateOfBirth) {
+    const token = randomBytes(24).toString("hex");
+    await prisma.agentSetPasswordToken.create({
+      data: {
+        agentId: agent.id,
+        token,
+        expiresAt: plusHours(new Date(), 24),
+      },
+    });
+    const { sendTransactionalEmail } = await import("@/lib/utils/mailer");
+    const origin = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
+    await sendTransactionalEmail({
+      to: agent.email,
+      subject: "Reset your partner password",
+      text: `Hello ${agent.fullName},\n\nReset your password: ${origin}/partner/set-password?token=${token}\n\nThis link expires in 24 hours.`,
+    });
+  }
+
+  return { success: true as const };
+}
+
+export async function requestAdminAgentPasswordReset(agentId: string) {
+  await requirePermission("agents:write");
+  const agent = await prisma.agent.findUnique({
+    where: { id: agentId },
     select: { id: true, email: true, fullName: true, partnerId: true },
   });
   if (!agent) {
-    return { success: false as const, error: "Partner ID not found" };
+    return { success: false as const, error: "Agent not found" };
   }
-
   const token = randomBytes(24).toString("hex");
   await prisma.agentSetPasswordToken.create({
     data: {
@@ -208,13 +254,13 @@ export async function requestPartnerPasswordReset(partnerId: string) {
       expiresAt: plusHours(new Date(), 24),
     },
   });
-
+  const origin = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "";
+  const resetPath = `/partner/set-password?token=${token}`;
   return {
     success: true as const,
+    resetPath,
+    resetUrl: origin ? `${origin}${resetPath}` : resetPath,
     email: agent.email,
-    fullName: agent.fullName,
-    partnerId: agent.partnerId,
-    resetPath: `/partner/set-password?token=${token}`,
   };
 }
 
@@ -243,6 +289,20 @@ export async function getPartnerDashboard(agentId: string) {
               endDate: true,
             },
             orderBy: { treatmentDate: "desc" },
+          },
+          deposits: {
+            select: { amountTwd: true, paymentDate: true },
+            orderBy: { paymentDate: "desc" },
+          },
+          requestedDeposits: {
+            select: {
+              amount: true,
+              amountTwd: true,
+              status: true,
+              requestedAt: true,
+            },
+            orderBy: { requestedAt: "desc" },
+            take: 1,
           },
         },
       },

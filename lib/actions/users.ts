@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db";
 import { requirePermission } from "@/lib/permissions";
+import { allocateShortId } from "@/lib/utils/display-id";
 import type { UserRole } from "@/prisma/generated/prisma/client";
 
 export async function getUsers() {
@@ -26,7 +27,7 @@ export async function getDoctorsForSelect() {
   await requirePermission("treatments:read");
   return prisma.user.findMany({
     where: { role: "DOCTOR", isActive: true },
-    select: { id: true, fullName: true },
+    select: { id: true, fullName: true, doctorCode: true },
     orderBy: { fullName: "asc" },
   });
 }
@@ -62,6 +63,10 @@ export async function createUser(input: CreateUserInput) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
+  const doctorCode =
+    input.role === "DOCTOR"
+      ? await prisma.$transaction((tx) => allocateShortId(tx, "doctor", "DR"))
+      : null;
   await prisma.user.create({
     data: {
       username,
@@ -69,6 +74,7 @@ export async function createUser(input: CreateUserInput) {
       fullName,
       email: input.email?.trim() || null,
       role: input.role,
+      doctorCode,
     },
   });
 
@@ -99,9 +105,21 @@ export async function resetUserPassword(userId: string, newPassword: string) {
   }
 
   const passwordHash = await bcrypt.hash(newPassword, 10);
-  await prisma.user.update({
-    where: { id: userId },
-    data: { passwordHash },
+  const { clientIpAddress } = await import("@/lib/utils/mailer");
+  const ip = await clientIpAddress();
+  await prisma.$transaction(async (tx) => {
+    const user = await tx.user.update({
+      where: { id: userId },
+      data: { passwordHash },
+      select: { role: true },
+    });
+    await tx.passwordChangeLog.create({
+      data: {
+        actorType: user.role === "DOCTOR" ? "DOCTOR" : "DOCTOR",
+        userId,
+        ipAddress: ip,
+      },
+    });
   });
 
   revalidatePath("/dashboard/settings/users");

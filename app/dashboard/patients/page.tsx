@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getPatients, getAgentsForAssignment } from "@/lib/data/patients";
+import { suggestPatients } from "@/lib/actions/patient-search";
 import { PatientSource, PatientStatus } from "@/prisma/generated/prisma/client";
 import {
   getPatientStatusLabel,
@@ -8,9 +9,9 @@ import {
 } from "@/components/admin/status-badge";
 import { CopyRegistrationLinkButton } from "@/components/admin/copy-registration-link-button";
 import { PatientsFilterForm } from "@/components/admin/patients-filter-form";
+import { SearchSuggestInput } from "@/components/admin/search-suggest-input";
 import { TablePagination } from "@/components/admin/table-pagination";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import {
@@ -111,14 +112,18 @@ export default async function PatientsPage({ searchParams }: PageProps) {
           <CardTitle className="text-base">Search & Filter</CardTitle>
         </CardHeader>
         <CardContent>
-          <PatientsFilterForm className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-            <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="search">Search by name, display ID, or phone</Label>
-              <Input
+          <PatientsFilterForm className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <input type="hidden" name="pageSize" value={String(size)} />
+            <div className="space-y-1.5 sm:col-span-2 lg:col-span-4">
+              <Label htmlFor="search">
+                Search by name, patient ID, visit ID, or phone
+              </Label>
+              <SearchSuggestInput
                 id="search"
                 name="search"
                 defaultValue={params.search ?? ""}
                 placeholder="Search..."
+                suggest={suggestPatients}
               />
             </div>
             <div className="space-y-1.5">
@@ -163,15 +168,7 @@ export default async function PatientsPage({ searchParams }: PageProps) {
                 <option value="status">Status</option>
               </Select>
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="pageSize">Rows per page</Label>
-              <Select id="pageSize" name="pageSize" defaultValue={String(size)}>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </Select>
-            </div>
-            <div className="flex flex-col gap-2 sm:col-span-2 sm:flex-row sm:items-end lg:col-span-6">
+            <div className="flex flex-col gap-2 sm:col-span-2 sm:flex-row sm:items-end lg:col-span-4">
               <Button type="submit" className="w-full sm:w-auto">
                 Apply Filters
               </Button>
@@ -194,8 +191,9 @@ export default async function PatientsPage({ searchParams }: PageProps) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-35">Display ID</TableHead>
+                  <TableHead className="w-28">Patient ID</TableHead>
                   <TableHead>Name</TableHead>
+                  <TableHead>Latest Visit</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Registered At</TableHead>
                   <TableHead>Source</TableHead>
@@ -206,7 +204,7 @@ export default async function PatientsPage({ searchParams }: PageProps) {
                 {patients.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      colSpan={6}
+                      colSpan={7}
                       className="py-10 text-center text-muted-foreground"
                     >
                       No patients found
@@ -215,11 +213,14 @@ export default async function PatientsPage({ searchParams }: PageProps) {
                 ) : (
                   patients.map((patient) => (
                     <TableRow key={patient.id}>
-                      <TableCell className="font-mono text-xs">
-                        {patient.displayId}
+                      <TableCell className="font-mono text-xs font-semibold">
+                        {patient.patientNumber}
                       </TableCell>
                       <TableCell className="font-medium">
                         {patient.fullName}
+                      </TableCell>
+                      <TableCell className="font-mono text-xs text-muted-foreground">
+                        {patient.visits[0]?.displayId ?? "—"}
                       </TableCell>
                       <TableCell>
                         <StatusBadge
@@ -260,9 +261,14 @@ export default async function PatientsPage({ searchParams }: PageProps) {
                 <Card key={patient.id} className="shadow-sm">
                   <CardContent className="space-y-2 p-4">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="font-mono text-xs text-muted-foreground">
-                        {patient.displayId}
+                      <p className="font-mono text-xs font-semibold">
+                        {patient.patientNumber}
                       </p>
+                      {patient.visits[0]?.displayId && (
+                        <p className="font-mono text-xs text-muted-foreground">
+                          {patient.visits[0].displayId}
+                        </p>
+                      )}
                       <StatusBadge
                         status={patient.status}
                         label={getPatientStatusLabel(patient.status)}

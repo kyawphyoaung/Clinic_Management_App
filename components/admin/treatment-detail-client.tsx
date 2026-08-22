@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation";
 import {
   deleteTreatment,
   updateTreatment,
+  deleteCharge,
+  updatePayment,
+  deletePayment,
 } from "@/lib/actions/treatments";
 import {
   TreatmentStatus as TreatmentStatusEnum,
   type TreatmentStatus,
 } from "@/prisma/generated/prisma/enums";
-import { ChargeForm } from "@/components/admin/charge-form";
 import { PaymentForm } from "@/components/admin/payment-form";
 import { TreatmentSummaryCard } from "@/components/admin/treatment-summary-card";
 import { TreatmentNotesTable } from "@/components/admin/treatment-notes-table";
@@ -50,16 +52,21 @@ type TreatmentDetailClientProps = {
     diagnosis: string | null;
     notes: string | null;
     status: TreatmentStatus;
-    patient: { id: string; displayId: string; fullName: string };
-    doctor: { id: string; fullName: string } | null;
+    patient: { id: string; displayId: string; patientNumber?: string; fullName: string };
+    visit?: { id: string; displayId: string; agentId: string | null } | null;
+    doctor: { id: string; fullName: string; doctorCode?: string | null } | null;
+    shortId?: string;
     charges: {
       id: string;
+      shortId?: string;
       categoryLabel: string;
       totalPrice: number;
       discount: number;
       depositApplied: number;
       netPrice: number;
+      isAgentRelated?: boolean;
       isPaid: boolean;
+      paidAmount?: number;
       createdAt: string;
       lines: {
         id: string;
@@ -74,10 +81,13 @@ type TreatmentDetailClientProps = {
       amount: number;
       method: string;
       paymentDate: Date;
+      createdAt?: Date;
       reference: string | null;
       notes: string | null;
       recordedBy: { fullName: string } | null;
       balanceAfter: number;
+      depositAppliedAmount?: number;
+      allocations?: { chargeId: string; amount: number }[];
     }[];
   };
   doctors: { id: string; fullName: string }[];
@@ -105,6 +115,14 @@ function todayInput() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function timeText(date: Date) {
+  return date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
+
 export function TreatmentDetailClient({
   canWrite,
   from,
@@ -113,9 +131,6 @@ export function TreatmentDetailClient({
   summary,
   linkedNotes = [],
 }: TreatmentDetailClientProps) {
-  const [selectedCharge, setSelectedCharge] = useState<
-    (typeof treatment.charges)[number] | null
-  >(null);
   const [editing, setEditing] = useState(false);
   const [lastPaymentId, setLastPaymentId] = useState<string | null>(null);
   const [statusValue, setStatusValue] = useState<TreatmentStatus>(
@@ -126,8 +141,20 @@ export function TreatmentDetailClient({
       (treatment.status === "COMPLETED" ? todayInput() : "")
   );
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<
+    (typeof treatment.payments)[number] | null
+  >(null);
+  const [editingPayment, setEditingPayment] = useState<
+    (typeof treatment.payments)[number] | null
+  >(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const orderedPayments = [...treatment.payments].sort((a, b) => {
+    const aTime = (a.createdAt ?? a.paymentDate).getTime();
+    const bTime = (b.createdAt ?? b.paymentDate).getTime();
+    return bTime - aTime;
+  });
+  const balanceCleared = summary.balance <= 0 && orderedPayments.length > 0;
 
   function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -227,7 +254,7 @@ export function TreatmentDetailClient({
                 href={`/dashboard/patients/${treatment.patient.id}`}
                 className="underline"
               >
-                {treatment.patient.fullName} ({treatment.patient.displayId})
+                {treatment.patient.fullName} ({treatment.patient.patientNumber ?? "—"})
               </Link>
             </CardDescription>
           </div>
@@ -294,6 +321,8 @@ export function TreatmentDetailClient({
                   : "—"}
               </div>
               <div>Doctor: {treatment.doctor?.fullName ?? "—"}</div>
+              <div>Treatment ID: {treatment.shortId ?? "—"}</div>
+              <div>Visit ID: {treatment.visit?.displayId ?? "—"}</div>
               <div>Diagnosis: {treatment.diagnosis ?? "—"}</div>
               <div className="sm:col-span-2">Notes: {treatment.notes ?? "—"}</div>
               {canWrite && (
@@ -391,12 +420,17 @@ export function TreatmentDetailClient({
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between py-3">
-          <CardTitle className="text-base">Charges</CardTitle>
+          <CardTitle className="text-base">Invoices</CardTitle>
           {canWrite && (
-            <ChargeForm
-              treatmentId={treatment.id}
-              depositBalance={summary.depositBalance ?? 0}
-            />
+            <Button
+              type="button"
+              variant="outline"
+              render={
+                <Link href={`/dashboard/treatments/${treatment.id}/invoices/new`} />
+              }
+            >
+              Add Invoice
+            </Button>
           )}
         </CardHeader>
         <CardContent className="p-0">
@@ -405,50 +439,47 @@ export function TreatmentDetailClient({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>No.</TableHead>
+                    <TableHead>ID</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Category</TableHead>
                     <TableHead>Total Price</TableHead>
-                    <TableHead>Deposit Applied</TableHead>
+                    <TableHead>Agent</TableHead>
                     <TableHead>Discount</TableHead>
                     <TableHead>Net Price</TableHead>
                     <TableHead>Paid</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {treatment.charges.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        colSpan={8}
+                        colSpan={9}
                         className="py-8 text-center text-muted-foreground"
                       >
-                        No charges yet
+                        No invoices yet
                       </TableCell>
                     </TableRow>
                   ) : (
-                    treatment.charges.map((charge, idx) => (
-                      <TableRow
-                        key={charge.id}
-                        className="cursor-pointer hover:bg-muted/50"
-                        onClick={() => setSelectedCharge(charge)}
-                      >
-                        <TableCell>{idx + 1}</TableCell>
+                    treatment.charges.map((charge) => (
+                      <TableRow key={charge.id}>
+                        <TableCell className="font-mono text-xs">
+                          {charge.shortId ?? "—"}
+                        </TableCell>
                         <TableCell>
                           {new Date(charge.createdAt).toLocaleDateString()}
                         </TableCell>
                         <TableCell>{charge.categoryLabel}</TableCell>
                         <TableCell>{formatMoney(charge.totalPrice)}</TableCell>
                         <TableCell>
-                          {charge.depositApplied > 0
-                            ? `-${formatMoney(charge.depositApplied)}`
-                            : formatMoney(0)}
+                          {charge.isAgentRelated === false ? "No" : "Yes"}
                         </TableCell>
                         <TableCell>{formatMoney(charge.discount)}</TableCell>
                         <TableCell
                           className={`font-medium ${
-                            charge.netPrice > 0
-                              ? "text-red-600 dark:text-red-400"
-                              : "text-emerald-600 dark:text-emerald-400"
+                            charge.isPaid
+                              ? "text-emerald-600 dark:text-emerald-400"
+                              : "text-red-600 dark:text-red-400"
                           }`}
                         >
                           {formatMoney(charge.netPrice)}
@@ -464,6 +495,40 @@ export function TreatmentDetailClient({
                             {charge.isPaid ? "Yes" : "No"}
                           </span>
                         </TableCell>
+                        <TableCell className="text-right">
+                          <div className="inline-flex gap-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              render={
+                                <Link
+                                  href={`/dashboard/treatments/${treatment.id}/invoices/${charge.id}`}
+                                />
+                              }
+                            >
+                              View
+                            </Button>
+                            {canWrite && (
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="destructive"
+                                disabled={charge.isPaid}
+                                onClick={() => {
+                                  if (charge.isPaid) return;
+                                  if (!window.confirm("Delete this invoice?")) return;
+                                  startTransition(async () => {
+                                    await deleteCharge(charge.id);
+                                    router.refresh();
+                                  });
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
                       </TableRow>
                     ))
                   )}
@@ -474,15 +539,11 @@ export function TreatmentDetailClient({
               <div className="space-y-3 p-4">
                 {treatment.charges.length === 0 ? (
                   <p className="py-8 text-center text-sm text-muted-foreground">
-                    No charges yet
+                    No invoices yet
                   </p>
                 ) : (
                   treatment.charges.map((charge, idx) => (
-                    <Card
-                      key={charge.id}
-                      className="cursor-pointer shadow-sm"
-                      onClick={() => setSelectedCharge(charge)}
-                    >
+                    <Card key={charge.id} className="shadow-sm">
                       <CardContent className="space-y-2 p-4">
                         <div className="flex items-start justify-between gap-2">
                           <p className="font-medium">
@@ -498,31 +559,58 @@ export function TreatmentDetailClient({
                             {charge.isPaid ? "Paid" : "Unpaid"}
                           </span>
                         </div>
+                        <MobileField label="Invoice ID">
+                          {charge.shortId ?? "—"}
+                        </MobileField>
                         <MobileField label="Date">
                           {new Date(charge.createdAt).toLocaleDateString()}
                         </MobileField>
                         <MobileField label="Total">
                           {formatMoney(charge.totalPrice)}
                         </MobileField>
-                        <MobileField label="Deposit Applied">
-                          {charge.depositApplied > 0
-                            ? `-${formatMoney(charge.depositApplied)}`
-                            : formatMoney(0)}
-                        </MobileField>
-                        <MobileField label="Discount">
-                          {formatMoney(charge.discount)}
-                        </MobileField>
                         <MobileField label="Net">
                           <span
                             className={`font-medium ${
-                              charge.netPrice > 0
-                                ? "text-red-600 dark:text-red-400"
-                                : "text-emerald-600 dark:text-emerald-400"
+                              charge.isPaid
+                                ? "text-emerald-600 dark:text-emerald-400"
+                                : "text-red-600 dark:text-red-400"
                             }`}
                           >
                             {formatMoney(charge.netPrice)}
                           </span>
                         </MobileField>
+                        <div className="flex gap-2 pt-1">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            render={
+                              <Link
+                                href={`/dashboard/treatments/${treatment.id}/invoices/${charge.id}`}
+                              />
+                            }
+                          >
+                            View
+                          </Button>
+                          {canWrite && (
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="destructive"
+                              disabled={charge.isPaid}
+                              onClick={() => {
+                                if (charge.isPaid) return;
+                                if (!window.confirm("Delete this invoice?")) return;
+                                startTransition(async () => {
+                                  await deleteCharge(charge.id);
+                                  router.refresh();
+                                });
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          )}
+                        </div>
                       </CardContent>
                     </Card>
                   ))
@@ -533,83 +621,19 @@ export function TreatmentDetailClient({
         </CardContent>
       </Card>
 
-      {selectedCharge && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="relative w-full max-w-lg rounded-lg border border-border bg-card p-6 shadow-lg">
-            <button
-              type="button"
-              className="absolute right-3 top-3 text-muted-foreground"
-              onClick={() => setSelectedCharge(null)}
-              aria-label="Close"
-            >
-              ×
-            </button>
-            <h3 className="text-lg font-semibold">Charge detail</h3>
-            <ResponsiveList
-              className="mt-4"
-              table={
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Notes</TableHead>
-                      <TableHead>Qty</TableHead>
-                      <TableHead>Price</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {selectedCharge.lines.map((line) => (
-                      <TableRow key={line.id}>
-                        <TableCell>{line.serviceCategory}</TableCell>
-                        <TableCell>{line.notes?.trim() || "—"}</TableCell>
-                        <TableCell>{line.quantity}</TableCell>
-                        <TableCell>{formatMoney(line.unitPrice)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              }
-              cards={
-                <div className="space-y-2">
-                  {selectedCharge.lines.map((line) => (
-                    <div
-                      key={line.id}
-                      className="rounded-md border border-border/60 bg-muted/20 px-3 py-2"
-                    >
-                      <p className="font-medium">{line.serviceCategory}</p>
-                      <MobileField label="Notes">
-                        {line.notes?.trim() || "—"}
-                      </MobileField>
-                      <MobileField label="Qty">{line.quantity}</MobileField>
-                      <MobileField label="Price">
-                        {formatMoney(line.unitPrice)}
-                      </MobileField>
-                    </div>
-                  ))}
-                </div>
-              }
-            />
-            <div className="mt-3 space-y-1 text-sm text-muted-foreground">
-              <p>Total: {formatMoney(selectedCharge.totalPrice)}</p>
-              <p>Deposit applied: {formatMoney(selectedCharge.depositApplied)}</p>
-              <p>Net: {formatMoney(selectedCharge.netPrice)}</p>
-              <p>Paid: {selectedCharge.isPaid ? "Yes" : "No"}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
       <Card>
         <CardHeader className="flex flex-row items-center justify-between py-3">
           <CardTitle className="text-base">Payments</CardTitle>
           {canWrite && (
             <PaymentForm
               treatmentId={treatment.id}
+              depositBalance={summary.depositBalance ?? 0}
               charges={treatment.charges.map((c) => ({
                 id: c.id,
                 description: c.categoryLabel,
                 serviceCategory: c.categoryLabel,
                 netPrice: c.netPrice,
+                paidAmount: c.paidAmount,
                 isPaid: c.isPaid,
               }))}
               onPaymentRecorded={(paymentId) => {
@@ -626,47 +650,75 @@ export function TreatmentDetailClient({
                 <TableHeader>
                   <TableRow>
                     <TableHead>Date</TableHead>
+                    <TableHead>Time</TableHead>
                     <TableHead>Amount</TableHead>
-                    <TableHead>Method</TableHead>
-                    <TableHead>Reference</TableHead>
                     <TableHead>Remaining Balance</TableHead>
-                    <TableHead className="text-right">Receipt</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {treatment.payments.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        colSpan={6}
+                        colSpan={5}
                         className="py-8 text-center text-muted-foreground"
                       >
                         No payments yet
                       </TableCell>
                     </TableRow>
                   ) : (
-                    treatment.payments.map((payment) => (
+                    orderedPayments.map((payment) => (
                       <TableRow key={payment.id}>
-                        <TableCell>
-                          {payment.paymentDate.toLocaleDateString()}
+                        <TableCell>{payment.paymentDate.toLocaleDateString()}</TableCell>
+                        <TableCell>{timeText(payment.createdAt ?? payment.paymentDate)}</TableCell>
+                        <TableCell className="text-emerald-600 dark:text-emerald-400">
+                          {formatMoney(payment.amount)}
                         </TableCell>
-                        <TableCell>{formatMoney(payment.amount)}</TableCell>
-                        <TableCell>{payment.method}</TableCell>
-                        <TableCell>{payment.reference ?? "—"}</TableCell>
-                        <TableCell>
-                          {formatMoney(payment.balanceAfter)}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            render={
-                              <Link
-                                href={`/dashboard/treatments/${treatment.id}/receipt/${payment.id}`}
-                              />
+                        <TableCell className="text-red-600 dark:text-red-400">
+                          <span
+                            className={
+                              balanceCleared && payment.balanceAfter > 0
+                                ? "line-through"
+                                : undefined
                             }
                           >
-                            Receipt
-                          </Button>
+                            {formatMoney(payment.balanceAfter)}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="inline-flex gap-2">
+                            <Button type="button" variant="outline" size="sm" onClick={() => setSelectedPayment(payment)}>
+                              View
+                            </Button>
+                            {canWrite && (
+                              <>
+                                <Button type="button" variant="outline" size="sm" onClick={() => setEditingPayment(payment)}>
+                                  Update
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="destructive"
+                                  size="sm"
+                                  onClick={() => {
+                                    if (!window.confirm("Delete this payment?")) return;
+                                    startTransition(async () => {
+                                      await deletePayment(payment.id);
+                                      router.refresh();
+                                    });
+                                  }}
+                                >
+                                  Delete
+                                </Button>
+                              </>
+                            )}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              render={<Link href={`/dashboard/treatments/${treatment.id}/payment-receipt/${payment.id}`} />}
+                            >
+                              Receipt
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))
@@ -681,21 +733,20 @@ export function TreatmentDetailClient({
                     No payments yet
                   </p>
                 ) : (
-                  treatment.payments.map((payment) => (
+                  orderedPayments.map((payment) => (
                     <Card key={payment.id} className="shadow-sm">
                       <CardContent className="space-y-2 p-4">
                         <div className="flex items-start justify-between gap-2">
                           <MobileField label="Date">
                             {payment.paymentDate.toLocaleDateString()}
                           </MobileField>
+                          <MobileField label="Time">
+                            {timeText(payment.createdAt ?? payment.paymentDate)}
+                          </MobileField>
                           <p className="font-medium">
                             {formatMoney(payment.amount)}
                           </p>
                         </div>
-                        <MobileField label="Method">{payment.method}</MobileField>
-                        <MobileField label="Reference">
-                          {payment.reference ?? "—"}
-                        </MobileField>
                         <MobileField label="Balance">
                           {formatMoney(payment.balanceAfter)}
                         </MobileField>
@@ -705,7 +756,7 @@ export function TreatmentDetailClient({
                           className="w-full"
                           render={
                             <Link
-                              href={`/dashboard/treatments/${treatment.id}/receipt/${payment.id}`}
+                              href={`/dashboard/treatments/${treatment.id}/payment-receipt/${payment.id}`}
                             />
                           }
                         >
@@ -724,7 +775,7 @@ export function TreatmentDetailClient({
                 className="w-full sm:w-auto"
                 render={
                   <Link
-                    href={`/dashboard/treatments/${treatment.id}/receipt/${lastPaymentId}`}
+                    href={`/dashboard/treatments/${treatment.id}/payment-receipt/${lastPaymentId}`}
                   />
                 }
               >
@@ -734,6 +785,44 @@ export function TreatmentDetailClient({
           )}
         </CardContent>
       </Card>
+      {selectedPayment && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="w-full max-w-md rounded-lg border border-border bg-card p-6">
+            <h3 className="text-lg font-semibold">Payment detail</h3>
+            <div className="mt-3 space-y-1 text-sm">
+              <p>Date: {selectedPayment.paymentDate.toLocaleDateString()}</p>
+              <p>Time: {timeText(selectedPayment.createdAt ?? selectedPayment.paymentDate)}</p>
+              <p>Amount: {formatMoney(selectedPayment.amount)}</p>
+              <p>Method: {selectedPayment.method}</p>
+              <p>Reference: {selectedPayment.reference ?? "—"}</p>
+              <p>Notes: {selectedPayment.notes ?? "—"}</p>
+            </div>
+            <div className="mt-4">
+              <Button type="button" variant="outline" onClick={() => setSelectedPayment(null)}>
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {editingPayment && (
+        <EditPaymentModal
+          payment={editingPayment}
+          charges={treatment.charges}
+          isPending={isPending}
+          onClose={() => setEditingPayment(null)}
+          onSave={(payload) => {
+            startTransition(async () => {
+              await updatePayment({
+                paymentId: editingPayment.id,
+                ...payload,
+              });
+              setEditingPayment(null);
+              router.refresh();
+            });
+          }}
+        />
+      )}
 
       <TreatmentNotesTable
         notes={linkedNotes}
@@ -765,6 +854,161 @@ export function TreatmentDetailClient({
           </CardContent>
         </Card>
       )}
+    </div>
+  );
+}
+
+function EditPaymentModal({
+  payment,
+  charges,
+  isPending,
+  onClose,
+  onSave,
+}: {
+  payment: {
+    id: string;
+    amount: number;
+    method: string;
+    paymentDate: Date;
+    reference: string | null;
+    notes: string | null;
+    allocations?: { chargeId: string; amount: number }[];
+  };
+  charges: {
+    id: string;
+    shortId?: string;
+    categoryLabel: string;
+    netPrice: number;
+    isPaid: boolean;
+    paidAmount?: number;
+  }[];
+  isPending: boolean;
+  onClose: () => void;
+  onSave: (payload: {
+    method: "CASH" | "CARD" | "BANK";
+    paymentDate: string;
+    reference: string;
+    notes: string;
+    allocations: { chargeId: string; amount: number }[];
+  }) => void;
+}) {
+  const [selected, setSelected] = useState<string[]>(
+    (payment.allocations ?? []).map((a) => a.chargeId)
+  );
+
+  function remainingFor(charge: (typeof charges)[number]) {
+    const thisPaymentShare =
+      payment.allocations?.find((a) => a.chargeId === charge.id)?.amount ?? 0;
+    const otherPaid = Math.max(0, (charge.paidAmount ?? 0) - thisPaymentShare);
+    return Math.max(0, Number((charge.netPrice - otherPaid).toFixed(2)));
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-lg border border-border bg-card p-6">
+        <h3 className="text-lg font-semibold">Update payment</h3>
+        <form
+          className="mt-3 space-y-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            const allocations = selected
+              .map((chargeId) => {
+                const charge = charges.find((c) => c.id === chargeId);
+                if (!charge) return null;
+                const amount = remainingFor(charge);
+                if (!(amount > 0)) return null;
+                return { chargeId, amount };
+              })
+              .filter((a): a is { chargeId: string; amount: number } => a != null);
+            onSave({
+              method: String(formData.get("method")) as "CASH" | "CARD" | "BANK",
+              paymentDate: String(formData.get("paymentDate") ?? ""),
+              reference: String(formData.get("reference") ?? ""),
+              notes: String(formData.get("notes") ?? ""),
+              allocations,
+            });
+          }}
+        >
+          <div className="space-y-1.5">
+            <Label>Method</Label>
+            <select
+              name="method"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm"
+              defaultValue={payment.method}
+            >
+              <option value="CASH">Cash</option>
+              <option value="CARD">Card</option>
+              <option value="BANK">Bank</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <Label>Date</Label>
+            <Input
+              name="paymentDate"
+              type="date"
+              defaultValue={toDateInput(payment.paymentDate)}
+              required
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Reference</Label>
+            <Input name="reference" defaultValue={payment.reference ?? ""} />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Notes</Label>
+            <Input name="notes" defaultValue={payment.notes ?? ""} />
+          </div>
+          <div className="space-y-2">
+            <Label>Linked invoices</Label>
+            {charges.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No invoices</p>
+            ) : (
+              <ul className="max-h-48 space-y-2 overflow-y-auto rounded-md border border-border p-3 text-sm">
+                {charges.map((c) => (
+                  <li key={c.id}>
+                    <label className="flex cursor-pointer items-start gap-2">
+                      <input
+                        type="checkbox"
+                        className="mt-0.5 size-4 accent-primary"
+                        checked={selected.includes(c.id)}
+                        onChange={() =>
+                          setSelected((prev) =>
+                            prev.includes(c.id)
+                              ? prev.filter((id) => id !== c.id)
+                              : [...prev, c.id]
+                          )
+                        }
+                      />
+                      <span>
+                        <span className="font-mono text-xs">
+                          {c.shortId ?? c.id.slice(0, 8)}
+                        </span>
+                        {" · "}
+                        {c.categoryLabel}
+                        {" · "}
+                        {formatMoney(c.netPrice)}
+                        {c.isPaid ? " (paid)" : ""}
+                      </span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="text-xs text-muted-foreground">
+              Toggle to link or unlink invoices for this payment.
+            </p>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isPending}>
+              Update
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

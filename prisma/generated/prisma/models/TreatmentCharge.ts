@@ -42,31 +42,37 @@ export type TreatmentChargeSumAggregateOutputType = {
 
 export type TreatmentChargeMinAggregateOutputType = {
   id: string | null
+  shortId: string | null
   treatmentId: string | null
   totalPrice: runtime.Decimal | null
   discount: runtime.Decimal | null
   depositApplied: runtime.Decimal | null
   netPrice: runtime.Decimal | null
+  isAgentRelated: boolean | null
   createdAt: Date | null
 }
 
 export type TreatmentChargeMaxAggregateOutputType = {
   id: string | null
+  shortId: string | null
   treatmentId: string | null
   totalPrice: runtime.Decimal | null
   discount: runtime.Decimal | null
   depositApplied: runtime.Decimal | null
   netPrice: runtime.Decimal | null
+  isAgentRelated: boolean | null
   createdAt: Date | null
 }
 
 export type TreatmentChargeCountAggregateOutputType = {
   id: number
+  shortId: number
   treatmentId: number
   totalPrice: number
   discount: number
   depositApplied: number
   netPrice: number
+  isAgentRelated: number
   createdAt: number
   _all: number
 }
@@ -88,31 +94,37 @@ export type TreatmentChargeSumAggregateInputType = {
 
 export type TreatmentChargeMinAggregateInputType = {
   id?: true
+  shortId?: true
   treatmentId?: true
   totalPrice?: true
   discount?: true
   depositApplied?: true
   netPrice?: true
+  isAgentRelated?: true
   createdAt?: true
 }
 
 export type TreatmentChargeMaxAggregateInputType = {
   id?: true
+  shortId?: true
   treatmentId?: true
   totalPrice?: true
   discount?: true
   depositApplied?: true
   netPrice?: true
+  isAgentRelated?: true
   createdAt?: true
 }
 
 export type TreatmentChargeCountAggregateInputType = {
   id?: true
+  shortId?: true
   treatmentId?: true
   totalPrice?: true
   discount?: true
   depositApplied?: true
   netPrice?: true
+  isAgentRelated?: true
   createdAt?: true
   _all?: true
 }
@@ -205,11 +217,13 @@ export type TreatmentChargeGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 
 export type TreatmentChargeGroupByOutputType = {
   id: string
+  shortId: string
   treatmentId: string
   totalPrice: runtime.Decimal
   discount: runtime.Decimal
   depositApplied: runtime.Decimal
   netPrice: runtime.Decimal
+  isAgentRelated: boolean
   createdAt: Date
   _count: TreatmentChargeCountAggregateOutputType | null
   _avg: TreatmentChargeAvgAggregateOutputType | null
@@ -238,11 +252,13 @@ export type TreatmentChargeWhereInput = {
   OR?: Prisma.TreatmentChargeWhereInput[]
   NOT?: Prisma.TreatmentChargeWhereInput | Prisma.TreatmentChargeWhereInput[]
   id?: Prisma.StringFilter<"TreatmentCharge"> | string
+  shortId?: Prisma.StringFilter<"TreatmentCharge"> | string
   treatmentId?: Prisma.StringFilter<"TreatmentCharge"> | string
   totalPrice?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFilter<"TreatmentCharge"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TreatmentCharge"> | Date | string
   treatment?: Prisma.XOR<Prisma.TreatmentScalarRelationFilter, Prisma.TreatmentWhereInput>
   lines?: Prisma.TreatmentChargeLineListRelationFilter
@@ -251,11 +267,13 @@ export type TreatmentChargeWhereInput = {
 
 export type TreatmentChargeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  shortId?: Prisma.SortOrder
   treatmentId?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   discount?: Prisma.SortOrder
   depositApplied?: Prisma.SortOrder
   netPrice?: Prisma.SortOrder
+  isAgentRelated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   treatment?: Prisma.TreatmentOrderByWithRelationInput
   lines?: Prisma.TreatmentChargeLineOrderByRelationAggregateInput
@@ -264,6 +282,7 @@ export type TreatmentChargeOrderByWithRelationInput = {
 
 export type TreatmentChargeWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  shortId?: string
   AND?: Prisma.TreatmentChargeWhereInput | Prisma.TreatmentChargeWhereInput[]
   OR?: Prisma.TreatmentChargeWhereInput[]
   NOT?: Prisma.TreatmentChargeWhereInput | Prisma.TreatmentChargeWhereInput[]
@@ -272,19 +291,22 @@ export type TreatmentChargeWhereUniqueInput = Prisma.AtLeast<{
   discount?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFilter<"TreatmentCharge"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TreatmentCharge"> | Date | string
   treatment?: Prisma.XOR<Prisma.TreatmentScalarRelationFilter, Prisma.TreatmentWhereInput>
   lines?: Prisma.TreatmentChargeLineListRelationFilter
   allocations?: Prisma.PaymentAllocationListRelationFilter
-}, "id">
+}, "id" | "shortId">
 
 export type TreatmentChargeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  shortId?: Prisma.SortOrder
   treatmentId?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   discount?: Prisma.SortOrder
   depositApplied?: Prisma.SortOrder
   netPrice?: Prisma.SortOrder
+  isAgentRelated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.TreatmentChargeCountOrderByAggregateInput
   _avg?: Prisma.TreatmentChargeAvgOrderByAggregateInput
@@ -298,20 +320,24 @@ export type TreatmentChargeScalarWhereWithAggregatesInput = {
   OR?: Prisma.TreatmentChargeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TreatmentChargeScalarWhereWithAggregatesInput | Prisma.TreatmentChargeScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"TreatmentCharge"> | string
+  shortId?: Prisma.StringWithAggregatesFilter<"TreatmentCharge"> | string
   treatmentId?: Prisma.StringWithAggregatesFilter<"TreatmentCharge"> | string
   totalPrice?: Prisma.DecimalWithAggregatesFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalWithAggregatesFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalWithAggregatesFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalWithAggregatesFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolWithAggregatesFilter<"TreatmentCharge"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TreatmentCharge"> | Date | string
 }
 
 export type TreatmentChargeCreateInput = {
   id?: string
+  shortId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
   treatment: Prisma.TreatmentCreateNestedOneWithoutChargesInput
   lines?: Prisma.TreatmentChargeLineCreateNestedManyWithoutChargeInput
@@ -320,11 +346,13 @@ export type TreatmentChargeCreateInput = {
 
 export type TreatmentChargeUncheckedCreateInput = {
   id?: string
+  shortId: string
   treatmentId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
   lines?: Prisma.TreatmentChargeLineUncheckedCreateNestedManyWithoutChargeInput
   allocations?: Prisma.PaymentAllocationUncheckedCreateNestedManyWithoutChargeInput
@@ -332,10 +360,12 @@ export type TreatmentChargeUncheckedCreateInput = {
 
 export type TreatmentChargeUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   treatment?: Prisma.TreatmentUpdateOneRequiredWithoutChargesNestedInput
   lines?: Prisma.TreatmentChargeLineUpdateManyWithoutChargeNestedInput
@@ -344,11 +374,13 @@ export type TreatmentChargeUpdateInput = {
 
 export type TreatmentChargeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   treatmentId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lines?: Prisma.TreatmentChargeLineUncheckedUpdateManyWithoutChargeNestedInput
   allocations?: Prisma.PaymentAllocationUncheckedUpdateManyWithoutChargeNestedInput
@@ -356,30 +388,36 @@ export type TreatmentChargeUncheckedUpdateInput = {
 
 export type TreatmentChargeCreateManyInput = {
   id?: string
+  shortId: string
   treatmentId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
 }
 
 export type TreatmentChargeUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TreatmentChargeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   treatmentId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -395,11 +433,13 @@ export type TreatmentChargeOrderByRelationAggregateInput = {
 
 export type TreatmentChargeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  shortId?: Prisma.SortOrder
   treatmentId?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   discount?: Prisma.SortOrder
   depositApplied?: Prisma.SortOrder
   netPrice?: Prisma.SortOrder
+  isAgentRelated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -412,21 +452,25 @@ export type TreatmentChargeAvgOrderByAggregateInput = {
 
 export type TreatmentChargeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  shortId?: Prisma.SortOrder
   treatmentId?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   discount?: Prisma.SortOrder
   depositApplied?: Prisma.SortOrder
   netPrice?: Prisma.SortOrder
+  isAgentRelated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type TreatmentChargeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  shortId?: Prisma.SortOrder
   treatmentId?: Prisma.SortOrder
   totalPrice?: Prisma.SortOrder
   discount?: Prisma.SortOrder
   depositApplied?: Prisma.SortOrder
   netPrice?: Prisma.SortOrder
+  isAgentRelated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -514,10 +558,12 @@ export type TreatmentChargeUpdateOneRequiredWithoutAllocationsNestedInput = {
 
 export type TreatmentChargeCreateWithoutTreatmentInput = {
   id?: string
+  shortId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
   lines?: Prisma.TreatmentChargeLineCreateNestedManyWithoutChargeInput
   allocations?: Prisma.PaymentAllocationCreateNestedManyWithoutChargeInput
@@ -525,10 +571,12 @@ export type TreatmentChargeCreateWithoutTreatmentInput = {
 
 export type TreatmentChargeUncheckedCreateWithoutTreatmentInput = {
   id?: string
+  shortId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
   lines?: Prisma.TreatmentChargeLineUncheckedCreateNestedManyWithoutChargeInput
   allocations?: Prisma.PaymentAllocationUncheckedCreateNestedManyWithoutChargeInput
@@ -565,20 +613,24 @@ export type TreatmentChargeScalarWhereInput = {
   OR?: Prisma.TreatmentChargeScalarWhereInput[]
   NOT?: Prisma.TreatmentChargeScalarWhereInput | Prisma.TreatmentChargeScalarWhereInput[]
   id?: Prisma.StringFilter<"TreatmentCharge"> | string
+  shortId?: Prisma.StringFilter<"TreatmentCharge"> | string
   treatmentId?: Prisma.StringFilter<"TreatmentCharge"> | string
   totalPrice?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFilter<"TreatmentCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFilter<"TreatmentCharge"> | boolean
   createdAt?: Prisma.DateTimeFilter<"TreatmentCharge"> | Date | string
 }
 
 export type TreatmentChargeCreateWithoutLinesInput = {
   id?: string
+  shortId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
   treatment: Prisma.TreatmentCreateNestedOneWithoutChargesInput
   allocations?: Prisma.PaymentAllocationCreateNestedManyWithoutChargeInput
@@ -586,11 +638,13 @@ export type TreatmentChargeCreateWithoutLinesInput = {
 
 export type TreatmentChargeUncheckedCreateWithoutLinesInput = {
   id?: string
+  shortId: string
   treatmentId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
   allocations?: Prisma.PaymentAllocationUncheckedCreateNestedManyWithoutChargeInput
 }
@@ -613,10 +667,12 @@ export type TreatmentChargeUpdateToOneWithWhereWithoutLinesInput = {
 
 export type TreatmentChargeUpdateWithoutLinesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   treatment?: Prisma.TreatmentUpdateOneRequiredWithoutChargesNestedInput
   allocations?: Prisma.PaymentAllocationUpdateManyWithoutChargeNestedInput
@@ -624,21 +680,25 @@ export type TreatmentChargeUpdateWithoutLinesInput = {
 
 export type TreatmentChargeUncheckedUpdateWithoutLinesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   treatmentId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.PaymentAllocationUncheckedUpdateManyWithoutChargeNestedInput
 }
 
 export type TreatmentChargeCreateWithoutAllocationsInput = {
   id?: string
+  shortId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
   treatment: Prisma.TreatmentCreateNestedOneWithoutChargesInput
   lines?: Prisma.TreatmentChargeLineCreateNestedManyWithoutChargeInput
@@ -646,11 +706,13 @@ export type TreatmentChargeCreateWithoutAllocationsInput = {
 
 export type TreatmentChargeUncheckedCreateWithoutAllocationsInput = {
   id?: string
+  shortId: string
   treatmentId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
   lines?: Prisma.TreatmentChargeLineUncheckedCreateNestedManyWithoutChargeInput
 }
@@ -673,10 +735,12 @@ export type TreatmentChargeUpdateToOneWithWhereWithoutAllocationsInput = {
 
 export type TreatmentChargeUpdateWithoutAllocationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   treatment?: Prisma.TreatmentUpdateOneRequiredWithoutChargesNestedInput
   lines?: Prisma.TreatmentChargeLineUpdateManyWithoutChargeNestedInput
@@ -684,30 +748,36 @@ export type TreatmentChargeUpdateWithoutAllocationsInput = {
 
 export type TreatmentChargeUncheckedUpdateWithoutAllocationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   treatmentId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lines?: Prisma.TreatmentChargeLineUncheckedUpdateManyWithoutChargeNestedInput
 }
 
 export type TreatmentChargeCreateManyTreatmentInput = {
   id?: string
+  shortId: string
   totalPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: boolean
   createdAt?: Date | string
 }
 
 export type TreatmentChargeUpdateWithoutTreatmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lines?: Prisma.TreatmentChargeLineUpdateManyWithoutChargeNestedInput
   allocations?: Prisma.PaymentAllocationUpdateManyWithoutChargeNestedInput
@@ -715,10 +785,12 @@ export type TreatmentChargeUpdateWithoutTreatmentInput = {
 
 export type TreatmentChargeUncheckedUpdateWithoutTreatmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lines?: Prisma.TreatmentChargeLineUncheckedUpdateManyWithoutChargeNestedInput
   allocations?: Prisma.PaymentAllocationUncheckedUpdateManyWithoutChargeNestedInput
@@ -726,10 +798,12 @@ export type TreatmentChargeUncheckedUpdateWithoutTreatmentInput = {
 
 export type TreatmentChargeUncheckedUpdateManyWithoutTreatmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  shortId?: Prisma.StringFieldUpdateOperationsInput | string
   totalPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   depositApplied?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   netPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  isAgentRelated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -775,11 +849,13 @@ export type TreatmentChargeCountOutputTypeCountAllocationsArgs<ExtArgs extends r
 
 export type TreatmentChargeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  shortId?: boolean
   treatmentId?: boolean
   totalPrice?: boolean
   discount?: boolean
   depositApplied?: boolean
   netPrice?: boolean
+  isAgentRelated?: boolean
   createdAt?: boolean
   treatment?: boolean | Prisma.TreatmentDefaultArgs<ExtArgs>
   lines?: boolean | Prisma.TreatmentCharge$linesArgs<ExtArgs>
@@ -789,37 +865,43 @@ export type TreatmentChargeSelect<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type TreatmentChargeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  shortId?: boolean
   treatmentId?: boolean
   totalPrice?: boolean
   discount?: boolean
   depositApplied?: boolean
   netPrice?: boolean
+  isAgentRelated?: boolean
   createdAt?: boolean
   treatment?: boolean | Prisma.TreatmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["treatmentCharge"]>
 
 export type TreatmentChargeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  shortId?: boolean
   treatmentId?: boolean
   totalPrice?: boolean
   discount?: boolean
   depositApplied?: boolean
   netPrice?: boolean
+  isAgentRelated?: boolean
   createdAt?: boolean
   treatment?: boolean | Prisma.TreatmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["treatmentCharge"]>
 
 export type TreatmentChargeSelectScalar = {
   id?: boolean
+  shortId?: boolean
   treatmentId?: boolean
   totalPrice?: boolean
   discount?: boolean
   depositApplied?: boolean
   netPrice?: boolean
+  isAgentRelated?: boolean
   createdAt?: boolean
 }
 
-export type TreatmentChargeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "treatmentId" | "totalPrice" | "discount" | "depositApplied" | "netPrice" | "createdAt", ExtArgs["result"]["treatmentCharge"]>
+export type TreatmentChargeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "shortId" | "treatmentId" | "totalPrice" | "discount" | "depositApplied" | "netPrice" | "isAgentRelated" | "createdAt", ExtArgs["result"]["treatmentCharge"]>
 export type TreatmentChargeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   treatment?: boolean | Prisma.TreatmentDefaultArgs<ExtArgs>
   lines?: boolean | Prisma.TreatmentCharge$linesArgs<ExtArgs>
@@ -842,11 +924,13 @@ export type $TreatmentChargePayload<ExtArgs extends runtime.Types.Extensions.Int
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    shortId: string
     treatmentId: string
     totalPrice: runtime.Decimal
     discount: runtime.Decimal
     depositApplied: runtime.Decimal
     netPrice: runtime.Decimal
+    isAgentRelated: boolean
     createdAt: Date
   }, ExtArgs["result"]["treatmentCharge"]>
   composites: {}
@@ -1275,11 +1359,13 @@ export interface Prisma__TreatmentChargeClient<T, Null = never, ExtArgs extends 
  */
 export interface TreatmentChargeFieldRefs {
   readonly id: Prisma.FieldRef<"TreatmentCharge", 'String'>
+  readonly shortId: Prisma.FieldRef<"TreatmentCharge", 'String'>
   readonly treatmentId: Prisma.FieldRef<"TreatmentCharge", 'String'>
   readonly totalPrice: Prisma.FieldRef<"TreatmentCharge", 'Decimal'>
   readonly discount: Prisma.FieldRef<"TreatmentCharge", 'Decimal'>
   readonly depositApplied: Prisma.FieldRef<"TreatmentCharge", 'Decimal'>
   readonly netPrice: Prisma.FieldRef<"TreatmentCharge", 'Decimal'>
+  readonly isAgentRelated: Prisma.FieldRef<"TreatmentCharge", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"TreatmentCharge", 'DateTime'>
 }
     

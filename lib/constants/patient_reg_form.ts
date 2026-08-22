@@ -17,21 +17,21 @@ export type { FormField, FormSection, SupportedLanguage } from "./form-types";
 // Shared Options (Nationality, Medical Services, Referral Sources)
 // =================================================================
 const NATIONALITY_OPTIONS = [
-  { value: "TW", label: { en: "Taiwan", mm: "ထိုင်ဝမ်", zh: "台灣" } },
-  { value: "MM", label: { en: "Myanmar", mm: "မြန်မာ", zh: "緬甸" } },
-  { value: "US", label: { en: "United States", mm: "အမေရိကန်", zh: "美國" } },
-  { value: "JP", label: { en: "Japan", mm: "ဂျပန်", zh: "日本" } },
-  { value: "KR", label: { en: "South Korea", mm: "တောင်ကိုရီးယား", zh: "韓國" } },
-  { value: "SG", label: { en: "Singapore", mm: "စင်ကာပူ", zh: "新加坡" } },
-  { value: "MY", label: { en: "Malaysia", mm: "မလေးရှား", zh: "馬來西亞" } },
-  { value: "TH", label: { en: "Thailand", mm: "ထိုင်း", zh: "泰國" } },
-  { value: "VN", label: { en: "Vietnam", mm: "ဗီယက်နမ်", zh: "越南" } },
-  { value: "PH", label: { en: "Philippines", mm: "ဖိလစ်ပိုင်", zh: "菲律賓" } },
-  { value: "CN", label: { en: "China", mm: "တရုတ်", zh: "中國" } },
-  { value: "HK", label: { en: "Hong Kong", mm: "ဟောင်ကောင်", zh: "香港" } },
-  { value: "AU", label: { en: "Australia", mm: "ဩစတြေးလျ", zh: "澳洲" } },
-  { value: "GB", label: { en: "United Kingdom", mm: "ယူနိုက်တက်ကင်းဒမ်း", zh: "英國" } },
-  { value: "OTHER", label: { en: "Other", mm: "အခြား", zh: "其他" } },
+  { value: "Taiwan", label: { en: "Taiwan", mm: "ထိုင်ဝမ်", zh: "台灣" } },
+  { value: "Myanmar", label: { en: "Myanmar", mm: "မြန်မာ", zh: "緬甸" } },
+  { value: "United States", label: { en: "United States", mm: "အမေရိကန်", zh: "美國" } },
+  { value: "Japan", label: { en: "Japan", mm: "ဂျပန်", zh: "日本" } },
+  { value: "South Korea", label: { en: "South Korea", mm: "တောင်ကိုရီးယား", zh: "韓國" } },
+  { value: "Singapore", label: { en: "Singapore", mm: "စင်ကာပူ", zh: "新加坡" } },
+  { value: "Malaysia", label: { en: "Malaysia", mm: "မလေးရှား", zh: "馬來西亞" } },
+  { value: "Thailand", label: { en: "Thailand", mm: "ထိုင်း", zh: "泰國" } },
+  { value: "Vietnam", label: { en: "Vietnam", mm: "ဗီယက်နမ်", zh: "越南" } },
+  { value: "Philippines", label: { en: "Philippines", mm: "ဖိလစ်ပိုင်", zh: "菲律賓" } },
+  { value: "China", label: { en: "China", mm: "တရုတ်", zh: "中國" } },
+  { value: "Hong Kong", label: { en: "Hong Kong", mm: "ဟောင်ကောင်", zh: "香港" } },
+  { value: "Australia", label: { en: "Australia", mm: "ဩစတြေးလျ", zh: "澳洲" } },
+  { value: "United Kingdom", label: { en: "United Kingdom", mm: "ယူနိုက်တက်ကင်းဒမ်း", zh: "英國" } },
+  { value: "Other", label: { en: "Other", mm: "အခြား", zh: "其他" } },
 ];
 
 // =================================================================
@@ -176,6 +176,7 @@ export const PATIENT_REGISTRATION_FORM: FormSection[] = [
         type: "text",
         label: { en: "Street Address", mm: "လမ်းလိပ်စာ", zh: "街道地址" },
         placeholder: { en: "Street name, building, apartment", mm: "လမ်းအမည်၊ အဆောက်အဦ၊ တိုက်ခန်း", zh: "街道名稱、建築物、公寓" },
+        required: true,
         colSpan: 2,
       },
       {
@@ -183,6 +184,7 @@ export const PATIENT_REGISTRATION_FORM: FormSection[] = [
         type: "text",
         label: { en: "City", mm: "မြို့", zh: "城市" },
         placeholder: { en: "City", mm: "မြို့", zh: "城市" },
+        required: true,
         colSpan: 1,
       },
       {
@@ -202,8 +204,8 @@ export const PATIENT_REGISTRATION_FORM: FormSection[] = [
       {
         name: "mobile_number",
         type: "tel",
-        label: { en: "Mobile Number (with country code)", mm: "မိုဘိုင်းဖုန်းနံပါတ် (နိုင်ငံကုဒ်ပါ)", zh: "手機號碼（含國碼）" },
-        placeholder: { en: "+95 912345678", mm: "+95 912345678", zh: "+95 912345678" },
+        label: { en: "Mobile Number", mm: "မိုဘိုင်းဖုန်းနံပါတ်", zh: "手機號碼" },
+        placeholder: { en: "912 345 678", mm: "912 345 678", zh: "912 345 678" },
         required: true,
         colSpan: 1,
       },
@@ -211,7 +213,7 @@ export const PATIENT_REGISTRATION_FORM: FormSection[] = [
         name: "whatsapp",
         type: "tel",
         label: { en: "WhatsApp", mm: "WhatsApp", zh: "WhatsApp" },
-        placeholder: { en: "+95 912345678", mm: "+95 912345678", zh: "+95 912345678" },
+        placeholder: { en: "912 345 678", mm: "912 345 678", zh: "912 345 678" },
         colSpan: 1,
       },
       {
@@ -263,7 +265,7 @@ export const PATIENT_REGISTRATION_FORM: FormSection[] = [
         name: "emergency_phone",
         type: "tel",
         label: { en: "Phone Number", mm: "ဖုန်းနံပါတ်", zh: "電話號碼" },
-        placeholder: { en: "+95 912345678", mm: "+95 912345678", zh: "+95 912345678" },
+        placeholder: { en: "912 345 678", mm: "912 345 678", zh: "912 345 678" },
         required: true,
         colSpan: 1,
       },

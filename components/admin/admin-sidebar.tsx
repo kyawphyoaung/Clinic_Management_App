@@ -18,6 +18,9 @@ import {
   CalendarDays,
   Clock,
   LayoutDashboard,
+  CircleHelp,
+  Landmark,
+  PiggyBank,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -81,10 +84,28 @@ const allNavItems = [
   },
   { href: "/dashboard/clinics", label: "Clinics", icon: Building, roles: ["ADMIN"] },
   {
+    href: "/dashboard/deposit-receivers",
+    label: "Deposit Receivers",
+    icon: Landmark,
+    roles: ["ADMIN"],
+  },
+  {
+    href: "/dashboard/cashflow",
+    label: "Cashflow",
+    icon: PiggyBank,
+    roles: ["ADMIN"],
+  },
+  {
     href: "/dashboard/settings/users",
     label: "Users",
     icon: Settings,
     roles: ["ADMIN"],
+  },
+  {
+    href: "/dashboard/help",
+    label: "Help",
+    icon: CircleHelp,
+    roles: ["ADMIN", "DOCTOR", "STAFF"],
   },
 ];
 

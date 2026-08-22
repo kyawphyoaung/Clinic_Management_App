@@ -8,41 +8,41 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function PartnerForgotPasswordForm() {
-  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError(null);
+    setMessage(null);
     const formData = new FormData(e.currentTarget);
-    const partnerId = String(formData.get("partner_id") ?? "").trim();
     startTransition(async () => {
-      const result = await requestPartnerPasswordReset(partnerId);
-      if (!result.success) {
-        setError(result.error);
-        return;
-      }
-      const subject = encodeURIComponent("Reset your partner password");
-      const body = encodeURIComponent(
-        `Hello ${result.fullName},\n\nPartner ID: ${result.partnerId}\nReset your password here: ${window.location.origin}${result.resetPath}\n\nThis link expires in 24 hours.`
+      await requestPartnerPasswordReset({
+        email: String(formData.get("email") ?? ""),
+        dateOfBirth: String(formData.get("date_of_birth") ?? ""),
+      });
+      setMessage(
+        "If the email and date of birth match our records, a reset link has been sent."
       );
-      window.location.href = `mailto:${result.email}?subject=${subject}&body=${body}`;
     });
   }
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="space-y-1.5">
-        <Label htmlFor="partner_id">Partner ID</Label>
-        <Input id="partner_id" name="partner_id" required />
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" name="email" type="email" required />
       </div>
-      {error && (
-        <Alert className="border-destructive/50">
-          <AlertDescription className="text-destructive">{error}</AlertDescription>
+      <div className="space-y-1.5">
+        <Label htmlFor="date_of_birth">Date of Birth</Label>
+        <Input id="date_of_birth" name="date_of_birth" type="date" required />
+      </div>
+      {message && (
+        <Alert>
+          <AlertDescription>{message}</AlertDescription>
         </Alert>
       )}
       <Button type="submit" className="w-full" disabled={isPending}>
-        Generate Reset Link
+        Send Reset Link
       </Button>
     </form>
   );

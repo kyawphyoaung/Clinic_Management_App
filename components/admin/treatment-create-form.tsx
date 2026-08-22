@@ -18,13 +18,14 @@ type DoctorOption = { id: string; fullName: string };
 type TreatmentCreateFormProps = {
   patientId: string;
   doctors: DoctorOption[];
+  visits: { id: string; displayId: string }[];
 };
 
 function todayString() {
   return new Date().toISOString().slice(0, 10);
 }
 
-export function TreatmentCreateForm({ patientId, doctors }: TreatmentCreateFormProps) {
+export function TreatmentCreateForm({ patientId, doctors, visits }: TreatmentCreateFormProps) {
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -33,6 +34,7 @@ export function TreatmentCreateForm({ patientId, doctors }: TreatmentCreateFormP
     startTransition(async () => {
       await createTreatment({
         patientId,
+        visitId: String(formData.get("visitId") ?? ""),
         treatmentDate: String(formData.get("treatmentDate") ?? todayString()),
         diagnosis: String(formData.get("diagnosis") ?? ""),
         doctorId: String(formData.get("doctorId") ?? "") || null,
@@ -49,6 +51,22 @@ export function TreatmentCreateForm({ patientId, doctors }: TreatmentCreateFormP
       </CardHeader>
       <CardContent>
         <form className="grid gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
+          <div className="space-y-1.5 md:col-span-2">
+            <Label htmlFor="visitId">Visit</Label>
+            <select
+              id="visitId"
+              name="visitId"
+              required
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
+              defaultValue={visits[0]?.id ?? ""}
+            >
+              {visits.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.displayId}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="space-y-1.5">
             <Label htmlFor="treatmentDate">Treatment Date</Label>
             <Input

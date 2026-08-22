@@ -13,6 +13,8 @@ import {
   PaymentMethod,
   ServiceCategory,
   AgentStatus,
+  VisitType,
+  VisitSource,
 } from "./generated/prisma/client";
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -43,16 +45,20 @@ function getRandomInt(min: number, max: number): number {
 // ============================================================
 
 const GENDERS = ['male', 'female', 'other'];
-const NATIONALITIES = ['US', 'MM', 'TW', 'JP', 'KR', 'SG', 'MY', 'TH', 'VN', 'PH', 'CN', 'HK', 'AU', 'GB'];
+const NATIONALITIES = ['United States', 'Myanmar', 'Taiwan', 'Japan', 'South Korea', 'Singapore', 'Malaysia', 'Thailand', 'Vietnam', 'Philippines', 'China', 'Hong Kong', 'Australia', 'United Kingdom'];
 const SERVICE_CATEGORIES = ['mens_health_urology', 'executive_screening', 'medical_aesthetics', 'hair_restoration', 'womens_health', 'neurology_wellness', 'preventive_medicine'];
 const REFERRAL_SOURCES = ['referral_partner', 'friend_family', 'facebook', 'instagram', 'google_search', 'youtube', 'website', 'other'];
 const ASSISTANCE_TYPES = ['airport_transfer', 'hotel_reservation', 'medical_interpreter', 'local_transportation', 'travel_info_only'];
 const BUSINESS_TYPES = ['medical_clinic', 'hospital', 'medical_tourism_agency', 'travel_agency', 'insurance_broker', 'corporate_wellness', 'aesthetic_clinic', 'healthcare_consultant', 'community_org', 'health_influencer'];
-const PATIENT_ORIGIN = ['US', 'MM', 'CA', 'AU', 'SG', 'MY', 'TH', 'VN', 'PH', 'ID', 'JP', 'KR', 'CN', 'HK', 'IN', 'GB'];
+const PATIENT_ORIGIN = ['United States', 'Myanmar', 'Canada', 'Australia', 'Singapore', 'Malaysia', 'Thailand', 'Vietnam', 'Philippines', 'Indonesia', 'Japan', 'South Korea', 'China', 'Hong Kong', 'India', 'United Kingdom'];
 const MEDICAL_SERVICES = ['erectile_dysfunction', 'testosterone_therapy', 'circumcision', 'vasectomy', 'prostate_bladder', 'hair_restoration', 'skin_tightening', 'laser_hair_removal', 'body_sculpting', 'executive_screening', 'preventive_medicine', 'pelvic_floor', 'sleep_disorders', 'chronic_pain', 'cognitive_health'];
 const MEDICAL_DOCS = ['medical_reports', 'lab_results', 'imaging', 'medication_list', 'referral_letter', 'surgical_records', 'other'];
 const SUPPORTING_DOCS = ['business_registration', 'professional_license', 'company_profile', 'business_card', 'government_id', 'other'];
-const COUNTRIES = ['US', 'MM', 'TW', 'JP', 'KR', 'SG', 'MY', 'TH', 'VN', 'PH', 'CN', 'HK', 'AU', 'GB', 'CA', 'IN', 'ID'];
+const COUNTRIES = ['United States', 'Myanmar', 'Taiwan', 'Japan', 'South Korea', 'Singapore', 'Malaysia', 'Thailand', 'Vietnam', 'Philippines', 'China', 'Hong Kong', 'Australia', 'United Kingdom', 'Canada', 'India', 'Indonesia'];
+
+let seedPatientSeq = 0;
+let seedTreatSeq = 0;
+let seedChargeSeq = 0;
 
 // ============================================================
 // Agent Data
@@ -63,7 +69,7 @@ const agents = [
     fullName: 'Aung Ko Ko',
     companyName: 'Golden Health Travel Co., Ltd',
     jobTitle: 'Director',
-    countryOfResidence: 'MM',
+    countryOfResidence: 'Myanmar',
     businessAddress: 'No. 123, Bogyoke Road, Yangon, Myanmar',
     mobileNumber: '+959123456789',
     whatsapp: '+959123456789',
@@ -80,7 +86,7 @@ const agents = [
     monthlyClients: '31_to_50',
     referralServices: ['mens_health_urology', 'executive_screening', 'hair_restoration'],
     referralServicesOther: '',
-    patientOriginCountries: ['MM', 'TH', 'SG'],
+    patientOriginCountries: ['Myanmar', 'Thailand', 'Singapore'],
     patientOriginOther: '',
     estimatedMonthlyReferrals: '11_to_20',
     confirmNoMedicalAdvice: true,
@@ -104,7 +110,7 @@ const agents = [
     fullName: 'Thiri Hlaing',
     companyName: 'Wellness Connect Pte Ltd',
     jobTitle: 'CEO & Founder',
-    countryOfResidence: 'SG',
+    countryOfResidence: 'Singapore',
     businessAddress: '10 Anson Road, #15-01 International Plaza, Singapore 079903',
     mobileNumber: '+6591234567',
     whatsapp: '+6591234567',
@@ -121,7 +127,7 @@ const agents = [
     monthlyClients: '51_to_100',
     referralServices: ['medical_aesthetics', 'womens_health', 'preventive_medicine'],
     referralServicesOther: '',
-    patientOriginCountries: ['SG', 'MY', 'ID', 'CN', 'HK'],
+    patientOriginCountries: ['Singapore', 'Malaysia', 'Indonesia', 'China', 'Hong Kong'],
     patientOriginOther: '',
     estimatedMonthlyReferrals: 'more_than_20',
     confirmNoMedicalAdvice: true,
@@ -183,6 +189,7 @@ function generatePatient(agentId: string, customStatus?: PatientStatus): any {
   const nationality = pickOne(NATIONALITIES);
   const country = pickOne(COUNTRIES);
   const dob = randomDate(new Date('1960-01-01'), new Date('2005-12-31'));
+  const patientNumber = String(260000 + (++seedPatientSeq)).slice(-6);
   const isCompleted = customStatus === PatientStatus.COMPLETED;
 
   // Consent booleans - all true
@@ -194,7 +201,8 @@ function generatePatient(agentId: string, customStatus?: PatientStatus): any {
   };
 
   return {
-    displayId: `00-000-${String(Math.floor(Math.random() * 99999) + 1).padStart(5, '0')}`,
+    displayId: `11-ZA1W-${patientNumber}-260311`,
+    patientNumber,
     fullName,
     preferredName: firstName,
     gender,
@@ -269,7 +277,7 @@ const DIAGNOSES = [
   'Benign Prostatic Hyperplasia',
 ];
 
-function generateTreatments(patientId: string, startDate: Date, endDate?: Date): any[] {
+function generateTreatments(patientId: string, visitId: string, startDate: Date, endDate?: Date): any[] {
   const isCompleted = !!endDate;
   const treatments = [];
   const numTreatments = getRandomInt(1, 3);
@@ -286,7 +294,9 @@ function generateTreatments(patientId: string, startDate: Date, endDate?: Date):
     const status: TreatmentStatus = isCompleted ? TreatmentStatus.COMPLETED : TreatmentStatus.ONGOING;
 
     treatments.push({
+      shortId: `TREAT-${String(++seedTreatSeq).padStart(3, "0")}`,
       patientId,
+      visitId,
       treatmentDate: treatmentStart,
       endDate: treatmentEnd ?? null,
       diagnosis: pickOne(DIAGNOSES),
@@ -311,6 +321,7 @@ function generateCharges(treatmentId: string): any[] {
     const category = pickOne(serviceCategories);
 
     charges.push({
+      shortId: `CHG-${String(++seedChargeSeq).padStart(3, "0")}`,
       treatmentId,
       totalPrice,
       discount: 0,
@@ -348,6 +359,22 @@ function generatePayment(
     notes: "Payment received",
     recordedById,
   };
+}
+
+async function persistPatientWithVisit(patientData: any) {
+  const patient = await prisma.patient.create({ data: patientData });
+  const visit = await prisma.visit.create({
+    data: {
+      displayId: patient.displayId,
+      patientId: patient.id,
+      clinicId: patient.clinicId as string,
+      agentId: patient.currentAgentId,
+      visitDate: patient.createdAt,
+      visitType: VisitType.FIRST_VISIT,
+      source: VisitSource.AGENT_REFERRAL,
+    },
+  });
+  return { patient, visit };
 }
 
 // ============================================================
@@ -458,6 +485,7 @@ async function main() {
         fullName: d.fullName,
         role: 'DOCTOR',
         isActive: true,
+        doctorCode: `DR${String(seededDoctors.length + 1).padStart(3, "0")}`,
       },
     });
     seededDoctors.push({ id: user.id, username: d.username, specialization: d.specialization });
@@ -625,9 +653,9 @@ async function main() {
     // Set signature date within range
     patientData.consentDate = randomDate(startDate, endDate);
 
-    const patient = await prisma.patient.create({ data: patientData });
+    const { patient, visit } = await persistPatientWithVisit(patientData);
     allPatients.push(patient);
-    agent1Patients.push({ patient, startDate, endDate, isCompleted: true });
+    agent1Patients.push({ patient, visit, startDate, endDate, isCompleted: true });
   }
 
   // 3 non-completed patients for Agent 1 (various statuses)
@@ -645,9 +673,9 @@ async function main() {
     patientData.clinicId = clinic1.id;
     patientData.consentDate = randomDate(startDate, new Date(2026, 6, 20));
 
-    const patient = await prisma.patient.create({ data: patientData });
+    const { patient, visit } = await persistPatientWithVisit(patientData);
     allPatients.push(patient);
-    agent1Patients.push({ patient, startDate, endDate: undefined, isCompleted: false });
+    agent1Patients.push({ patient, visit, startDate, endDate: undefined, isCompleted: false });
   }
 
   // --- Agent 2: 4 patients (2 completed, 2 various) ---
@@ -666,9 +694,9 @@ async function main() {
     patientData.clinicId = clinic2.id;
     patientData.consentDate = randomDate(startDate, endDate);
 
-    const patient = await prisma.patient.create({ data: patientData });
+    const { patient, visit } = await persistPatientWithVisit(patientData);
     allPatients.push(patient);
-    agent2Patients.push({ patient, startDate, endDate, isCompleted: true });
+    agent2Patients.push({ patient, visit, startDate, endDate, isCompleted: true });
   }
 
   // 2 non-completed patients for Agent 2
@@ -685,9 +713,9 @@ async function main() {
     patientData.clinicId = clinic2.id;
     patientData.consentDate = randomDate(startDate, new Date(2026, 6, 28));
 
-    const patient = await prisma.patient.create({ data: patientData });
+    const { patient, visit } = await persistPatientWithVisit(patientData);
     allPatients.push(patient);
-    agent2Patients.push({ patient, startDate, endDate: undefined, isCompleted: false });
+    agent2Patients.push({ patient, visit, startDate, endDate: undefined, isCompleted: false });
   }
 
   console.log(`  ✅ ${allPatients.length} patients created`);
@@ -698,8 +726,8 @@ async function main() {
   const allTreatments = [];
 
   // Process Agent 1 patients
-  for (const { patient, startDate, endDate, isCompleted } of agent1Patients) {
-    const treatments = generateTreatments(patient.id, startDate, endDate);
+  for (const { patient, visit, startDate, endDate, isCompleted } of agent1Patients) {
+    const treatments = generateTreatments(patient.id, visit.id, startDate, endDate);
     for (const treatmentData of treatments) {
       const treatment = await prisma.treatment.create({
         data: {
@@ -733,8 +761,8 @@ async function main() {
   }
 
   // Process Agent 2 patients
-  for (const { patient, startDate, endDate, isCompleted } of agent2Patients) {
-    const treatments = generateTreatments(patient.id, startDate, endDate);
+  for (const { patient, visit, startDate, endDate, isCompleted } of agent2Patients) {
+    const treatments = generateTreatments(patient.id, visit.id, startDate, endDate);
     for (const treatmentData of treatments) {
       const treatment = await prisma.treatment.create({
         data: {

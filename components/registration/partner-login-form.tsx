@@ -60,6 +60,11 @@ export function PartnerLoginForm() {
           <Button type="submit" className="w-full" disabled={isPending}>
             Sign In
           </Button>
+          <p className="text-center text-sm text-muted-foreground">
+            <a className="underline" href="/partner/forgot-password">
+              Forgot password?
+            </a>
+          </p>
         </form>
       </CardContent>
     </Card>

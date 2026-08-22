@@ -133,3 +133,38 @@ export const CommissionReviewStatus = {
 } as const
 
 export type CommissionReviewStatus = (typeof CommissionReviewStatus)[keyof typeof CommissionReviewStatus]
+
+
+export const VisitType = {
+  FIRST_VISIT: 'FIRST_VISIT',
+  REVISIT: 'REVISIT',
+  FOLLOW_UP: 'FOLLOW_UP'
+} as const
+
+export type VisitType = (typeof VisitType)[keyof typeof VisitType]
+
+
+export const VisitSource = {
+  AGENT_REFERRAL: 'AGENT_REFERRAL',
+  WALKIN: 'WALKIN'
+} as const
+
+export type VisitSource = (typeof VisitSource)[keyof typeof VisitSource]
+
+
+export const PasswordActorType = {
+  AGENT: 'AGENT',
+  DOCTOR: 'DOCTOR'
+} as const
+
+export type PasswordActorType = (typeof PasswordActorType)[keyof typeof PasswordActorType]
+
+
+export const RequestedDepositStatus = {
+  REQUESTED: 'REQUESTED',
+  SENT: 'SENT',
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type RequestedDepositStatus = (typeof RequestedDepositStatus)[keyof typeof RequestedDepositStatus]

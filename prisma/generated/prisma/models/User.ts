@@ -31,6 +31,7 @@ export type UserMinAggregateOutputType = {
   passwordHash: string | null
   fullName: string | null
   role: $Enums.UserRole | null
+  doctorCode: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +44,7 @@ export type UserMaxAggregateOutputType = {
   passwordHash: string | null
   fullName: string | null
   role: $Enums.UserRole | null
+  doctorCode: string | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +57,7 @@ export type UserCountAggregateOutputType = {
   passwordHash: number
   fullName: number
   role: number
+  doctorCode: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -69,6 +72,7 @@ export type UserMinAggregateInputType = {
   passwordHash?: true
   fullName?: true
   role?: true
+  doctorCode?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -81,6 +85,7 @@ export type UserMaxAggregateInputType = {
   passwordHash?: true
   fullName?: true
   role?: true
+  doctorCode?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +98,7 @@ export type UserCountAggregateInputType = {
   passwordHash?: true
   fullName?: true
   role?: true
+  doctorCode?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -178,6 +184,7 @@ export type UserGroupByOutputType = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode: string | null
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -211,6 +218,7 @@ export type UserWhereInput = {
   passwordHash?: Prisma.StringFilter<"User"> | string
   fullName?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
+  doctorCode?: Prisma.StringNullableFilter<"User"> | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -222,6 +230,10 @@ export type UserWhereInput = {
   specializations?: Prisma.DoctorSpecializationListRelationFilter
   patientNotesCreated?: Prisma.PatientNoteListRelationFilter
   depositsRecorded?: Prisma.PatientDepositListRelationFilter
+  passwordResetTokens?: Prisma.UserPasswordResetTokenListRelationFilter
+  passwordChangeLogs?: Prisma.PasswordChangeLogListRelationFilter
+  depositTransfers?: Prisma.DepositTransferListRelationFilter
+  requestedDeposits?: Prisma.RequestedDepositListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -231,6 +243,7 @@ export type UserOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  doctorCode?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -242,11 +255,16 @@ export type UserOrderByWithRelationInput = {
   specializations?: Prisma.DoctorSpecializationOrderByRelationAggregateInput
   patientNotesCreated?: Prisma.PatientNoteOrderByRelationAggregateInput
   depositsRecorded?: Prisma.PatientDepositOrderByRelationAggregateInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenOrderByRelationAggregateInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogOrderByRelationAggregateInput
+  depositTransfers?: Prisma.DepositTransferOrderByRelationAggregateInput
+  requestedDeposits?: Prisma.RequestedDepositOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   username?: string
+  doctorCode?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -265,7 +283,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   specializations?: Prisma.DoctorSpecializationListRelationFilter
   patientNotesCreated?: Prisma.PatientNoteListRelationFilter
   depositsRecorded?: Prisma.PatientDepositListRelationFilter
-}, "id" | "username">
+  passwordResetTokens?: Prisma.UserPasswordResetTokenListRelationFilter
+  passwordChangeLogs?: Prisma.PasswordChangeLogListRelationFilter
+  depositTransfers?: Prisma.DepositTransferListRelationFilter
+  requestedDeposits?: Prisma.RequestedDepositListRelationFilter
+}, "id" | "username" | "doctorCode">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -274,6 +296,7 @@ export type UserOrderByWithAggregationInput = {
   passwordHash?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  doctorCode?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -292,6 +315,7 @@ export type UserScalarWhereWithAggregatesInput = {
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   fullName?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
+  doctorCode?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -304,6 +328,7 @@ export type UserCreateInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -315,6 +340,10 @@ export type UserCreateInput = {
   specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -324,6 +353,7 @@ export type UserUncheckedCreateInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -335,6 +365,10 @@ export type UserUncheckedCreateInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUpdateInput = {
@@ -344,6 +378,7 @@ export type UserUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -355,6 +390,10 @@ export type UserUpdateInput = {
   specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -364,6 +403,7 @@ export type UserUncheckedUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -375,6 +415,10 @@ export type UserUncheckedUpdateInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -384,6 +428,7 @@ export type UserCreateManyInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -396,6 +441,7 @@ export type UserUpdateManyMutationInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -408,6 +454,7 @@ export type UserUncheckedUpdateManyInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -425,6 +472,7 @@ export type UserCountOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  doctorCode?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -437,6 +485,7 @@ export type UserMaxOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  doctorCode?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -449,6 +498,7 @@ export type UserMinOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  doctorCode?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -519,6 +569,36 @@ export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
 
+export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  upsert?: Prisma.UserUpsertWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.UserUpdateWithoutPasswordResetTokensInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserCreateNestedOneWithoutPasswordChangeLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordChangeLogsInput, Prisma.UserUncheckedCreateWithoutPasswordChangeLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordChangeLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutPasswordChangeLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordChangeLogsInput, Prisma.UserUncheckedCreateWithoutPasswordChangeLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordChangeLogsInput
+  upsert?: Prisma.UserUpsertWithoutPasswordChangeLogsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordChangeLogsInput, Prisma.UserUpdateWithoutPasswordChangeLogsInput>, Prisma.UserUncheckedUpdateWithoutPasswordChangeLogsInput>
+}
+
 export type UserCreateNestedOneWithoutTreatmentsAsDoctorInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutTreatmentsAsDoctorInput, Prisma.UserUncheckedCreateWithoutTreatmentsAsDoctorInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutTreatmentsAsDoctorInput
@@ -565,6 +645,22 @@ export type UserUpdateOneRequiredWithoutPatientNotesCreatedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPatientNotesCreatedInput, Prisma.UserUpdateWithoutPatientNotesCreatedInput>, Prisma.UserUncheckedUpdateWithoutPatientNotesCreatedInput>
 }
 
+export type UserCreateNestedOneWithoutDepositTransfersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDepositTransfersInput, Prisma.UserUncheckedCreateWithoutDepositTransfersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepositTransfersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutDepositTransfersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDepositTransfersInput, Prisma.UserUncheckedCreateWithoutDepositTransfersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepositTransfersInput
+  upsert?: Prisma.UserUpsertWithoutDepositTransfersInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDepositTransfersInput, Prisma.UserUpdateWithoutDepositTransfersInput>, Prisma.UserUncheckedUpdateWithoutDepositTransfersInput>
+}
+
 export type UserCreateNestedOneWithoutDepositsRecordedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutDepositsRecordedInput, Prisma.UserUncheckedCreateWithoutDepositsRecordedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepositsRecordedInput
@@ -581,6 +677,22 @@ export type UserUpdateOneWithoutDepositsRecordedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDepositsRecordedInput, Prisma.UserUpdateWithoutDepositsRecordedInput>, Prisma.UserUncheckedUpdateWithoutDepositsRecordedInput>
 }
 
+export type UserCreateNestedOneWithoutRequestedDepositsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRequestedDepositsInput, Prisma.UserUncheckedCreateWithoutRequestedDepositsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequestedDepositsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutRequestedDepositsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRequestedDepositsInput, Prisma.UserUncheckedCreateWithoutRequestedDepositsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRequestedDepositsInput
+  upsert?: Prisma.UserUpsertWithoutRequestedDepositsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRequestedDepositsInput, Prisma.UserUpdateWithoutRequestedDepositsInput>, Prisma.UserUncheckedUpdateWithoutRequestedDepositsInput>
+}
+
 export type UserCreateWithoutAppointmentsAsDoctorInput = {
   id?: string
   username: string
@@ -588,6 +700,7 @@ export type UserCreateWithoutAppointmentsAsDoctorInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -598,6 +711,10 @@ export type UserCreateWithoutAppointmentsAsDoctorInput = {
   specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAppointmentsAsDoctorInput = {
@@ -607,6 +724,7 @@ export type UserUncheckedCreateWithoutAppointmentsAsDoctorInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -617,6 +735,10 @@ export type UserUncheckedCreateWithoutAppointmentsAsDoctorInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAppointmentsAsDoctorInput = {
@@ -642,6 +764,7 @@ export type UserUpdateWithoutAppointmentsAsDoctorInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -652,6 +775,10 @@ export type UserUpdateWithoutAppointmentsAsDoctorInput = {
   specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAppointmentsAsDoctorInput = {
@@ -661,6 +788,7 @@ export type UserUncheckedUpdateWithoutAppointmentsAsDoctorInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -671,6 +799,10 @@ export type UserUncheckedUpdateWithoutAppointmentsAsDoctorInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutWeeklyAvailabilityInput = {
@@ -680,6 +812,7 @@ export type UserCreateWithoutWeeklyAvailabilityInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -690,6 +823,10 @@ export type UserCreateWithoutWeeklyAvailabilityInput = {
   specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutWeeklyAvailabilityInput = {
@@ -699,6 +836,7 @@ export type UserUncheckedCreateWithoutWeeklyAvailabilityInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -709,6 +847,10 @@ export type UserUncheckedCreateWithoutWeeklyAvailabilityInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutWeeklyAvailabilityInput = {
@@ -734,6 +876,7 @@ export type UserUpdateWithoutWeeklyAvailabilityInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -744,6 +887,10 @@ export type UserUpdateWithoutWeeklyAvailabilityInput = {
   specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWeeklyAvailabilityInput = {
@@ -753,6 +900,7 @@ export type UserUncheckedUpdateWithoutWeeklyAvailabilityInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -763,6 +911,10 @@ export type UserUncheckedUpdateWithoutWeeklyAvailabilityInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutAvailabilityOverridesInput = {
@@ -772,6 +924,7 @@ export type UserCreateWithoutAvailabilityOverridesInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -782,6 +935,10 @@ export type UserCreateWithoutAvailabilityOverridesInput = {
   specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAvailabilityOverridesInput = {
@@ -791,6 +948,7 @@ export type UserUncheckedCreateWithoutAvailabilityOverridesInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -801,6 +959,10 @@ export type UserUncheckedCreateWithoutAvailabilityOverridesInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAvailabilityOverridesInput = {
@@ -826,6 +988,7 @@ export type UserUpdateWithoutAvailabilityOverridesInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -836,6 +999,10 @@ export type UserUpdateWithoutAvailabilityOverridesInput = {
   specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAvailabilityOverridesInput = {
@@ -845,6 +1012,7 @@ export type UserUncheckedUpdateWithoutAvailabilityOverridesInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -855,6 +1023,10 @@ export type UserUncheckedUpdateWithoutAvailabilityOverridesInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSpecializationsInput = {
@@ -864,6 +1036,7 @@ export type UserCreateWithoutSpecializationsInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -874,6 +1047,10 @@ export type UserCreateWithoutSpecializationsInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSpecializationsInput = {
@@ -883,6 +1060,7 @@ export type UserUncheckedCreateWithoutSpecializationsInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -893,6 +1071,10 @@ export type UserUncheckedCreateWithoutSpecializationsInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSpecializationsInput = {
@@ -918,6 +1100,7 @@ export type UserUpdateWithoutSpecializationsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -928,6 +1111,10 @@ export type UserUpdateWithoutSpecializationsInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSpecializationsInput = {
@@ -937,6 +1124,7 @@ export type UserUncheckedUpdateWithoutSpecializationsInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -947,6 +1135,234 @@ export type UserUncheckedUpdateWithoutSpecializationsInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  username: string
+  email?: string | null
+  passwordHash: string
+  fullName: string
+  role: $Enums.UserRole
+  doctorCode?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentCreateNestedManyWithoutDoctorInput
+  paymentsRecorded?: Prisma.TreatmentPaymentCreateNestedManyWithoutRecordedByInput
+  appointmentsAsDoctor?: Prisma.AppointmentCreateNestedManyWithoutDoctorInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityCreateNestedManyWithoutDoctorInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideCreateNestedManyWithoutDoctorInput
+  specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
+  patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
+  depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  username: string
+  email?: string | null
+  passwordHash: string
+  fullName: string
+  role: $Enums.UserRole
+  doctorCode?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUncheckedCreateNestedManyWithoutDoctorInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUncheckedCreateNestedManyWithoutRecordedByInput
+  appointmentsAsDoctor?: Prisma.AppointmentUncheckedCreateNestedManyWithoutDoctorInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUncheckedCreateNestedManyWithoutDoctorInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedCreateNestedManyWithoutDoctorInput
+  specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
+  patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
+  depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpsertWithoutPasswordResetTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUpdateManyWithoutDoctorNestedInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUpdateManyWithoutRecordedByNestedInput
+  appointmentsAsDoctor?: Prisma.AppointmentUpdateManyWithoutDoctorNestedInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUpdateManyWithoutDoctorNestedInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUpdateManyWithoutDoctorNestedInput
+  specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
+  patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
+  depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUncheckedUpdateManyWithoutDoctorNestedInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUncheckedUpdateManyWithoutRecordedByNestedInput
+  appointmentsAsDoctor?: Prisma.AppointmentUncheckedUpdateManyWithoutDoctorNestedInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUncheckedUpdateManyWithoutDoctorNestedInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedUpdateManyWithoutDoctorNestedInput
+  specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
+  patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
+  depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutPasswordChangeLogsInput = {
+  id?: string
+  username: string
+  email?: string | null
+  passwordHash: string
+  fullName: string
+  role: $Enums.UserRole
+  doctorCode?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentCreateNestedManyWithoutDoctorInput
+  paymentsRecorded?: Prisma.TreatmentPaymentCreateNestedManyWithoutRecordedByInput
+  appointmentsAsDoctor?: Prisma.AppointmentCreateNestedManyWithoutDoctorInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityCreateNestedManyWithoutDoctorInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideCreateNestedManyWithoutDoctorInput
+  specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
+  patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
+  depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutPasswordChangeLogsInput = {
+  id?: string
+  username: string
+  email?: string | null
+  passwordHash: string
+  fullName: string
+  role: $Enums.UserRole
+  doctorCode?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUncheckedCreateNestedManyWithoutDoctorInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUncheckedCreateNestedManyWithoutRecordedByInput
+  appointmentsAsDoctor?: Prisma.AppointmentUncheckedCreateNestedManyWithoutDoctorInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUncheckedCreateNestedManyWithoutDoctorInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedCreateNestedManyWithoutDoctorInput
+  specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
+  patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
+  depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutPasswordChangeLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordChangeLogsInput, Prisma.UserUncheckedCreateWithoutPasswordChangeLogsInput>
+}
+
+export type UserUpsertWithoutPasswordChangeLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordChangeLogsInput, Prisma.UserUncheckedUpdateWithoutPasswordChangeLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordChangeLogsInput, Prisma.UserUncheckedCreateWithoutPasswordChangeLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPasswordChangeLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordChangeLogsInput, Prisma.UserUncheckedUpdateWithoutPasswordChangeLogsInput>
+}
+
+export type UserUpdateWithoutPasswordChangeLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUpdateManyWithoutDoctorNestedInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUpdateManyWithoutRecordedByNestedInput
+  appointmentsAsDoctor?: Prisma.AppointmentUpdateManyWithoutDoctorNestedInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUpdateManyWithoutDoctorNestedInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUpdateManyWithoutDoctorNestedInput
+  specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
+  patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
+  depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPasswordChangeLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUncheckedUpdateManyWithoutDoctorNestedInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUncheckedUpdateManyWithoutRecordedByNestedInput
+  appointmentsAsDoctor?: Prisma.AppointmentUncheckedUpdateManyWithoutDoctorNestedInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUncheckedUpdateManyWithoutDoctorNestedInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedUpdateManyWithoutDoctorNestedInput
+  specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
+  patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
+  depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutTreatmentsAsDoctorInput = {
@@ -956,6 +1372,7 @@ export type UserCreateWithoutTreatmentsAsDoctorInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -966,6 +1383,10 @@ export type UserCreateWithoutTreatmentsAsDoctorInput = {
   specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutTreatmentsAsDoctorInput = {
@@ -975,6 +1396,7 @@ export type UserUncheckedCreateWithoutTreatmentsAsDoctorInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -985,6 +1407,10 @@ export type UserUncheckedCreateWithoutTreatmentsAsDoctorInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutTreatmentsAsDoctorInput = {
@@ -1010,6 +1436,7 @@ export type UserUpdateWithoutTreatmentsAsDoctorInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1020,6 +1447,10 @@ export type UserUpdateWithoutTreatmentsAsDoctorInput = {
   specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTreatmentsAsDoctorInput = {
@@ -1029,6 +1460,7 @@ export type UserUncheckedUpdateWithoutTreatmentsAsDoctorInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1039,6 +1471,10 @@ export type UserUncheckedUpdateWithoutTreatmentsAsDoctorInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPaymentsRecordedInput = {
@@ -1048,6 +1484,7 @@ export type UserCreateWithoutPaymentsRecordedInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1058,6 +1495,10 @@ export type UserCreateWithoutPaymentsRecordedInput = {
   specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsRecordedInput = {
@@ -1067,6 +1508,7 @@ export type UserUncheckedCreateWithoutPaymentsRecordedInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1077,6 +1519,10 @@ export type UserUncheckedCreateWithoutPaymentsRecordedInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
   depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsRecordedInput = {
@@ -1102,6 +1548,7 @@ export type UserUpdateWithoutPaymentsRecordedInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1112,6 +1559,10 @@ export type UserUpdateWithoutPaymentsRecordedInput = {
   specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsRecordedInput = {
@@ -1121,6 +1572,7 @@ export type UserUncheckedUpdateWithoutPaymentsRecordedInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1131,6 +1583,10 @@ export type UserUncheckedUpdateWithoutPaymentsRecordedInput = {
   specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
   depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutPatientNotesCreatedInput = {
@@ -1140,6 +1596,7 @@ export type UserCreateWithoutPatientNotesCreatedInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1150,6 +1607,10 @@ export type UserCreateWithoutPatientNotesCreatedInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideCreateNestedManyWithoutDoctorInput
   specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
   depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPatientNotesCreatedInput = {
@@ -1159,6 +1620,7 @@ export type UserUncheckedCreateWithoutPatientNotesCreatedInput = {
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1169,6 +1631,10 @@ export type UserUncheckedCreateWithoutPatientNotesCreatedInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedCreateNestedManyWithoutDoctorInput
   specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
   depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPatientNotesCreatedInput = {
@@ -1194,6 +1660,7 @@ export type UserUpdateWithoutPatientNotesCreatedInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1204,6 +1671,10 @@ export type UserUpdateWithoutPatientNotesCreatedInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUpdateManyWithoutDoctorNestedInput
   specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
   depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPatientNotesCreatedInput = {
@@ -1213,6 +1684,7 @@ export type UserUncheckedUpdateWithoutPatientNotesCreatedInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1223,15 +1695,20 @@ export type UserUncheckedUpdateWithoutPatientNotesCreatedInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedUpdateManyWithoutDoctorNestedInput
   specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
   depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
-export type UserCreateWithoutDepositsRecordedInput = {
+export type UserCreateWithoutDepositTransfersInput = {
   id?: string
   username: string
   email?: string | null
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1242,15 +1719,20 @@ export type UserCreateWithoutDepositsRecordedInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideCreateNestedManyWithoutDoctorInput
   specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
+  depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
 }
 
-export type UserUncheckedCreateWithoutDepositsRecordedInput = {
+export type UserUncheckedCreateWithoutDepositTransfersInput = {
   id?: string
   username: string
   email?: string | null
   passwordHash: string
   fullName: string
   role: $Enums.UserRole
+  doctorCode?: string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1261,6 +1743,122 @@ export type UserUncheckedCreateWithoutDepositsRecordedInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedCreateNestedManyWithoutDoctorInput
   specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
+  depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutDepositTransfersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDepositTransfersInput, Prisma.UserUncheckedCreateWithoutDepositTransfersInput>
+}
+
+export type UserUpsertWithoutDepositTransfersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDepositTransfersInput, Prisma.UserUncheckedUpdateWithoutDepositTransfersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDepositTransfersInput, Prisma.UserUncheckedCreateWithoutDepositTransfersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDepositTransfersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDepositTransfersInput, Prisma.UserUncheckedUpdateWithoutDepositTransfersInput>
+}
+
+export type UserUpdateWithoutDepositTransfersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUpdateManyWithoutDoctorNestedInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUpdateManyWithoutRecordedByNestedInput
+  appointmentsAsDoctor?: Prisma.AppointmentUpdateManyWithoutDoctorNestedInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUpdateManyWithoutDoctorNestedInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUpdateManyWithoutDoctorNestedInput
+  specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
+  patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
+  depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDepositTransfersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUncheckedUpdateManyWithoutDoctorNestedInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUncheckedUpdateManyWithoutRecordedByNestedInput
+  appointmentsAsDoctor?: Prisma.AppointmentUncheckedUpdateManyWithoutDoctorNestedInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUncheckedUpdateManyWithoutDoctorNestedInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedUpdateManyWithoutDoctorNestedInput
+  specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
+  patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
+  depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutDepositsRecordedInput = {
+  id?: string
+  username: string
+  email?: string | null
+  passwordHash: string
+  fullName: string
+  role: $Enums.UserRole
+  doctorCode?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentCreateNestedManyWithoutDoctorInput
+  paymentsRecorded?: Prisma.TreatmentPaymentCreateNestedManyWithoutRecordedByInput
+  appointmentsAsDoctor?: Prisma.AppointmentCreateNestedManyWithoutDoctorInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityCreateNestedManyWithoutDoctorInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideCreateNestedManyWithoutDoctorInput
+  specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
+  patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutDepositsRecordedInput = {
+  id?: string
+  username: string
+  email?: string | null
+  passwordHash: string
+  fullName: string
+  role: $Enums.UserRole
+  doctorCode?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUncheckedCreateNestedManyWithoutDoctorInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUncheckedCreateNestedManyWithoutRecordedByInput
+  appointmentsAsDoctor?: Prisma.AppointmentUncheckedCreateNestedManyWithoutDoctorInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUncheckedCreateNestedManyWithoutDoctorInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedCreateNestedManyWithoutDoctorInput
+  specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
+  patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutDepositsRecordedInput = {
@@ -1286,6 +1884,7 @@ export type UserUpdateWithoutDepositsRecordedInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1296,6 +1895,10 @@ export type UserUpdateWithoutDepositsRecordedInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUpdateManyWithoutDoctorNestedInput
   specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDepositsRecordedInput = {
@@ -1305,6 +1908,7 @@ export type UserUncheckedUpdateWithoutDepositsRecordedInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1315,6 +1919,122 @@ export type UserUncheckedUpdateWithoutDepositsRecordedInput = {
   availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedUpdateManyWithoutDoctorNestedInput
   specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
   patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
+  requestedDeposits?: Prisma.RequestedDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutRequestedDepositsInput = {
+  id?: string
+  username: string
+  email?: string | null
+  passwordHash: string
+  fullName: string
+  role: $Enums.UserRole
+  doctorCode?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentCreateNestedManyWithoutDoctorInput
+  paymentsRecorded?: Prisma.TreatmentPaymentCreateNestedManyWithoutRecordedByInput
+  appointmentsAsDoctor?: Prisma.AppointmentCreateNestedManyWithoutDoctorInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityCreateNestedManyWithoutDoctorInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideCreateNestedManyWithoutDoctorInput
+  specializations?: Prisma.DoctorSpecializationCreateNestedManyWithoutDoctorInput
+  patientNotesCreated?: Prisma.PatientNoteCreateNestedManyWithoutCreatedByInput
+  depositsRecorded?: Prisma.PatientDepositCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutRequestedDepositsInput = {
+  id?: string
+  username: string
+  email?: string | null
+  passwordHash: string
+  fullName: string
+  role: $Enums.UserRole
+  doctorCode?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUncheckedCreateNestedManyWithoutDoctorInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUncheckedCreateNestedManyWithoutRecordedByInput
+  appointmentsAsDoctor?: Prisma.AppointmentUncheckedCreateNestedManyWithoutDoctorInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUncheckedCreateNestedManyWithoutDoctorInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedCreateNestedManyWithoutDoctorInput
+  specializations?: Prisma.DoctorSpecializationUncheckedCreateNestedManyWithoutDoctorInput
+  patientNotesCreated?: Prisma.PatientNoteUncheckedCreateNestedManyWithoutCreatedByInput
+  depositsRecorded?: Prisma.PatientDepositUncheckedCreateNestedManyWithoutCreatedByInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedCreateNestedManyWithoutUserInput
+  depositTransfers?: Prisma.DepositTransferUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutRequestedDepositsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRequestedDepositsInput, Prisma.UserUncheckedCreateWithoutRequestedDepositsInput>
+}
+
+export type UserUpsertWithoutRequestedDepositsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRequestedDepositsInput, Prisma.UserUncheckedUpdateWithoutRequestedDepositsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRequestedDepositsInput, Prisma.UserUncheckedCreateWithoutRequestedDepositsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRequestedDepositsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRequestedDepositsInput, Prisma.UserUncheckedUpdateWithoutRequestedDepositsInput>
+}
+
+export type UserUpdateWithoutRequestedDepositsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUpdateManyWithoutDoctorNestedInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUpdateManyWithoutRecordedByNestedInput
+  appointmentsAsDoctor?: Prisma.AppointmentUpdateManyWithoutDoctorNestedInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUpdateManyWithoutDoctorNestedInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUpdateManyWithoutDoctorNestedInput
+  specializations?: Prisma.DoctorSpecializationUpdateManyWithoutDoctorNestedInput
+  patientNotesCreated?: Prisma.PatientNoteUpdateManyWithoutCreatedByNestedInput
+  depositsRecorded?: Prisma.PatientDepositUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRequestedDepositsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  doctorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  treatmentsAsDoctor?: Prisma.TreatmentUncheckedUpdateManyWithoutDoctorNestedInput
+  paymentsRecorded?: Prisma.TreatmentPaymentUncheckedUpdateManyWithoutRecordedByNestedInput
+  appointmentsAsDoctor?: Prisma.AppointmentUncheckedUpdateManyWithoutDoctorNestedInput
+  weeklyAvailability?: Prisma.DoctorWeeklyAvailabilityUncheckedUpdateManyWithoutDoctorNestedInput
+  availabilityOverrides?: Prisma.DoctorAvailabilityOverrideUncheckedUpdateManyWithoutDoctorNestedInput
+  specializations?: Prisma.DoctorSpecializationUncheckedUpdateManyWithoutDoctorNestedInput
+  patientNotesCreated?: Prisma.PatientNoteUncheckedUpdateManyWithoutCreatedByNestedInput
+  depositsRecorded?: Prisma.PatientDepositUncheckedUpdateManyWithoutCreatedByNestedInput
+  passwordResetTokens?: Prisma.UserPasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordChangeLogs?: Prisma.PasswordChangeLogUncheckedUpdateManyWithoutUserNestedInput
+  depositTransfers?: Prisma.DepositTransferUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -1331,6 +2051,10 @@ export type UserCountOutputType = {
   specializations: number
   patientNotesCreated: number
   depositsRecorded: number
+  passwordResetTokens: number
+  passwordChangeLogs: number
+  depositTransfers: number
+  requestedDeposits: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1342,6 +2066,10 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   specializations?: boolean | UserCountOutputTypeCountSpecializationsArgs
   patientNotesCreated?: boolean | UserCountOutputTypeCountPatientNotesCreatedArgs
   depositsRecorded?: boolean | UserCountOutputTypeCountDepositsRecordedArgs
+  passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
+  passwordChangeLogs?: boolean | UserCountOutputTypeCountPasswordChangeLogsArgs
+  depositTransfers?: boolean | UserCountOutputTypeCountDepositTransfersArgs
+  requestedDeposits?: boolean | UserCountOutputTypeCountRequestedDepositsArgs
 }
 
 /**
@@ -1410,6 +2138,34 @@ export type UserCountOutputTypeCountDepositsRecordedArgs<ExtArgs extends runtime
   where?: Prisma.PatientDepositWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserPasswordResetTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPasswordChangeLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordChangeLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDepositTransfersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DepositTransferWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRequestedDepositsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RequestedDepositWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1418,6 +2174,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   passwordHash?: boolean
   fullName?: boolean
   role?: boolean
+  doctorCode?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1429,6 +2186,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   specializations?: boolean | Prisma.User$specializationsArgs<ExtArgs>
   patientNotesCreated?: boolean | Prisma.User$patientNotesCreatedArgs<ExtArgs>
   depositsRecorded?: boolean | Prisma.User$depositsRecordedArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  passwordChangeLogs?: boolean | Prisma.User$passwordChangeLogsArgs<ExtArgs>
+  depositTransfers?: boolean | Prisma.User$depositTransfersArgs<ExtArgs>
+  requestedDeposits?: boolean | Prisma.User$requestedDepositsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1439,6 +2200,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   passwordHash?: boolean
   fullName?: boolean
   role?: boolean
+  doctorCode?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1451,6 +2213,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   passwordHash?: boolean
   fullName?: boolean
   role?: boolean
+  doctorCode?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1463,12 +2226,13 @@ export type UserSelectScalar = {
   passwordHash?: boolean
   fullName?: boolean
   role?: boolean
+  doctorCode?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "passwordHash" | "fullName" | "role" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "username" | "email" | "passwordHash" | "fullName" | "role" | "doctorCode" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   treatmentsAsDoctor?: boolean | Prisma.User$treatmentsAsDoctorArgs<ExtArgs>
   paymentsRecorded?: boolean | Prisma.User$paymentsRecordedArgs<ExtArgs>
@@ -1478,6 +2242,10 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   specializations?: boolean | Prisma.User$specializationsArgs<ExtArgs>
   patientNotesCreated?: boolean | Prisma.User$patientNotesCreatedArgs<ExtArgs>
   depositsRecorded?: boolean | Prisma.User$depositsRecordedArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  passwordChangeLogs?: boolean | Prisma.User$passwordChangeLogsArgs<ExtArgs>
+  depositTransfers?: boolean | Prisma.User$depositTransfersArgs<ExtArgs>
+  requestedDeposits?: boolean | Prisma.User$requestedDepositsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1494,6 +2262,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     specializations: Prisma.$DoctorSpecializationPayload<ExtArgs>[]
     patientNotesCreated: Prisma.$PatientNotePayload<ExtArgs>[]
     depositsRecorded: Prisma.$PatientDepositPayload<ExtArgs>[]
+    passwordResetTokens: Prisma.$UserPasswordResetTokenPayload<ExtArgs>[]
+    passwordChangeLogs: Prisma.$PasswordChangeLogPayload<ExtArgs>[]
+    depositTransfers: Prisma.$DepositTransferPayload<ExtArgs>[]
+    requestedDeposits: Prisma.$RequestedDepositPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1502,6 +2274,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     passwordHash: string
     fullName: string
     role: $Enums.UserRole
+    doctorCode: string | null
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1907,6 +2680,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   specializations<T extends Prisma.User$specializationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$specializationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DoctorSpecializationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   patientNotesCreated<T extends Prisma.User$patientNotesCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$patientNotesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PatientNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   depositsRecorded<T extends Prisma.User$depositsRecordedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$depositsRecordedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PatientDepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordResetTokens<T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordChangeLogs<T extends Prisma.User$passwordChangeLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordChangeLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordChangeLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  depositTransfers<T extends Prisma.User$depositTransfersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$depositTransfersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DepositTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  requestedDeposits<T extends Prisma.User$requestedDepositsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$requestedDepositsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RequestedDepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1942,6 +2719,7 @@ export interface UserFieldRefs {
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly fullName: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
+  readonly doctorCode: Prisma.FieldRef<"User", 'String'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -2527,6 +3305,102 @@ export type User$depositsRecordedArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.PatientDepositScalarFieldEnum | Prisma.PatientDepositScalarFieldEnum[]
+}
+
+/**
+ * User.passwordResetTokens
+ */
+export type User$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPasswordResetToken
+   */
+  select?: Prisma.UserPasswordResetTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPasswordResetToken
+   */
+  omit?: Prisma.UserPasswordResetTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPasswordResetTokenInclude<ExtArgs> | null
+  where?: Prisma.UserPasswordResetTokenWhereInput
+  orderBy?: Prisma.UserPasswordResetTokenOrderByWithRelationInput | Prisma.UserPasswordResetTokenOrderByWithRelationInput[]
+  cursor?: Prisma.UserPasswordResetTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserPasswordResetTokenScalarFieldEnum | Prisma.UserPasswordResetTokenScalarFieldEnum[]
+}
+
+/**
+ * User.passwordChangeLogs
+ */
+export type User$passwordChangeLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PasswordChangeLog
+   */
+  select?: Prisma.PasswordChangeLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PasswordChangeLog
+   */
+  omit?: Prisma.PasswordChangeLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordChangeLogInclude<ExtArgs> | null
+  where?: Prisma.PasswordChangeLogWhereInput
+  orderBy?: Prisma.PasswordChangeLogOrderByWithRelationInput | Prisma.PasswordChangeLogOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordChangeLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordChangeLogScalarFieldEnum | Prisma.PasswordChangeLogScalarFieldEnum[]
+}
+
+/**
+ * User.depositTransfers
+ */
+export type User$depositTransfersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DepositTransfer
+   */
+  select?: Prisma.DepositTransferSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DepositTransfer
+   */
+  omit?: Prisma.DepositTransferOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DepositTransferInclude<ExtArgs> | null
+  where?: Prisma.DepositTransferWhereInput
+  orderBy?: Prisma.DepositTransferOrderByWithRelationInput | Prisma.DepositTransferOrderByWithRelationInput[]
+  cursor?: Prisma.DepositTransferWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DepositTransferScalarFieldEnum | Prisma.DepositTransferScalarFieldEnum[]
+}
+
+/**
+ * User.requestedDeposits
+ */
+export type User$requestedDepositsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RequestedDeposit
+   */
+  select?: Prisma.RequestedDepositSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RequestedDeposit
+   */
+  omit?: Prisma.RequestedDepositOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RequestedDepositInclude<ExtArgs> | null
+  where?: Prisma.RequestedDepositWhereInput
+  orderBy?: Prisma.RequestedDepositOrderByWithRelationInput | Prisma.RequestedDepositOrderByWithRelationInput[]
+  cursor?: Prisma.RequestedDepositWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RequestedDepositScalarFieldEnum | Prisma.RequestedDepositScalarFieldEnum[]
 }
 
 /**

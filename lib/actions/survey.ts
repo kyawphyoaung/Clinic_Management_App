@@ -9,7 +9,7 @@ import {
 import { calculateScore, getLocalizedResult } from "@/lib/utils/scoring";
 import { getFirstZodError } from "@/lib/utils/zod";
 import { toInputJsonValue } from "@/lib/utils/json";
-import { generateDisplayId } from "@/lib/utils/display-id";
+import { createPatientWithVisit } from "@/lib/utils/create-patient-with-visit";
 import { PatientSource } from "@/prisma/generated/prisma/client";
 
 export type SurveyActionResult =
@@ -53,16 +53,18 @@ export async function submitSurvey(
         const dob = new Date();
         dob.setFullYear(dob.getFullYear() - data.demographics.age);
 
-        const displayId = await generateDisplayId(tx);
-        const patient = await tx.patient.create({
-          data: {
-            displayId,
+        const { patient } = await createPatientWithVisit(
+          tx,
+          {
+            displayId: "pending",
+            patientNumber: "pending",
             fullName: data.demographics.name,
             gender: data.demographics.gender,
             dateOfBirth: dob,
             source: PatientSource.WALKIN,
           },
-        });
+          { source: "WALKIN" }
+        );
         patientId = patient.id;
       } else if (patientId) {
         const existing = await tx.patient.findUnique({

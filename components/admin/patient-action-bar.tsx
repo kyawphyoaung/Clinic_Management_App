@@ -9,20 +9,16 @@ import type { PatientStatus } from "@/prisma/generated/prisma/enums";
 
 type PatientActionBarProps = {
   patientId: string;
-  currentClinicId: string | null;
   currentStatus: PatientStatus;
   currentAgentId: string | null;
-  clinics: { id: string; code: string; name: string }[];
   agents: { id: string; fullName: string; partnerId: string | null }[];
   statusOptions: { value: PatientStatus; label: string }[];
 };
 
 export function PatientActionBar({
   patientId,
-  currentClinicId,
   currentStatus,
   currentAgentId,
-  clinics,
   agents,
   statusOptions,
 }: PatientActionBarProps) {
@@ -42,23 +38,7 @@ export function PatientActionBar({
 
   return (
     <div className="rounded-lg border border-border bg-card/50 p-4">
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="space-y-1.5">
-          <p className="text-xs text-muted-foreground">Assign Clinic</p>
-          <Select
-            value={currentClinicId ?? ""}
-            disabled={isPending}
-            onChange={(e) => mutate({ clinicId: e.target.value || null })}
-          >
-            <option value="">Unassigned</option>
-            {clinics.map((clinic) => (
-              <option key={clinic.id} value={clinic.id}>
-                {clinic.code} - {clinic.name}
-              </option>
-            ))}
-          </Select>
-        </div>
-
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-1.5">
           <p className="text-xs text-muted-foreground">Change Status</p>
           <Select

@@ -28,6 +28,11 @@ export type Patient = Prisma.PatientModel
  */
 export type Clinic = Prisma.ClinicModel
 /**
+ * Model Visit
+ * 
+ */
+export type Visit = Prisma.VisitModel
+/**
  * Model Agent
  * 
  */
@@ -42,6 +47,11 @@ export type ConsentLog = Prisma.ConsentLogModel
  * 
  */
 export type YearlyPatientSequence = Prisma.YearlyPatientSequenceModel
+/**
+ * Model SequenceCounter
+ * 
+ */
+export type SequenceCounter = Prisma.SequenceCounterModel
 /**
  * Model AgentSetPasswordToken
  * 
@@ -108,6 +118,16 @@ export type SurveyResponse = Prisma.SurveyResponseModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model UserPasswordResetToken
+ * 
+ */
+export type UserPasswordResetToken = Prisma.UserPasswordResetTokenModel
+/**
+ * Model PasswordChangeLog
+ * 
+ */
+export type PasswordChangeLog = Prisma.PasswordChangeLogModel
+/**
  * Model Treatment
  * 
  */
@@ -138,7 +158,22 @@ export type PaymentAllocation = Prisma.PaymentAllocationModel
  */
 export type PatientNote = Prisma.PatientNoteModel
 /**
+ * Model DepositReceiver
+ * 
+ */
+export type DepositReceiver = Prisma.DepositReceiverModel
+/**
+ * Model DepositTransfer
+ * 
+ */
+export type DepositTransfer = Prisma.DepositTransferModel
+/**
  * Model PatientDeposit
  * 
  */
 export type PatientDeposit = Prisma.PatientDepositModel
+/**
+ * Model RequestedDeposit
+ * 
+ */
+export type RequestedDeposit = Prisma.RequestedDepositModel

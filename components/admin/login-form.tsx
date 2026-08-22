@@ -78,6 +78,12 @@ export function LoginForm() {
             {isLoading && <Loader2 className="size-4 animate-spin" />}
             Sign In
           </Button>
+          <p className="text-center text-sm text-muted-foreground">
+            Doctors:{" "}
+            <a className="underline" href="/jamesHarry/forgot-password">
+              Forgot password?
+            </a>
+          </p>
         </form>
       </CardContent>
     </Card>
